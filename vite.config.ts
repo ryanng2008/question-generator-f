@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://qg-env.eba-rskeuxuj.ap-southeast-1.elasticbeanstalk.com/',
+        target: 'http://qg-env.eba-rskeuxuj.ap-southeast-1.elasticbeanstalk.com/',// http://127.0.0.1:5000/
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
@@ -15,3 +15,4 @@ export default defineConfig({
     },
   }, 
 })
+
