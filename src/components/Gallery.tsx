@@ -65,7 +65,9 @@ function Gallery() {
   }
   
   function getContent() {
-    if(filteredItems.length > 0) return filteredItems
+    if(filteredItems.length > 0) return (
+      <ul className='grid grid-cols-2 gap-4'>{filteredItems}</ul>
+    )
     switch(activeTab) {
       case 'library': 
         return (
