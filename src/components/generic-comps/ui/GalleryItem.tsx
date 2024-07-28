@@ -24,21 +24,21 @@ function GalleryItem ({
     return (
     <div>
       <Link to={id}>
-        <div className="bg-[#CBD0D2] rounded-3xl grid grid-cols-3 py-6 px-8 hover:drop-shadow-2xl duration-500">
-            <div className="col-span-2 flex flex-col ">
+        <div className="bg-[#CBD0D2] rounded-3xl grid grid-cols-3 py-5 px-8 hover:drop-shadow-2xl duration-500">
+            <div className="col-span-2 flex flex-col gap-3 ">
                 <div className="TITLE text-3xl font-bold"><h1>{title}</h1></div>
-                <ul className="TAGS py-3 flex flex-wrap justify-start px-0 gap-x-4 gap-y-2 drop-shadow-md">
+                {tags.length > 0 && <ul className={`TAGS flex flex-wrap justify-start px-0 gap-x-4 gap-y-2 drop-shadow-md`}>
                     {tags.map((tag, i) => {
                       return <li key={i}><CategoryTag text={tag} /></li>
                     })}
-                </ul>
-                <div className="BLURB text-sm pr-4 max-h-[60px] ">
-                    <p>{description}</p>
+                </ul>}
+                <div className="BLURB text-sm">
+                    <p>{description.length > 200 ? description.substring(0, 200) : description}</p>
                 </div>
             </div>
-            <div className="col-span-1 px-6 flex items-center">
+            <div className="col-span-1 pl-6 flex items-center">
                 <img 
-                className='max-h-[200px]'
+                className=''
                 src={image} alt={image.toString()} />
             </div>
         </div>
