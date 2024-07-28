@@ -1,6 +1,8 @@
+//import BASE_URL from "./apiConfig";
+
 export async function fetchCategoryDetails(categoryId: string) {
     try {
-        const response = await fetch(`https://66a5a7305dc27a3c190bd6f7.mockapi.ion/categorydetails/${categoryId}`);
+        const response = await fetch(`https://66a5a7305dc27a3c190bd6f7.mockapi.io/categorydetails/${categoryId}`);
         if(!response.ok) throw new Error(`Failed to fetch  details for category ID ${categoryId}`)
         const data = await response.json();
         return data;
