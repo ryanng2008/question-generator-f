@@ -10,8 +10,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://66a5a7305dc27a3c190bd6f7.mockapi.io/', // http://127.0.0.1:5000/
+        target: 'http://qg-env.eba-rskeuxuj.ap-southeast-1.elasticbeanstalk.com/', // http://127.0.0.1:5000/
         //http://qg-env.eba-rskeuxuj.ap-southeast-1.elasticbeanstalk.com/
+        //https://66a5a7305dc27a3c190bd6f7.mockapi.io/
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
