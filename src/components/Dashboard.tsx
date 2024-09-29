@@ -12,7 +12,7 @@ function Dashboard() {
                 </div>
                 <div className="HEADING text-[#444341] text-2xl py-4 ml-2"> {/* w-1/2 */}
                     <h1>Here are your weekly study stats:</h1>
-                </div>
+                </div>w
                 <div className=' STATS GRID sm:grid sm:grid-cols-2 flex flex-col pt-4 w-full lg:w-[90%] mx-auto'>
                     <Statistic number="3" caption="Day Streak" /> 
                     <Statistic number="120" caption="Questions" /> 
@@ -22,6 +22,7 @@ function Dashboard() {
             </div>
         )
     }
+    const a = '<div>Nigganigga</div>'
 
     const MinimalContainer = () => {
         return(

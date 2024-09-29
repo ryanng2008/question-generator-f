@@ -32,3 +32,33 @@ export function toTeX(rawText: string) { // returns the stuff inside question bl
   })}</div>)
   return texified
 }
+
+export function texToSympyString(latex: string) {
+    return latex
+      .replace(/\\left/g, '')
+      .replace(/\\right/g, '')
+      // TRIG
+      .replace(/\\sin/g, 'sin')
+      .replace(/\\cos/g, 'cos')
+      .replace(/\\tan/g, 'tan')
+      .replace(/\\asin/g, 'asin')
+      .replace(/\\acos/g, 'acos')
+      .replace(/\\atan/g, 'atan')
+      // OTHER ELEMENTARY
+      .replace(/\\log/g, 'log')
+      .replace(/\\ln/g, 'log')
+      .replace(/\\sqrt/g, 'sqrt')
+      .replace(/\\frac{([^}]+)}{([^}]+)}/g, '(($1) / ($2))') // FRAC
+      .replace(/\^/g, '**') // EXP
+      .replace(/\|([^|]+)\|/g, 'abs($1)') // ABS
+      // SYMBOLS
+      .replace(/\\pi/g, 'pi') // PI
+      .replace(/\b(?<!\\)e\b/g, 'e') // E - using word boundaries
+      // ADD: HYPERBOLIC (sinh, cosh, tanh, asinh, acosh, atanh)
+
+      // SPECIAL: Abs, Min, Max
+      // REMOVE LEFT AND RIGHT
+    while(true) {
+
+    }
+}

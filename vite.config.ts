@@ -19,6 +19,9 @@ export default defineConfig({
       },
     },
   }, 
+  define: {
+    global: {},
+  }
 })
 
 // DEVELOPMENT
