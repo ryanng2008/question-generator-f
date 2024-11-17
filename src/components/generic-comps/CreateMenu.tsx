@@ -43,7 +43,7 @@ export function CreateQuestion() {
     // PV State
     const [pvs, setPVs] = useState<PVClient[]>([{varName: '', latex: ``}]);
     const [rvs, setRVs] = useState<RVClient[]>([{name: '', lb: '', hb: ''}]);
-    const [answerInput, setAnswerInput] = useState('');
+    const [answerInput, _setAnswerInput] = useState('');
     const sanitizedAnswer = DOMPurify.sanitize(answerInput)
     const [message, setMessage] = useState('');
 
