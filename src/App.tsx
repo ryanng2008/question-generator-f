@@ -4,9 +4,12 @@ import Gallery from "./components/Gallery"
 import CategoryMenu from "./components/generic-comps/CategoryMenu"
 import { Route, Routes } from "react-router-dom"
 import QuestionsPage from "./components/generic-comps/QuestionsPage"
-import Workspace from "./components/Workspace"
+//import Workspace from "./components/Workspace"
 import CreateMenu from "./components/generic-comps/CreateMenu"
+import { addStyles } from "react-mathquill";
 
+
+addStyles()
 
 function App() {
 
@@ -20,7 +23,7 @@ function App() {
             <Route path='library/:categoryId' element={<CategoryMenu />} />
             <Route path='library/:categoryId/questions' element={<QuestionsPage />}/>
             <Route path='create' element={<CreateMenu />}/>
-            <Route path='workspace' element={<Workspace />}/>
+            {/* <Route path='workspace' element={<Workspace />}/> */}
           </Routes>
         </div>
       </div>

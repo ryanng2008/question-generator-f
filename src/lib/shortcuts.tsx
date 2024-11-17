@@ -35,8 +35,12 @@ export function toTeX(rawText: string) { // returns the stuff inside question bl
 
 export function texToSympyString(latex: string) {
     return latex
+      // REMOVE LEFT AND RIGHT
       .replace(/\\left/g, '')
       .replace(/\\right/g, '')
+      // SYMBOLS
+      .replace(/\\pi/g, 'pi') // PI
+      .replace(/\b(?<!\\)e\b/g, 'E') // E - using word boundaries
       // TRIG
       .replace(/\\sin/g, 'sin')
       .replace(/\\cos/g, 'cos')
@@ -48,17 +52,43 @@ export function texToSympyString(latex: string) {
       .replace(/\\log/g, 'log')
       .replace(/\\ln/g, 'log')
       .replace(/\\sqrt/g, 'sqrt')
+      // HYPERBOLIC
+      .replace(/\\sinh/g, 'sinh')
+      .replace(/\\cosh/g, 'cosh')
+      .replace(/\\tanh/g, 'tanh')
+      .replace(/\\asinh/g, 'asinh')
+      .replace(/\\acosh/g, 'acosh')
+      .replace(/\\atanh/g, 'atanh')
+      // SPECIAL - math formatting 
       .replace(/\\frac{([^}]+)}{([^}]+)}/g, '(($1) / ($2))') // FRAC
       .replace(/\^/g, '**') // EXP
-      .replace(/\|([^|]+)\|/g, 'abs($1)') // ABS
-      // SYMBOLS
-      .replace(/\\pi/g, 'pi') // PI
-      .replace(/\b(?<!\\)e\b/g, 'e') // E - using word boundaries
-      // ADD: HYPERBOLIC (sinh, cosh, tanh, asinh, acosh, atanh)
+      .replace(/\|([^|]+)\|/g, 'Abs($1)') // ABS
+      .replace(/\\cdot/g, ' *')
+      // SPECIAL - string formatting
+      .replace(/\\ /g, ' ') 
+}
 
-      // SPECIAL: Abs, Min, Max
-      // REMOVE LEFT AND RIGHT
-    while(true) {
+export const allowedFunctions = [
+  'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 
+  'log', 'ln', 'sqrt', 'frac', 'pi', 
+  'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh',
+  'cdot'];
 
+export function sanitizeLatex(input: string) { // MOVE THIS INTO A DIFFERENT MODULE 
+  // SANITIZE: .replace(/\\(left|right)/g, '')  
+  const commandRegex = /\\([a-zA-Z]+)/g; // match LaTeX commands, e.g., \int, \sum, \sin
+  const sanitized = input
+    .replace(commandRegex, (match, p1) => {
+    if (allowedFunctions.includes(p1)) {
+      return match; // Keep allowed functions
     }
+    return ''; // Remove disallowed functions
+  });
+  return sanitized;
+}
+
+export function finalSanitize(input: string) {
+  const sanitized = input
+
+  return sanitized
 }

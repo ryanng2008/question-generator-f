@@ -25,8 +25,8 @@ function Navbar() {
         </Link>
         <div className="flex items-center space-x-24">
           <ul className='flex justify-apart space-x-16'>
-            <li><Link to='/'><NavbarButton text='dashboard'/></Link></li>
             <li><Link to='/library'><NavbarButton text='library'/></Link></li>
+            <li><Link to='/create'><NavbarButton text='create'/></Link></li>
           </ul>
           <button className='' onClick={handleMenuClick}>
             <img className='max-w-[48px] fill-mywhite' src={Menu} alt="Menu" />

@@ -38,15 +38,15 @@ function Gallery() {
   const filteredItems = categoriesToItems((activeTab == "explore") ? filteredGallery : filteredLibrary);
 
   function categoriesToItems(categoryList: any[]) {
-    return categoryList.map((category: any) => (
-      <li key={category.id}>
+    return categoryList.map((category: any, i) => (
+      <li key={i}>
       <GalleryItem
       title={category.title}
       tags={category.tags}
       description={category.description}
       image={category.imageLink}
       id={category._id} />
-    </li>
+      </li>
     ))
   }
 

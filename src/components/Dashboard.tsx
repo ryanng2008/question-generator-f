@@ -6,7 +6,7 @@ function Dashboard() {
     const hasProfile = false;
     const StatsContainer = () => {
         return (
-            <div className='CONTENT CONTAINER flex flex-col w-1/2'>
+            <div className='CONTENT CONTAINER flex flex-col'>
                 <div className="HEADING my-4 pt-8 font-bold text-6xl text-[#444341]">
                     <h1>Welcome back, user!</h1>
                 </div>
@@ -22,11 +22,10 @@ function Dashboard() {
             </div>
         )
     }
-    const a = '<div>Nigganigga</div>'
 
     const MinimalContainer = () => {
         return(
-        <div className='CONTENT CONTAINER flex flex-col w-1/2 mt-[30vh]'>
+        <div className='CONTENT CONTAINER flex flex-col mt-[30vh]'>
             <div className="HEADING my-4 font-bold text-7xl text-[#444341]">
                 <h1>Welcome back!</h1>
             </div>
@@ -60,9 +59,9 @@ function Dashboard() {
     <div className="font-inter">
         <div className="lg:px-12 md:px-8 px-0 mx-4 flex flex-col">
             
-            <div className="CONTENT flex flex-row justify-between h-[85vh]"> 
+            <div className="CONTENT grid grid-cols-2 justify-between h-[85vh]"> 
                 {hasProfile ? <StatsContainer /> : <MinimalContainer />}
-                <div className='w-1/2 flex items-center justify-center '>
+                <div className='flex items-center justify-center '>
                     <div className=' md:max-w-[90%] max-w-full overflow-hidden'>
                     <img 
                     className='px-4 mx-auto justify-center shrink-0'

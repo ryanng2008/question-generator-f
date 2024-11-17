@@ -10,7 +10,7 @@ export interface Category {
 
 export interface RawQuestion {
     question: string,
-    rvs: RandomVariable[],
+    rvs: RV[],
     pvs: ProcessedVariables,
     answer_expressions: ProcessedVariables
     answer: string
@@ -21,10 +21,21 @@ export interface Question {
     answer: string
 }
 
-interface RandomVariable {
+export interface RV {
     name: string,
     lb: number,
     hb: number
+}
+
+export interface RVClient {
+    name: string,
+    lb: string,
+    hb: string
+}
+
+export interface PVClient {
+    varName: string,
+    latex: string
 }
 
 interface ProcessedVariables {

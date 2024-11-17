@@ -24,28 +24,29 @@ function QuestionsPage() {
   });
   
   const [questionObjs, setQuestionObjs] = useState<Question[]>([]); // useState getQuestionList(categoryId) // <Question[]>
-  const [refresh, setRefresh] = useState(false);
+  //const [refresh, setRefresh] = useState(false);
   const [sort, setSort] = useState<string>('Number');
   const [count, setCount] = useState(-1);
   const questionsCount = count == -1 ? questionObjs.length : count;
-
+  const [fetching, setFetching] = useState<boolean>(false);
+  async function fetchData() {
+    if(!fetching) {
+      setFetching(true)
+      fetchQuestionList(categoryId, count)
+      .then(data => setQuestionObjs(data))
+      .then(() => setTimeout(() => {
+        setFetching(false);
+      }, 1000))
+      .catch(error => console.error(error))
+    }
+  }
   useEffect(() => {
-    fetchQuestionList(categoryId, count)
-    .then(data => {
-      //console.log("Question List:")
-      //console.log(data)
-      setQuestionObjs(data)
-    })
-    .catch(error => console.error(error))
-  }, [refresh, questionsCount])
+    fetchData();
+  }, [questionsCount])
 
   useEffect(() => {
     fetchCategoryDetails(categoryId)
-    .then(data => {
-      //console.log("Category Details:")
-      //console.log(data)
-      setCategory(data)
-    })
+    .then(data => setCategory(data))
     .catch(error => console.error(error))
   }, [])
 
@@ -61,7 +62,7 @@ function QuestionsPage() {
         <div className="ActionBar flex px-8 mx-8 py-4 gap-4">
             <div className="px-4 flex flex-row items-center gap-8">
                 <div>
-                    <button onClick={() => setRefresh(!refresh)}>
+                    <button onClick={fetchData}>
                       <img className='max-h-8 hover:scale-110 duration-300' src={Refresh} alt="" />
                     </button>
                 </div>
