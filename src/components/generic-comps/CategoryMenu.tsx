@@ -24,8 +24,8 @@ function CategoryMenu() {
         <div className='flex flex-col gap-[1px] my-4 mx-4'>
           <MenuButton text='Questions' linkedPage='questions' />
           <MenuButton text='Test' linkedPage='test' />
-          <MenuButton text='Questions 2' linkedPage='questions' />
-          <MenuButton text='Option 4' linkedPage='main'/>
+          {/* <MenuButton text='Spaced Repetition' linkedPage='questions' />
+          <MenuButton text='Create' linkedPage='main'/> */}
       </div>
       </div>
     </div>

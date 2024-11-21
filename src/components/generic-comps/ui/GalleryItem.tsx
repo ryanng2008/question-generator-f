@@ -11,7 +11,7 @@ interface GIProps {
 
 const CategoryTag = ({ text }: { text: string }) => {
   return(
-      <div className="bg-[#444341] rounded-2xl px-4 py-1"><p className="text-white text-sm font-semibold">{text}</p></div>
+      <div className="bg-[#444341] rounded-xl px-4 py-1"><p className="text-white text-sm font-semibold">{text}</p></div>
   )
 }
 function GalleryItem ({ 

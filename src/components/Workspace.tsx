@@ -9,16 +9,18 @@
 
 
 
+import ComboSelectCategory from './generic-comps/ui/ComboSelectCategory';
 
 
-// export default function Workspace() {
-//     return (
-//         <>
-//             {/* <QuestionInput /> */}
-//             <PVsInput />
-//         </>
-//     )
-// }
+
+
+export default function Workspace() {
+    return (
+        <div className='m-10'>
+            <ComboSelectCategory categoryId='' onChange={() => {}} />
+        </div>
+    )
+}
 
 // function PVsInput() { 
 //     // One component stores internal state - on click it saves to a global state variable in a parent. That click will sanitize the TeX (PROBLEM SOLVED)

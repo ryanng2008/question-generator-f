@@ -1,7 +1,7 @@
 import { PVClient, RVClient } from "../interfaces";
 import BASE_URL from "./apiConfig";
 
-export async function handlePostQuestion(questionString: string, rvs: RVClient[], pvs: PVClient[], answerString: string) {
+export async function handlePostQuestion(questionString: string, rvs: RVClient[], pvs: PVClient[], answerString: string, categoryId: string) {
     try {
         const response = await fetch(`${BASE_URL}/postquestion`, {
             method: 'POST',
@@ -12,7 +12,8 @@ export async function handlePostQuestion(questionString: string, rvs: RVClient[]
                 question: questionString,
                 rvs: rvs,
                 pvs: pvs,
-                answer: answerString
+                answer: answerString,
+                categoryid: categoryId
             })
         });
 

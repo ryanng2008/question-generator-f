@@ -1,7 +1,7 @@
 export interface Category {
     author: string;
     description: string;
-    id: string;
+    _id: string;
     imageLink: string;
     questions: string[];
     tags: string[];
