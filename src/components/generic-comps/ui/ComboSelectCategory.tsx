@@ -73,7 +73,7 @@ export default function ComboSelectCategory({ categoryId, onChange }: { category
       <Menu as="div" className="text-left max-w-56">
         <button onClick={() => setOpen(!open)} className='inline-block bg-darkgray px-4 py-2 rounded-lg hover:ring-2  ring-midgray'>
           <div className='flex gap-2'>
-            <input className='outline-none bg-transparent text-sm text-white' value={query} onChange={handleQuery} />
+            <input className='outline-none bg-transparent text-sm text-white placeholder:opacity-50 placeholder:text-white' placeholder='Select a category...' value={query} onChange={handleQuery} />
             <ChevronDownIcon height={16} className='my-auto ' fill='#ffffff' />
           </div>
         </button>
