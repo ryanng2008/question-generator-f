@@ -104,8 +104,9 @@ export default function CreateQuestion() {
                     </button>
                     {showInfo && <div className="absolute right-0 left-[-60px] border-2 border-darkgray bg-white pb-2 pt-3 px-4 text-darkgray rounded-lg text-sm top-full mt-1 drop-shadow-xl">
                         <ul className="list-disc list-inside space-y-1"> 
-                            <li>Delimit processed variables with [[double square brackets]]</li>
+                            <li>Delimit processed variables with <strong>[[</strong>double square brackets<strong>]]</strong></li>
                             <li>Implicit multiplication doesn't work: write x*y instead of xy</li>
+                            <li>Render LaTeX between <strong>$</strong>dollar signs<strong>$</strong></li>
                             <li>Answer field coming soon!</li>
                         </ul>
                     </div>}
