@@ -46,8 +46,9 @@ export async function handleRegister(username: string, password: string) {
                 password: password
             })
         })
-        const result = await response.json();
-        return result
+        const data = await response.json();
+        sessionStorage.setItem("token", data.token);
+        return { success: data.success, message: data.message }
     } catch (error) {
         console.error('An error occurred. ', error)
         return { success: false, message: 'An error occurred'}

@@ -7,9 +7,6 @@ import { useState } from 'react';
 
 
 function QuestionItem({ questionObject, index }: {questionObject: Question; index: number}) {
-    //console.log(questionObject)
-    console.log('yoyoyo')
-    console.log(questionObject.answer)
     const formattedQuestion = toTeX(questionObject.question) // (DONE) TODO: error handling inside toTeX and safety net
     const longQuestion = questionObject.question && (questionObject.question.length > 200)
     const [expanded, setExpanded] = useState(false);

@@ -16,8 +16,6 @@ export function round(value: number, places: number = 0) {
 
 export function toTeX(rawText: string) { // returns the stuff inside question block
   // old regex: /(?<!\\)\$(.*?)(?<!\\)\$/g
-
-  console.log(`RAW TEXT: ${rawText}`)
   if(!rawText) return ''
   const regex = /((?<!\\)\$.*?(?<!\\)\$)/g;
   const matches = rawText.match(regex);

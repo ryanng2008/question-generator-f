@@ -47,7 +47,7 @@ function Login({ switchPage }: { switchPage: (page: 'login' | 'register') => voi
   const [credentials, setCredentials] = useState({ username: '', password: ''})
   const [message, setMessage] = useState<string>('Niggger');
   const { login } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
       setCredentials(c => ({ ...c, [e.target.name]: e.target.value}))
   }
@@ -55,7 +55,7 @@ function Login({ switchPage }: { switchPage: (page: 'login' | 'register') => voi
       const result = await login(credentials.username, credentials.password);
       if(result.message) {
         setMessage(result.message);
-        navigate("/")
+        // navigate("/")
       } else {
         setMessage('Login failed')
       }
@@ -91,7 +91,7 @@ function Register({ switchPage }: { switchPage: (page: 'login' | 'register') => 
   const [credentials, setCredentials] = useState({ username: '', password: ''});
   const [message, setMessage] = useState<string>('');
   const { register } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setCredentials(c => ({ ...c, [e.target.name]: e.target.value}))
   }
@@ -99,7 +99,7 @@ function Register({ switchPage }: { switchPage: (page: 'login' | 'register') => 
     const result = await register(credentials.username, credentials.password);
     if(result.success) {
       setMessage(result.message);
-      navigate("/");
+      // navigate("/");
     } else {
       setMessage(result.message);
     }

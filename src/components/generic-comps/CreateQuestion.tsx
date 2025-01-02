@@ -158,7 +158,6 @@ function PVParent({
         setVariables(nextVariables);
     }
     function deleteVariable(index: number) {
-        //console.log(index)
         const newVariables = variables.filter((_variable, i) => ((i !== index)));
         setVariables(newVariables);
     }
@@ -166,7 +165,6 @@ function PVParent({
         if(variables[variables.length - 1].varName) {
             setVariables([...variables, {varName: '', latex: ``}])
         }
-        console.log(variables)
     }, [variables])
     const pvInputs = variables.map((variable, index) => {
         return (
@@ -199,7 +197,6 @@ function ProcessedVariableInput({
     const [variable, setVariable] = useState(initialVariable); // What does the variable name look like and what constraints can we put on it
     const [latex, setLatex] = useState(initialLatex);
     const [saved, setSaved] = useState(false);
-    // console.log(latex)
     
     function handleSubmit() {
         const sanitizedLatex = sanitizeLatex(latex);
