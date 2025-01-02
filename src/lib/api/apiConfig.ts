@@ -1,4 +1,5 @@
-const BASE_URL = 'https://question-generator-b.onrender.com'
+const BASE_URL = 'http://127.0.0.1:5000'
+//https://question-generator-b.onrender.com
 
 //'http://qg-env.eba-rskeuxuj.ap-southeast-1.elasticbeanstalk.com'
 

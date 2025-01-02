@@ -4,6 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { Category } from '../../../lib/interfaces';
 import { Menu, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
+import { useAuth } from '../../../AuthContext';
 
 
 // How do I construct this
@@ -13,10 +14,18 @@ import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 // - When u press enter the menu closes 
 
 export default function ComboSelectCategory({ categoryId, onChange }: { categoryId: string, onChange: (newId: string) => void }) {
-    const [category, setCategory] = useState<Category | null>(null);
-    const [query, setQuery] = useState(category?.title || ''); // the search value
+    const { user } = useAuth();
+    // const [category, setCategory] = useState<Category | null>(null);
+    const [query, setQuery] = useState(''); // the search value
     // const [selectedName, setSelectedName] = useState('');
     // console.log(categoryId)
+    // console.log(category)
+
+    // useEffect(() => {
+    //   if (category && category.title) {
+    //       setQuery(category?.title || '');
+    //   }
+    // }, [category]);
     const [open, setOpen] = useState(false);
     const [results, setResults] = useState<Category[]>([]); // the autocomplete results
     const resultItems = results.map((cat, i) => {
@@ -31,11 +40,10 @@ export default function ComboSelectCategory({ categoryId, onChange }: { category
       if(cid !== categoryId) {
         onChange(cid)
         // setSelectedName(name);
-        setQuery(name)
+        setQuery(name || '')
         setOpen(!open);
       } else {
         onChange('')
-        // setSelectedName('')
         setQuery('')
         setOpen(!open);
       }
@@ -44,17 +52,10 @@ export default function ComboSelectCategory({ categoryId, onChange }: { category
       setQuery(e.target.value);
       debouncedSearch(e.target.value);
     }
-    // if (!results.some(cat => cat._id === categoryId) && selectedName) {
-    //   resultItems.unshift(
-    //     <div className="group hover:bg-darkgray flex cursor-default items-center gap-2 rounded-lg py-2 px-3 pr-4 select-none" onClick={() => handleSelect('', '')} key={-1}>
-    //       <CheckIcon height={16} className={`fill-darkgray stroke-darkgray group-hover:fill-lightgray`} />
-    //       <h1 className=' text-darkgray group-hover:text-lightgray text-sm/6'>{selectedName}</h1>
-    //     </div>
-    //   );
-    // } 
+    
     
     const debouncedSearch = useDebouncedCallback((value) => {
-        searchCategory(value)
+        searchCategory(value, user)
         .then(data => setResults(data))
         .catch(error => console.error(error))
     }, 300);
@@ -62,7 +63,7 @@ export default function ComboSelectCategory({ categoryId, onChange }: { category
       if(categoryId !== '0') {
         fetchCategoryDetails(categoryId)
         .then(data => {
-          setCategory(data)
+          // setCategory(data)
           setQuery(data.title)
         })
         .catch(error => console.error(error))
@@ -93,3 +94,12 @@ export default function ComboSelectCategory({ categoryId, onChange }: { category
       </Menu>
     )
 }
+
+// if (!results.some(cat => cat._id === categoryId) && selectedName) {
+    //   resultItems.unshift(
+    //     <div className="group hover:bg-darkgray flex cursor-default items-center gap-2 rounded-lg py-2 px-3 pr-4 select-none" onClick={() => handleSelect('', '')} key={-1}>
+    //       <CheckIcon height={16} className={`fill-darkgray stroke-darkgray group-hover:fill-lightgray`} />
+    //       <h1 className=' text-darkgray group-hover:text-lightgray text-sm/6'>{selectedName}</h1>
+    //     </div>
+    //   );
+    // } 

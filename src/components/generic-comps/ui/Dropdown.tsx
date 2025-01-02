@@ -1,6 +1,7 @@
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import clsx from 'clsx'
 
 interface DropdownProps {
   title: string;
@@ -16,7 +17,11 @@ export default function Dropdown({ title, selected, options, onSelect }: Dropdow
       <MenuItem key={index}>
         {({ active }) => (
         <button
-          className={`${active ? 'bg-darkgray text-mywhite' : 'text-darkgray'} ${(selected == option) ? 'border-2 border-darkgray' : ''} group flex w-full items-center rounded-md px-2 py-2 text-md font-inter`}
+          className={clsx(
+            'group flex w-full items-center rounded-md px-2 py-2 text-md font-inter',
+            (active) ? 'bg-darkgray text-mywhite' : 'text-darkgray',
+            (selected == option) ? 'border-2 border-darkgray' : '' 
+          )}
           onClick={() => onSelect(option)}>
         {option}
         </button>

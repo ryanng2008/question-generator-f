@@ -36,6 +36,7 @@ export function toTeX(rawText: string) { // returns the stuff inside question bl
 export function texToSympyString(latex: string) {
     return latex
       // REMOVE LEFT AND RIGHT
+      .replace(/\\frac{([^}]+)}{([^}]+)}/g, '(($1) / ($2))')
       .replace(/\\left/g, '')
       .replace(/\\right/g, '')
       // SYMBOLS
@@ -60,12 +61,12 @@ export function texToSympyString(latex: string) {
       .replace(/\\acosh/g, 'acosh')
       .replace(/\\atanh/g, 'atanh')
       // SPECIAL - math formatting 
-      .replace(/\\frac{([^}]+)}{([^}]+)}/g, '(($1) / ($2))') // FRAC
       .replace(/\^/g, '**') // EXP
       .replace(/\|([^|]+)\|/g, 'Abs($1)') // ABS
       .replace(/\\cdot/g, ' *')
       // SPECIAL - string formatting
       .replace(/\\ /g, ' ') 
+      .replace(/\\frac{([^}]+)}{([^}]+)}/g, '(($1) / ($2))') // FRAC
 }
 
 export const allowedFunctions = [

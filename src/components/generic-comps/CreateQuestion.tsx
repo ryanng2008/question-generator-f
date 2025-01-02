@@ -1,62 +1,120 @@
 import DOMPurify from "dompurify";
 import { useEffect, useState, Fragment } from "react";
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Latex from "react-latex-next";
 import { EditableMathField } from "react-mathquill";
-import { CheckCircleIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { CheckCircleIcon, InformationCircleIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { PVClient, RVClient } from "../../lib/interfaces";
-import { sanitizeLatex } from "../../lib/shortcuts";
-import { handlePostQuestion } from "../../lib/api/createQuestionApi";
+import { sanitizeLatex, texToSympyString } from "../../lib/shortcuts";
+import { handlePostQuestion } from "../../lib/api/createApi";
 import ComboSelectCategory from "./ui/ComboSelectCategory";
+import { useAuth } from "../../AuthContext";
 
 export default function CreateQuestion() {
-    const categoryId = useParams().categoryId || '0';
+    const { user } = useAuth(); // BOUTTA GET RID O FHTISSSSS
+    const navigate = useNavigate();
+    // Data
+    const categoryId = useParams().categoryId || '-1';
     const [selectedId, setSelectedId] = useState(categoryId);
     
-    // Question State
+    // Question State + Sanitized
     const [questionInput, setQuestionInput] = useState('');
-    const sanitizedQuestion = DOMPurify.sanitize(questionInput);
     const [answerInput, _setAnswerInput] = useState('');
+    const sanitizedQuestion = DOMPurify.sanitize(questionInput);
     const sanitizedAnswer = DOMPurify.sanitize(answerInput)
-    // PV State
+    // Variables state
     const [pvs, setPVs] = useState<PVClient[]>([{varName: '', latex: ``}]);
     const [rvs, setRVs] = useState<RVClient[]>([{name: '', lb: '', hb: ''}]);
     const [message, setMessage] = useState('');
     async function onCreate() {
-        let fixedPVs = (pvs[pvs.length - 1].latex === `` && pvs[pvs.length - 1].varName === '') ? pvs.slice(0, -1) : pvs
+        if(!user) {
+            setMessage('Log in first!')
+            return
+        }
+        if(selectedId === '-1') {
+            setMessage('Select an ID')
+            return
+        }
+        const seenVarNames = new Set();
+        for (let i = 0; i < pvs.length; i++) {
+            if(seenVarNames.has(pvs[i].varName)) {
+                setMessage('You have some duplicate variables')
+                return
+                // setPVs(p => p.map((pv, index) => { return i === index ? { varName: '', latex: pv.latex } : pv}))
+            }
+            seenVarNames.add(pvs[i].varName)
+        }
+        const seenNames = new Set();
+        for (let i = 0; i < rvs.length; i++) {
+            if(seenNames.has(rvs[i].name)) {
+                setMessage('You have some duplicate variables')
+                return
+                // setRVs(r => r.map((rv, index) => { return i === index ? { name: '', lb: rv.lb, hb: rv.hb } : rv}))
+            }
+            seenVarNames.add(rvs[i].name);
+        }
+
+        let fixedPVs: PVClient[] = (pvs[pvs.length - 1].latex === `` && pvs[pvs.length - 1].varName === '') ? pvs.slice(0, -1) : pvs
         let fixedRVs = (rvs[rvs.length - 1].name === '' && rvs[rvs.length - 1].lb === '' && rvs[rvs.length - 1].hb === '') ? rvs.slice(0, -1) : rvs;
         const somePVsEmpty = fixedPVs.some(pv => pv.varName === '' || pv.latex === '');
         const someRVsEmpty = fixedRVs.some(rv => rv.name === '' || rv.lb === '' || rv.hb === '');
         if(somePVsEmpty || someRVsEmpty || questionInput.length === 0) {
-            // Add a message thing
             setMessage('Some of your fields are empty. Fill them in!') 
+            return
+        } 
+
+        // Check if some PVs/RVs are the same name
+
+        // sanitize all the pvs
+        for(const pv of fixedPVs) {
+            pv.latex = texToSympyString(pv.latex);
+        }
+        const createQuestion = await handlePostQuestion(sanitizedQuestion, fixedRVs, fixedPVs, sanitizedAnswer, selectedId);
+        if(createQuestion.success) {
+            setMessage('Success!')
+            navigate(`/library/${selectedId}/questions`)
+            // redirect maybe with settimeout
         } else {
-            const createQuestion = await handlePostQuestion(sanitizedQuestion, fixedRVs, fixedPVs, sanitizedAnswer, selectedId);
-            if(createQuestion.success) {
-                setMessage('Success!')
-                // redirect maybe with settimeout
-            } else {
-                setMessage('Failed to upload this question. Check your fields!')
-            }
+            setMessage(`Failed to upload this question: ${createQuestion.message}`)
         }
     }
+    useEffect(() => {
+        setMessage('')
+    }, [pvs, rvs])
+
+    const [showInfo, setShowInfo] = useState(false);
     return (
         <div className="flex flex-col gap-8 mx-4 lg:px-12 md:px-8 px-0 py-8">
             <div className="HEAD my-4">
                 <h1 className="text-6xl font-semibold">Create Question</h1>
             </div>
             <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-xl flex flex-col gap-8 py-6 px-8">
-                <div className="CATEGORY SELECT flex flex-row gap-8 items-center">
+                <div className="CATEGORY SELECT flex flex-row justify-between items-center">
+                    <div className="flex flex-row gap-8">
                     <h1 className="font-medium text-2xl">Category</h1>
                     <ComboSelectCategory categoryId={selectedId} onChange={setSelectedId}/>
+                    </div>
                     {/* <div className="bg-darkgray py-1 px-2 text-white font-medium rounded-lg"><p>{selectedId}</p></div> */}
                     {/* <ComboBox /> */}
                     {/* <input type="text" placeholder="Dropdown"/> */}
+                    <div className="relative">
+                    <button onClick={() => setShowInfo(!showInfo)} className="drop-shadow-xl text-white w-70 bg-red-800 font-medium rounded-lg py-2 px-4 flex flex-row gap-2 items-center">
+                        <p>READ BEFORE PROCEEDING</p>
+                        <InformationCircleIcon className="h-4"/>
+                    </button>
+                    {showInfo && <div className="absolute right-0 left-[-60px] border-2 border-darkgray bg-white pb-2 pt-3 px-4 text-darkgray rounded-lg text-sm top-full mt-1 drop-shadow-xl">
+                        <ul className="list-disc list-inside space-y-1"> 
+                            <li>Delimit processed variables with [[double square brackets]]</li>
+                            <li>Implicit multiplication doesn't work: write x*y instead of xy</li>
+                            <li>Answer field coming soon!</li>
+                        </ul>
+                    </div>}
+                    </div>
                 </div>
                 <div className="h-px w-full bg-black"/>
                 <div className="QUESTION INPUT flex flex-col gap-2">
                     <h1 className="font-medium text-2xl">Question Input Text</h1>
-                    <input className='p-2 rounded-lg' placeholder="Type the question here..." value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
+                    <input className='p-2 rounded-lg outline-mywhite' placeholder="Type the question here..." value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
                 </div>
                 <div className="QUESTION PREVIEW gap-3 flex flex-col">
                     <h1 className=" text-2xl font-medium">Preview Question</h1>
@@ -108,6 +166,7 @@ function PVParent({
         if(variables[variables.length - 1].varName) {
             setVariables([...variables, {varName: '', latex: ``}])
         }
+        console.log(variables)
     }, [variables])
     const pvInputs = variables.map((variable, index) => {
         return (
@@ -162,7 +221,7 @@ function ProcessedVariableInput({
                 <h2 className="text-xs text-[#738086] pl-[1px] pb-1 tracking-wider font-medium">Name</h2>
                 <input 
                 type="text" 
-                className="VARIABLE NAME INPUT col-span-1 max-w-full break-all p-1 rounded-md text-sm bg-white" 
+                className="VARIABLE NAME INPUT col-span-1 max-w-full break-all p-1 rounded-md text-sm bg-white outline-mywhite" 
                 placeholder=""
                 value={variable} 
                 maxLength={15} 
@@ -171,7 +230,7 @@ function ProcessedVariableInput({
             <div className="flex items-end">
                 <p className="mb-1 text-[#738086] font-semibold">=</p>
             </div>
-            <div className="w-full overflow-hidden">
+            <div className="w-full">
                 <h2 className="text-xs text-[#738086] pl-[3px] pb-1 tracking-wider font-medium">Expression</h2>
                 <EditableMathField
                 style={{
@@ -183,6 +242,7 @@ function ProcessedVariableInput({
                     marginLeft: '0.25rem',
                     marginTop: 'auto',
                     marginBottom: 'auto',
+                    outlineColor: '#ECEAE1'
                 }}
                 latex={latex}
                 onChange={(mathField) => setLatex(mathField.latex())}
@@ -256,7 +316,7 @@ function RandomVariableInput({
                 <input 
                 name='name'
                 type="text" 
-                className="max-w-full break-all p-1 rounded-md text-sm bg-white" 
+                className="max-w-full break-all p-1 rounded-md text-sm bg-white outline-mywhite" 
                 placeholder=""
                 value={variable.name} 
                 maxLength={15} 
@@ -268,7 +328,7 @@ function RandomVariableInput({
                 <input 
                 name="lb"
                 type="number" 
-                className="max-w-full break-all p-1 rounded-md text-sm bg-white" 
+                className="max-w-full break-all p-1 rounded-md text-sm bg-white outline-mywhite" 
                 placeholder=""
                 value={variable.lb} 
                 maxLength={15} 
@@ -280,7 +340,7 @@ function RandomVariableInput({
                 <input 
                 name="hb"
                 type="number" 
-                className="max-w-full break-all p-1 rounded-md text-sm bg-white" 
+                className="max-w-full break-all p-1 rounded-md text-sm bg-white outline-mywhite" 
                 placeholder=""
                 value={variable.hb} 
                 maxLength={15} 

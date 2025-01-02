@@ -1,5 +1,6 @@
 
 import { Link } from "react-router-dom";
+import Art from "./ui/Art";
 
 export default function CreateMenu() {
     return (
@@ -16,9 +17,7 @@ export default function CreateMenu() {
                 <p>Create question</p>
                 </Link>
             </div>
-            <div className="ART m-8 bg-gray-400">
-                ART
-            </div>
+            <Art />
         </div>
     </div>)
 }
