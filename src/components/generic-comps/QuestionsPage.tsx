@@ -12,9 +12,11 @@ import ComboSlider from './ui/ComboSlider';
 // import { PlusCircleIcon } from '@heroicons/react/20/solid';
 import Create from '../../assets/svgs/Create.svg'
 import { useDebouncedCallback } from 'use-debounce';
+import { useAuth } from '../../AuthContext';
 
 
 function QuestionsPage() {
+  const { user } = useAuth();
   const categoryId = useParams().categoryId || '';
   const [category, setCategory] = useState<Category>({
     _id: '',
@@ -95,10 +97,10 @@ function QuestionsPage() {
                     <h1 className=' text-[#444341] text-xl font-medium tracking-normal my-auto'>questions shown</h1>
                 </div>
             </div>
-            <Link className='ml-auto mr-4 flex items-center' to={`/create/question/${categoryId}`}>
+            {user === category.author && <Link className='ml-auto mr-4 flex items-center' to={`/create/question/${categoryId}`}>
               {/* <PlusCircleIcon height={48}/> */}
               <img src={Create} className='max-h-12'/>
-            </Link>
+            </Link>}
         </div>
         <ul className='Questions py-4 flex flex-col gap-4'>
           {questionTags}
