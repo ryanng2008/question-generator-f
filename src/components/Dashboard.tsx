@@ -26,7 +26,7 @@ function Dashboard() {
     const MinimalContainer = () => {
         return(
         <div className='CONTENT CONTAINER flex flex-col mt-[30vh]'>
-            <div className="HEADING my-4 font-bold text-7xl text-[#444341]">
+            <div className="HEADING my-4 font-semibold text-7xl text-[#444341]">
                 <h1>Welcome back!</h1>
             </div>
             <div className='ml-1 my-2'>

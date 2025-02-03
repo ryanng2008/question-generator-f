@@ -24,8 +24,8 @@ function GalleryItem ({
     return (
     <div>
       <Link to={id}>
-        <div className="bg-[#CBD0D2] rounded-3xl grid grid-cols-3 py-5 px-8 hover:drop-shadow-2xl duration-500">
-            <div className="col-span-2 flex flex-col gap-3 ">
+        <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl grid grid-cols-3 py-5 px-8 hover:shadow-xl duration-500">
+            <div className="col-span-3 flex flex-col gap-3 ">
                 <div className="TITLE text-3xl font-bold"><h1>{title}</h1></div>
                 {tags.length > 0 && <ul className={`TAGS flex flex-wrap justify-start px-0 gap-x-4 gap-y-2 drop-shadow-md`}>
                     {tags.map((tag, i) => {
@@ -36,7 +36,8 @@ function GalleryItem ({
                     <p>{description.length > 200 ? description.substring(0, 200) : description}</p>
                 </div>
             </div>
-            <div className="col-span-1 pl-6 flex items-center">
+            {/* below is flex*/}
+            <div className="hidden col-span-1 pl-6 items-center">
                 <img 
                 className=''
                 src={image} alt={image.toString()} />

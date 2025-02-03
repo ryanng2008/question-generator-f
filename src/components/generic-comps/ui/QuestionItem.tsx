@@ -1,5 +1,5 @@
-import Expand from '../../../assets/svgs/Expand.svg'
-import Retract from '../../../assets/svgs/Retract.svg'
+// import Expand from '../../../assets/svgs/Expand.svg'
+// import Retract from '../../../assets/svgs/Retract.svg'
 import { toTeX } from '../../../lib/shortcuts';
 import { Question } from '../../../lib/interfaces';
 import { useState } from 'react';
@@ -8,8 +8,8 @@ import { useState } from 'react';
 
 function QuestionItem({ questionObject, index }: {questionObject: Question; index: number}) {
     const formattedQuestion = toTeX(questionObject.question) // (DONE) TODO: error handling inside toTeX and safety net
-    const longQuestion = questionObject.question && (questionObject.question.length > 200)
-    const [expanded, setExpanded] = useState(false);
+    // const longQuestion = questionObject.question && (questionObject.question.length > 200)
+    // const [expanded, setExpanded] = useState(false);
     const [showAnswer, setShowAnswer] = useState(false);
 
     return (
@@ -20,13 +20,13 @@ function QuestionItem({ questionObject, index }: {questionObject: Question; inde
                     <h1 className='text-2xl font-semibold'>Question {index}</h1>
                     <div className='rounded-lg my-auto text-lg py-[3px] px-4 font-bold bg-[#CDFFC9] invisible sm:visible'><p>Easy</p></div>
                 </div>
-                {longQuestion && 
+                {/* {longQuestion && 
                 <div>
                     <button onClick={() => setExpanded(!expanded)}><img className='max-w-[24px]' src={expanded ? Retract : Expand} alt="" /></button>
                 </div>
-                }
+                } */}
             </div>
-            <div className={`CHILDREN - this is where the TeX stuff goes overflow-x-auto overflow-y-clip min-h-[64px] duration-500 ${expanded ? "max-h-max" : "max-h-[64px]"} py-2 break-all`}>
+            <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip min-h-[64px] duration-500 py-2 break-all`}>
             {formattedQuestion}
             </div>
         </div>

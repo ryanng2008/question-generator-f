@@ -53,9 +53,10 @@ export default function CreateCategory() {
                         <h1 className="text-xl font-medium">Tags</h1>
                         <input 
                         type="text" 
-                        className='outline-mywhite py-1 px-2 rounded-lg'
+                        className='outline-mywhite py-1 px-2 rounded-lg w-[50%]'
                         onKeyDown={e => { if(e.key === 'Enter') handleAddItem() }} 
                         value={tagsInput} 
+                        placeholder='Type your tags here'
                         onChange={e => setTagsInput(e.target.value)} />
                         <ul className="flex flex-wrap gap-3 h-24 p-4 overflow-scroll no-scrollbar bg-white rounded-xl border-[3px] border-midgray">
                             {tags.map((tag, i) => { 

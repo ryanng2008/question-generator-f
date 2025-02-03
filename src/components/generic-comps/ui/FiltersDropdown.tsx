@@ -24,7 +24,7 @@ function FiltersDropdown({ onInput, onDelete, tags }: { onInput: any, onDelete: 
 
     })
 
-    console.log(tags.length)
+    // console.log(tags.length)
 
     return (
         <div className="text-right font-inter">

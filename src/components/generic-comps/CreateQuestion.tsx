@@ -3,7 +3,7 @@ import { useEffect, useState, Fragment } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
 import Latex from "react-latex-next";
 import { EditableMathField } from "react-mathquill";
-import { CheckCircleIcon, InformationCircleIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { CheckCircleIcon, EllipsisVerticalIcon, InformationCircleIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { PVClient, RVClient } from "../../lib/interfaces";
 import { sanitizeLatex, texToSympyString } from "../../lib/shortcuts";
 import { handlePostQuestion } from "../../lib/api/createApi";
@@ -23,7 +23,15 @@ export default function CreateQuestion() {
     const sanitizedQuestion = DOMPurify.sanitize(questionInput);
     const sanitizedAnswer = DOMPurify.sanitize(answerInput)
     // Variables state
-    const [pvs, setPVs] = useState<PVClient[]>([{varName: '', latex: ``}]);
+    const [pvs, setPVs] = useState<PVClient[]>([{
+        varName: '', 
+        latex: ``,
+        coefficient: false,
+        dp: 0}]);
+
+    useEffect(() => {
+        console.log(pvs)
+    }, [pvs])
     const [rvs, setRVs] = useState<RVClient[]>([{name: '', lb: '', hb: ''}]);
     const [message, setMessage] = useState('');
     async function onCreate() {
@@ -78,9 +86,9 @@ export default function CreateQuestion() {
             setMessage(`Failed to upload this question: ${createQuestion.message}`)
         }
     }
-    useEffect(() => {
-        setMessage('')
-    }, [pvs, rvs])
+    // useEffect(() => {
+    //     setMessage('')
+    // }, [pvs, rvs])
 
     const [showInfo, setShowInfo] = useState(false);
     return (
@@ -102,14 +110,7 @@ export default function CreateQuestion() {
                         <p>READ BEFORE PROCEEDING</p>
                         <InformationCircleIcon className="h-4"/>
                     </button>
-                    {showInfo && <div className="absolute right-0 left-[-60px] border-2 border-darkgray bg-white pb-2 pt-3 px-4 text-darkgray rounded-lg text-sm top-full mt-1 drop-shadow-xl">
-                        <ul className="list-disc list-inside space-y-1"> 
-                            <li>Delimit processed variables with <strong>[[</strong>double square brackets<strong>]]</strong></li>
-                            <li>Implicit multiplication doesn't work: write x*y instead of xy</li>
-                            <li>Render LaTeX between <strong>$</strong>dollar signs<strong>$</strong></li>
-                            <li>Answer field coming soon!</li>
-                        </ul>
-                    </div>}
+                    {showInfo && <Info />}
                     </div>
                 </div>
                 <div className="h-px w-full bg-black"/>
@@ -123,13 +124,13 @@ export default function CreateQuestion() {
                         <Latex children={sanitizedQuestion} />
                     </div>
                 </div>
+                {/* <div className="ANSWER grid grid-cols-2 gap-8">
+                    <div>answer</div>
+                    <div>input</div>
+                </div> */}
                 <div className="VARIABLES flex flex-col md:grid grid-cols-3 gap-8">
                     {/* Maybe you need to make it a flex with changeable size,  */}
-                    <div className="RVS flex flex-col col-span-1">
-                        <h2 className="text-xl font-medium py-2">Random Variables</h2>
-                        <RVParent variables={rvs} setVariables={setRVs}/>
-                        {/* array of RVs but they have a divider border, except for the last one*/ }
-                    </div>
+                    <RVParent variables={rvs} setVariables={setRVs}/>
                     <div className="PVS flex flex-col col-span-2">
                         <h2 className="text-xl font-medium py-2">Processed Variables</h2>
                         <PVParent variables={pvs} setVariables={setPVs}/>
@@ -144,6 +145,26 @@ export default function CreateQuestion() {
     )
 }
 
+function Info() {
+    return (
+        <div className="absolute right-0 w-[600px] border-2 border-darkgray bg-white py-3 px-4 text-darkgray rounded-lg text-sm top-full mt-1 drop-shadow-xl flex flex-col gap-2">
+        <ul className="list-disc list-inside space-y-1"> 
+            <li>Generate random integers with Random Variables (min and max inclusive)</li>
+            <li>Use Random Variables inside your Processed Variables expressions: e.g. sin(<strong>a</strong>)</li>
+            <li>Use Processed Variables in the Question Input</li>
+            <li>Delimit Processed Variables with <strong>[[</strong>double square brackets<strong>]]</strong></li>
+            <li>Render LaTeX between <strong>$</strong>dollar signs<strong>$</strong></li>
+        </ul>
+        <h1 className="text-lg font-semibold">Additional notes</h1>
+        <ul className="space-y-2">
+            <li>No implicit multiplication: write x*y instead of xy</li>
+            <li className="flex items-center">Open the three dots <EllipsisVerticalIcon className="h-5" />  to configure constants & decimal places</li>
+            {/* <li>Answer field coming soon!</li> */}
+        </ul>
+        </div>
+    )
+}
+
 
 function PVParent({
     variables,
@@ -152,67 +173,117 @@ function PVParent({
     variables: PVClient[],
     setVariables: (variables: PVClient[]) => void
     }) { 
-    function modifyVariable(index: number, latexString: string, variable: string) {
+    // function modifyVariableOld(index: number, latexString: string, variable: string, coefficient: boolean, dp: number) {
+    //     const nextVariables = variables.map((v, i) => {
+    //         return (i === index) ? {varName: variable, latex: latexString, coefficient: coefficient, dp: dp } : v;
+    //     })
+    //     setVariables(nextVariables);
+    // }
+    function modifyVariableLatex(index: number, latex: string) {
         const nextVariables = variables.map((v, i) => {
-            return (i === index) ? {varName: variable, latex: latexString} : v;
+            return (i === index) ? {...v, latex: latex} : v;
         })
-        setVariables(nextVariables);
+        setVariables(nextVariables)
+    }
+    function modifyVariable(index: number, keyName: string, value: string | number | boolean) {
+        const nextVariables = variables.map((v, i) => {
+            return (i === index) ? {...v, [keyName]: value} : v;
+        })
+        setVariables(nextVariables)
     }
     function deleteVariable(index: number) {
-        const newVariables = variables.filter((_variable, i) => ((i !== index)));
-        setVariables(newVariables);
-    }
-    useEffect(() => {
-        if(variables[variables.length - 1].varName) {
-            setVariables([...variables, {varName: '', latex: ``}])
+        if(variables.length > 1) {
+            const newVariables = variables.filter((_variable, i) => ((i !== index)));
+            setVariables(newVariables);
         }
-    }, [variables])
+    }
+    // useEffect(() => {
+    //     if(variables[variables.length - 1].varName) {
+    //         setVariables([...variables, {varName: '', latex: ``}])
+    //     }
+    // }, [variables])
+    function handleAdd() {
+        setVariables([...variables, {
+            varName: '', 
+            latex: ``,
+            coefficient: false,
+            dp: 0
+        }])
+    }
     const pvInputs = variables.map((variable, index) => {
         return (
             <Fragment key={index}>
                 <ProcessedVariableInput 
                 key={index}
                 index={index} 
-                initialVariable={`${variable.varName}`} 
+                pv={variable}
+                // initialVariable={`${variable.varName}`} 
                 initialLatex={`${variable.latex}`}
-                onUpdate={modifyVariable}
+                onUpdateLatex={modifyVariableLatex}
+                onUpdateNormal={modifyVariable}
                 onDelete={deleteVariable}/>
                 {(index !== variables.length - 1) && <div key={`divider-${index}`} className="h-px bg-black"/>}
             </Fragment>)
     })
-    return (<div className="flex flex-col gap-3">{pvInputs}</div>)
+    return (
+    <div className="flex flex-col gap-3">
+        {pvInputs}
+        <button 
+            className="my-4 w-full mx-auto bg-darkgray/90 rounded-xl py-1 text-white flex items-center justify-center"
+            onClick={handleAdd}>
+            <PlusIcon height={20} />
+        </button>
+    </div>)
 }
 
 
 function ProcessedVariableInput({ 
-    initialVariable, 
+    pv,
+    // initialVariable, 
     initialLatex, 
     index,
-    onUpdate,
-    onDelete }: { 
-    initialVariable: string, 
+    onUpdateLatex,
+    onUpdateNormal,
+    onDelete }: {
+    pv: PVClient,
+    // initialVariable: string, 
     initialLatex: string, 
     index: number, 
-    onUpdate: (index: number, variable: string, latex: string) => void ,
+    onUpdateLatex: (index: number, latex: string) => void ,
+    onUpdateNormal: (index: number, keyName: string, value: string | number | boolean) => void ,
     onDelete: (index: number) => void }) {
-    const [variable, setVariable] = useState(initialVariable); // What does the variable name look like and what constraints can we put on it
+    // const [variable, setVariable] = useState(''); // What does the variable name look like and what constraints can we put on it
     const [latex, setLatex] = useState(initialLatex);
     const [saved, setSaved] = useState(false);
-    
-    function handleSubmit() {
+    const [menuOpen, setMenuOpen] = useState(false);
+    // const [properties, setProperties] = useState({
+    //     coefficient: false,
+    //     dp: 0
+    // });
+    function handleUpdateLatex() {
         const sanitizedLatex = sanitizeLatex(latex);
-        //setLatex(sanitizedLatex);
-        onUpdate(index, sanitizedLatex, variable);
+        onUpdateLatex(index, sanitizedLatex);
         setSaved(true);
     }
+    function handleUpdateNormal(keyName: string, value: string | boolean | number) {
+        onUpdateNormal(index, keyName, value);
+        // ADD THIS TO ALL OF THE INPUTS
+    }
+    // function handleSubmit() {
+    //     const sanitizedLatex = sanitizeLatex(latex);
+    //     //setLatex(sanitizedLatex);
+    //     onUpdate(index, sanitizedLatex, variable, properties.coefficient, properties.dp);
+    //     setSaved(true);
+    // }
 
     useEffect(() => {
         setSaved(false)
-    }, [variable, latex])   
+    }, [latex])   
     useEffect(() => {
-        setVariable(initialVariable);
+        // setVariable(initialVariable);
         setLatex(initialLatex);
-      }, [initialVariable, initialLatex]);      
+      }, [initialLatex]); 
+ 
     return (
         <div className="flex flex-row gap-4">
             <div className="w-1/5 flex flex-col justify-end">
@@ -221,9 +292,9 @@ function ProcessedVariableInput({
                 type="text" 
                 className="VARIABLE NAME INPUT col-span-1 max-w-full break-all p-1 rounded-md text-sm bg-white outline-mywhite" 
                 placeholder=""
-                value={variable} 
+                value={pv.varName} 
                 maxLength={15} 
-                onChange={e => setVariable(e.target.value.replace(/[^A-Za-z]/g, '').toUpperCase())} />
+                onChange={e => handleUpdateNormal('varName', e.target.value.replace(/[^A-Za-z]/g, '').toUpperCase())} />
             </div>
             <div className="flex items-end">
                 <p className="mb-1 text-[#738086] font-semibold">=</p>
@@ -246,10 +317,47 @@ function ProcessedVariableInput({
                 onChange={(mathField) => setLatex(mathField.latex())}
                 />
             </div>
-            <div className="flex justify-end items-end">
-                {!saved && <button onClick={handleSubmit}><CheckCircleIcon height={32}/></button>}
-                <button onClick={() => onDelete(index)}><TrashIcon height={32} /></button>
+            <div className="relative flex items-end">
+            <div className="flex justify-end items-end gap-2">
+                {!saved && <button className="hover:scale-[105%] hover:text-darkgray/60 duration-150" onClick={handleUpdateLatex}>
+                <CheckCircleIcon height={32}/></button>}
+                <button className="hover:scale-[105%] hover:text-darkgray/60 duration-150" onClick={() => onDelete(index)}>
+                <TrashIcon height={32} /></button>
+                <button className="hover:scale-[105%] hover:text-darkgray/60 duration-150" onClick={() => setMenuOpen(!menuOpen)}>
+                <EllipsisVerticalIcon height={32} /></button>
             </div>
+            {menuOpen && 
+            <div className="z-[9999] flex flex-col gap-2 px-4 py-3 absolute w-[200px] right-0 -bottom-3 transform translate-y-full bg-mywhite border-2 border-darkgray/70 rounded-lg shadow-xl" onMouseLeave={() => setMenuOpen(!menuOpen)}>
+            <div className="COEFFICIENT flex flex-row justify-between gap-4 mx-1 items-center">
+                <h3 className="text-sm font-medium">Coefficient</h3>
+                <div className="inline-flex items-center">
+                  <label className="flex items-center cursor-pointer relative">
+                    <input type="checkbox" 
+                    onChange={() => handleUpdateNormal('coefficient', !pv.coefficient)} 
+                    checked={pv.coefficient} 
+                    className="peer h-6 w-6 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 bg-white checked:border-slate-800" id="check" />
+                    <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </label>
+                </div> 
+            </div>
+            <div className="h-px bg-gray-500"/>
+            <div className="DP flex justify-between gap-4 overflow-hidden items-center mx-1">
+                <h3 className="text-sm font-medium">d.p.</h3>
+                <input 
+                type="number" 
+                className="min-w-0 max-w-[60px] py-1 px-2 text-sm rounded-md flex-grow box-border m-1 shadow-md " 
+                value={pv.dp}
+                onChange={e => handleUpdateNormal('dp', parseInt(e.target.value))} 
+                />
+            </div>
+            </div>
+            }
+            </div>
+
         </div>
     )
 }
@@ -286,12 +394,29 @@ function RVParent({
                 {(i !== variables.length - 1) && <div key={`divider-${i}`} className="h-px bg-black"/>}
             </Fragment>)
     })
-    useEffect(() => {
-        if(variables[variables.length - 1].name) {
-            setVariables([...variables, {name: '', lb: '', hb: ''}])
-        }
-    }, [variables])
-    return (<div className="flex flex-col gap-3">{rvInputs}</div>)
+    function handleAdd() {
+        setVariables([...variables, {name: '', lb: '', hb: ''}])
+    }
+    return (
+        <div className="RVS flex flex-col col-span-1">
+            <div className="flex gap-4">
+                <h2 className="text-xl font-medium py-2">Random Variables</h2>
+                {/* <button 
+                    className="rounded-xl text-darkgray flex items-center justify-center"
+                    onClick={handleAdd}>
+                    <PlusIcon height={24} />
+                </button> */}
+            </div>
+            <div className="flex flex-col gap-3">
+                {rvInputs}
+                <button 
+                    className="my-4 flex bg-darkgray/90 rounded-xl py-1 text-white items-center justify-center"
+                    onClick={handleAdd}>
+                    <PlusIcon height={20} />
+                </button>
+            </div>
+        </div>    
+        )
 }
 
 function RandomVariableInput({
@@ -305,8 +430,13 @@ function RandomVariableInput({
     onDelete: (index: number) => void
     }) {
     function onInput(e: React.ChangeEvent<HTMLInputElement>) {
-        onVariableChange(index, e.target.name as 'name' | 'lb' | 'hb', e.target.value)
+        if(e.target.name === 'name') {
+            onVariableChange(index, 'name', e.target.value.replace(/[^A-Za-z]/g, '').toLowerCase())
+            return
+        }
+        onVariableChange(index, e.target.name as 'lb' | 'hb', e.target.value)
     }
+
     return (
         <div className="grid grid-cols-5 lg:gap-4 md:gap-2 gap-4 pb-[2.5px]">
             <div className="justify-between col-span-2">
@@ -346,7 +476,7 @@ function RandomVariableInput({
                  />
             </div>
             <div className="flex justify-end items-end col-span-1">
-                <button onClick={() => onDelete(index)}><TrashIcon height={32} /></button>
+                <button onClick={() => onDelete(index)} className="hover:scale-105 duration-150 hover:text-darkgray/60"><TrashIcon height={32} /></button>
             </div>
         </div>
     )

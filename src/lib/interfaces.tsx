@@ -33,9 +33,12 @@ export interface RVClient {
     hb: string
 }
 
+
 export interface PVClient {
     varName: string,
-    latex: string
+    latex: string,
+    coefficient: boolean,
+    dp: number
 }
 
 interface ProcessedVariables {
