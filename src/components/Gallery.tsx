@@ -64,7 +64,7 @@ function Gallery() {
     setTags(tags.filter(t => t != tag))
   }
   
-  function getContent() {
+  function Content() {
     if(filteredItems.length > 0) return (
       <ul className='grid grid-cols-2 gap-4'>{filteredItems}</ul>
     )
@@ -78,7 +78,7 @@ function Gallery() {
       case 'explore':
         return (
         <div className='items-center h-[70vh] flex flex-row justify-center gap-4'>
-          <p className='text-xl'>Nothing's here yet. Come back later!</p>
+          <p className='text-xl'>Loading...</p>
         </div>
         )
       default:
@@ -114,7 +114,7 @@ function Gallery() {
                   </div>
               </div>
                 <div className="ITEMS CONTAINER h-screen">
-                    {getContent()}
+                    {<Content />}
                 </div>
               </div>
               
