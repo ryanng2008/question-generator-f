@@ -25,7 +25,7 @@ function Dashboard() {
 
     const MinimalContainer = () => {
         return(
-        <div className='CONTENT CONTAINER flex flex-col mt-[30vh]'>
+        <div className='CONTENT CONTAINER flex flex-col justify-center'>
             <div className="HEADING my-4 font-semibold text-7xl text-[#444341]">
                 <h1>Welcome back!</h1>
             </div>
@@ -56,10 +56,8 @@ function Dashboard() {
         </div>
         </div>)}
     return (
-    <div className="font-inter">
-        <div className="lg:px-12 md:px-8 px-0 mx-4 flex flex-col">
-            
-            <div className="CONTENT grid grid-cols-2 justify-between h-[85vh]"> 
+        <div className="grow lg:px-12 md:px-8 px-0 mx-4 flex flex-col justify-center h-full">
+            <div className="CONTENT grid grid-cols-2 justify-center items-center"> 
                 {hasProfile ? <StatsContainer /> : <MinimalContainer />}
                 <div className='flex items-center justify-center '>
                     <div className=' md:max-w-[90%] max-w-full overflow-hidden'>
@@ -71,7 +69,6 @@ function Dashboard() {
                 </div>
             </div>
         </div>
-    </div>
     )
 }
 

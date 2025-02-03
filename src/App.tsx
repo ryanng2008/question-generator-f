@@ -24,24 +24,22 @@ function App() {
     loadUser()
   }, [location])
   return (
-      <div className='App font-inter'>
+      <div className='font-inter min-h-screen flex flex-col'>
         <Metadata />
         <Navbar />
-        <div className='content'>
-          <Routes> 
-            <Route path='' element={<Dashboard />} />
-            <Route path='library' element={<Gallery />} /> 
-            <Route path='library/:categoryId' element={<CategoryMenu />} />
-            <Route path='library/:categoryId/questions' element={<QuestionsPage />}/>
-            <Route path='create' element={<CreateMenu />}/>
-            <Route path='create/question' element={<CreateQuestion />}/>
-            <Route path='create/question/:categoryId' element={<CreateQuestion />}/>
-            <Route path='create/category' element={<CreateCategory />}/>
-            {/* <Route path='test' element={<Workspace />}/> */}
-            <Route path='account' element={<Account />}/>
-            {/* <Route path='workspace' element={<Workspace />}/>  */}
-          </Routes>
-        </div>
+        <Routes> 
+          <Route path='' element={<Dashboard />} />
+          <Route path='library' element={<Gallery />} /> 
+          <Route path='library/:categoryId' element={<CategoryMenu />} />
+          <Route path='library/:categoryId/questions' element={<QuestionsPage />}/>
+          <Route path='create' element={<CreateMenu />}/>
+          <Route path='create/question' element={<CreateQuestion />}/>
+          <Route path='create/question/:categoryId' element={<CreateQuestion />}/>
+          <Route path='create/category' element={<CreateCategory />}/>
+          {/* <Route path='test' element={<Workspace />}/> */}
+          <Route path='account' element={<Account />}/>
+          {/* <Route path='workspace' element={<Workspace />}/>  */}
+        </Routes>
       </div>
   )
 }

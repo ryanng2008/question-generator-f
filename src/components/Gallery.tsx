@@ -71,7 +71,7 @@ function Gallery() {
     switch(activeTab) {
       case 'library': 
         return (
-        <div className='items-center h-[70vh] flex flex-row justify-center gap-4'>
+        <div className='items-center h-full flex flex-row justify-center gap-4 my-auto'>
           <p className='text-xl'>Looks like nothing's saved yet...</p>
           <button className='text-lg bg-darkgray text-mywhite py-2 px-4 rounded-lg font-medium hover:scale-105 duration-500' onClick={() => setActiveTab('explore')}>Explore</button>
          </div>)
@@ -92,8 +92,8 @@ function Gallery() {
   }
 
   return (
-      <div>
-          <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col">
+      <>
+          <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col grow">
               <div className="MENUBAR CONTAINER">
                   <div className={`MENUBAR my-4 mx-24 flex flex-row justify-between rounded-lg md:px-12 px-4 py-4`}>
                       <div className="flex flex-row items-center">
@@ -113,12 +113,12 @@ function Gallery() {
                       </div>
                   </div>
               </div>
-                <div className="ITEMS CONTAINER h-screen">
+                <div className="ITEMS CONTAINER flex flex-col grow">
                     {<Content />}
                 </div>
               </div>
               
-          </div>
+          </>
   )
 }
 
