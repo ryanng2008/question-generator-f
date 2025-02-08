@@ -15,6 +15,7 @@ export default function CreateCategory() {
     const [tags, setTags] = useState<string[]>([]);
     const [tagsInput, setTagsInput] = useState('');
     const [message, setMessage] = useState('');
+    const [allowSubmit, setAllowSubmit] = useState(true);
     const handleAddItem = () => {
         if (tagsInput.trim() !== '') {
             setTags((prevTags) => [...prevTags, tagsInput]);
@@ -22,6 +23,10 @@ export default function CreateCategory() {
         }
     };
     async function onCreate() {
+        if(!allowSubmit) {
+            return
+        }
+        setAllowSubmit(false);
         if(!user) {
             setMessage('Log in first!')
             return
