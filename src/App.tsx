@@ -12,7 +12,7 @@ import CreateQuestion from "./components/generic-comps/CreateQuestion"
 import CreateCategory from "./components/generic-comps/CreateCategory"
 import Account from "./components/Account"
 import { useAuth } from "./AuthContext"
-import Metadata from "./lib/Metadata"
+// import Metadata from "./lib/Metadata"
 
 
 addStyles()
@@ -25,7 +25,7 @@ function App() {
   }, [location])
   return (
       <div className='font-inter min-h-screen flex flex-col'>
-        <Metadata />
+        {/* <Metadata /> */}
         <Navbar />
         <Routes> 
           <Route path='' element={<Dashboard />} />
