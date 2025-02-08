@@ -97,8 +97,9 @@ function QuestionsPage() {
                     <h1 className=' text-[#444341] text-xl font-medium tracking-normal my-auto'>questions shown</h1>
                 </div>
             </div>
-            {user === category.author && <Link className='ml-auto mr-4 flex items-center' to={`/create/question/${categoryId}`}>
+            {true && <Link className='ml-auto mr-4 flex items-center' to={`/create/question/${categoryId}`}>
               {/* <PlusCircleIcon height={48}/> */}
+              {/**user === category.author */}
               <img src={Create} className='max-h-12'/>
             </Link>}
         </div>
