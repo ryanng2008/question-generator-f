@@ -99,7 +99,7 @@ function QuestionsPage() {
             </div>
             {true && <Link className='ml-auto mr-4 flex items-center' to={`/create/question/${categoryId}`}>
               {/* <PlusCircleIcon height={48}/> */}
-              {/**user === category.author */}
+              {user === category.author}
               <img src={Create} className='max-h-12'/>
             </Link>}
         </div>
