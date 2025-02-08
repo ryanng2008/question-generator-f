@@ -9,7 +9,7 @@ function FiltersDropdown({ onInput, onDelete, tags }: { onInput: any, onDelete: 
     const CategoryTag = ({ text }: { text: string }) => {
       return(
           <div className="bg-[#444341] rounded-lg py-[0.25rem] flex pl-3 pr-2 justify-between gap-3">
-            <p className="text-white text-sm font-semibold">{(text.length < 16) ? text : text.slice(0, 15) + "..."}</p>
+            <p className="text-white text-sm font-normal">{(text.length < 16) ? text : text.slice(0, 15) + "..."}</p>
             <button onClick={() => onDelete(text)} className='text-white'>
               <XMarkIcon className='w-3'/>
             </button>
@@ -23,16 +23,19 @@ function FiltersDropdown({ onInput, onDelete, tags }: { onInput: any, onDelete: 
           </li>) 
 
     })
-
+    function handleAddInput() {
+      if(input.trim() == '') return
+      setInput('')
+      onInput(input.trim())
+    }
     // console.log(tags.length)
 
     return (
-        <div className="text-right font-inter">
-        <div className="text-left ">
+        <div className="text-left">
           <div>
             <button 
               onClick={() => setShown(!shown)}
-              className="flex gap-4 justify-left rounded-md bg-darkgray hover:drop-shadow-lg hXXXover:shadow-black/50 duration-300 text-white px-4 py-2 text-lg font-medium">
+              className="flex gap-4 outline-none justify-left rounded-md bg-darkgray hover:drop-shadow-lg hXXXover:shadow-black/50 duration-300 text-white px-4 py-2 text-lg font-medium">
               filters
               <ChevronDownIcon
                 className="-mr-1 ml-2 my-auto h-5 w-5 text-white "
@@ -50,13 +53,14 @@ function FiltersDropdown({ onInput, onDelete, tags }: { onInput: any, onDelete: 
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-[70%]" 
           >
-            <div className="font-inter gap-4 flex flex-col font-medium py-2 px-2 z-[9999] absolute origin-top-right rounded-md bg-lightgray shadow-lg shadow-black/50">
-              <div className='flex flex-row gap-2'>
-                <input type="text" value={input || ''} onChange={e => setInput(e.target.value)} className='text-left w-[128px] px-2' />
-                <button onClick={() => {
-                  setInput('')
-                  onInput(input)
-                }}>
+            <div className="font-inter gap-4 flex flex-col font-medium py-4 pr-4 pl-5 z-[9999] absolute origin-top-right rounded-md bg-lightgray shadow-lg shadow-black/50">
+              <div className='flex flex-row gap-4'>
+                <input 
+                type="text" 
+                value={input || ''} 
+                onChange={e => setInput(e.target.value)} className='text-left w-[128px] font-normal outline-none rounded-lg px-2'
+                onKeyDown={e => { if(e.key === 'Enter') handleAddInput() }}  />
+                <button onClick={handleAddInput}>
                   <img className='w-8' src={Enter} alt="" />
                 </button>
               </div>
@@ -66,7 +70,6 @@ function FiltersDropdown({ onInput, onDelete, tags }: { onInput: any, onDelete: 
             </div>
           </Transition>
         </div>
-      </div>
     )
 }
 

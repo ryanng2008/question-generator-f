@@ -93,7 +93,7 @@ function Gallery() {
 
   return (
       <>
-          <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col grow">
+          <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col grow mb-12">
               <div className="MENUBAR CONTAINER">
                   <div className={`MENUBAR my-4 mx-24 flex flex-row justify-between rounded-lg md:px-12 px-4 py-4`}>
                       <div className="flex flex-row items-center">
