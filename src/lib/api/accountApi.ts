@@ -20,7 +20,7 @@ export async function handleLogin(username: string, password: string) {
             return { success: false, message: 'Login failed' }
         }
         const data = await response.json();
-        sessionStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
         // console.log(data)
         return { success: data.success, message: data.message }
         // console.log([...response.headers.entries()]);
@@ -48,7 +48,7 @@ export async function handleRegister(username: string, password: string) {
         })
         const data = await response.json();
         if(data.success) {
-            sessionStorage.setItem("token", data.token);
+            localStorage.setItem("token", data.token);
         }
         return { success: data.success, message: data.message }
     } catch (error) {
@@ -61,7 +61,7 @@ export async function handleRegister(username: string, password: string) {
 
 
 export async function fetchUser() {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
         const res = await fetch(`${BASE_URL}/user`, {
             method: 'GET',

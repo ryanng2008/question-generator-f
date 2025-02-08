@@ -2,7 +2,7 @@ import { PVClient, RVClient } from "../interfaces";
 import BASE_URL from "./apiConfig";
 
 export async function handlePostQuestion(questionString: string, rvs: RVClient[], pvs: PVClient[], answerString: string, categoryId: string) {
-    const token = sessionStorage.getItem("token")
+    const token = localStorage.getItem("token")
     try {
         const response = await fetch(`${BASE_URL}/postquestion`, {
             method: 'POST',
@@ -37,7 +37,7 @@ export async function handlePostQuestion(questionString: string, rvs: RVClient[]
 }
 
 export async function handlePostCategory(title: string, description: string, tags: string[], ) {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
         const response = await fetch(`${BASE_URL}/postcategory`, {
             method: 'POST',
