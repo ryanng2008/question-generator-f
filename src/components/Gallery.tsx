@@ -13,7 +13,7 @@ const GalleryTab = ({ text=' ', onClick, active }: { text: string, onClick: any,
 
 
 function Gallery() {
-  const [activeTab, setActiveTab] = useState('library')
+  const [activeTab, setActiveTab] = useState('explore')
   function handleSwitchTab(tab: string) {
     setActiveTab(tab)
   }
