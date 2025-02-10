@@ -43,6 +43,7 @@ export default function CreateQuestion() {
             setMessage('Select an ID')
             return
         }
+        
         const seenVarNames = new Set();
         for (let i = 0; i < pvs.length; i++) {
             if(seenVarNames.has(pvs[i].varName)) {
@@ -64,13 +65,22 @@ export default function CreateQuestion() {
 
         let fixedPVs: PVClient[] = (pvs[pvs.length - 1].latex === `` && pvs[pvs.length - 1].varName === '') ? pvs.slice(0, -1) : pvs
         let fixedRVs = (rvs[rvs.length - 1].name === '' && rvs[rvs.length - 1].lb === '' && rvs[rvs.length - 1].hb === '') ? rvs.slice(0, -1) : rvs;
+        if(fixedRVs.length < 1) {
+            setMessage('Make Random Variables to use in Processed Variables!')
+            return
+        }
+        if(fixedPVs.length < 1) {
+            setMessage('Make Processed Variables! If you don\'t need processing, put the lone variable in the expression. e.g. A = a')
+            return
+        }
+        
         const somePVsEmpty = fixedPVs.some(pv => pv.varName === '' || pv.latex === '');
         const someRVsEmpty = fixedRVs.some(rv => rv.name === '' || rv.lb === '' || rv.hb === '');
         if(somePVsEmpty || someRVsEmpty || questionInput.length === 0) {
             setMessage('Some of your fields are empty. Fill them in!') 
             return
         } 
-
+        
         // Check if some PVs/RVs are the same name
 
         // sanitize all the pvs
