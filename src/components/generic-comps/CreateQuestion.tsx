@@ -19,7 +19,7 @@ export default function CreateQuestion() {
     
     // Question State + Sanitized
     const [questionInput, setQuestionInput] = useState('');
-    const [answerInput, _setAnswerInput] = useState('');
+    const [answerInput, setAnswerInput] = useState('');
     const sanitizedQuestion = DOMPurify.sanitize(questionInput);
     const sanitizedAnswer = DOMPurify.sanitize(answerInput)
     // Variables state
@@ -107,8 +107,8 @@ export default function CreateQuestion() {
                 <h1 className="text-6xl font-semibold">Create Question</h1>
             </div>
             <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-xl flex flex-col gap-8 py-6 px-8">
-                <div className="CATEGORY SELECT flex flex-row justify-between items-center">
-                    <div className="flex flex-row gap-8">
+                <div className="CATEGORY SELECT flex md:flex-row flex-col gap-4 md:justify-between md:items-center">
+                    <div className="flex flex-row gap-8 justify-left">
                     <h1 className="font-medium text-2xl">Category</h1>
                     <ComboSelectCategory categoryId={selectedId} onChange={setSelectedId}/>
                     </div>
@@ -126,11 +126,11 @@ export default function CreateQuestion() {
                 <div className="h-px w-full bg-black"/>
                 <div className="QUESTION INPUT flex flex-col gap-2">
                     <h1 className="font-medium text-2xl">Question Input Text</h1>
-                    <input className='p-2 rounded-lg outline-mywhite' placeholder="Type the question here..." value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
+                    <input className='p-2 rounded-lg outline-mywhite' placeholder="What is the value of $\frac{[[A]]}{[[B]]}$ ?" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
                 </div>
                 <div className="QUESTION PREVIEW gap-3 flex flex-col">
                     <h1 className=" text-2xl font-medium">Preview Question</h1>
-                    <div className="bg-darkgray text-white text-lg py-4 px-8 rounded-lg min-h-[50px]">
+                    <div className="bg-darkgray text-white text-lg py-4 md:px-8 px-4  rounded-lg min-h-[50px]">
                         <Latex children={sanitizedQuestion} />
                     </div>
                 </div>
@@ -144,6 +144,19 @@ export default function CreateQuestion() {
                     <div className="PVS flex flex-col col-span-2">
                         <h2 className="text-xl font-medium py-2">Processed Variables</h2>
                         <PVParent variables={pvs} setVariables={setPVs}/>
+                    </div>
+                </div>
+                <div className="h-px w-full bg-black"/>
+                <div className="ANSWER flex flex-col md:grid grid-cols-2 gap-8">
+                    <div className="QUESTION INPUT flex flex-col gap-2">
+                        <h1 className="font-medium text-2xl">Answer Input Text</h1>
+                        <input className='p-2 my-2 rounded-lg outline-mywhite' placeholder="[[A]] is greater than [[B]]" value={answerInput} onChange={e => setAnswerInput(e.target.value)}/>
+                    </div>
+                    <div className="QUESTION PREVIEW gap-3 flex flex-col">
+                        <h1 className=" text-2xl font-medium">Preview Answer</h1>
+                        <div className="bg-darkgray text-white text-lg py-4 px-4 rounded-lg min-h-[50px]">
+                            <Latex children={sanitizedAnswer} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -161,7 +174,7 @@ function Info() {
         <ul className="list-disc list-inside space-y-1"> 
             <li>Generate random integers with Random Variables (min and max inclusive)</li>
             <li>Use Random Variables inside your Processed Variables expressions: e.g. sin(<strong>a</strong>)</li>
-            <li>Use Processed Variables in the Question Input</li>
+            <li>Use Processed Variables in the Question Input & Answer Input</li>
             <li>Delimit Processed Variables with <strong>[[</strong>double square brackets<strong>]]</strong></li>
             <li>Render LaTeX between <strong>$</strong>dollar signs<strong>$</strong></li>
         </ul>
