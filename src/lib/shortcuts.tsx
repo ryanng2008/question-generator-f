@@ -21,9 +21,9 @@ export function toTeX(rawText: string) { // returns the stuff inside question bl
   const matches = rawText.match(regex);
   if(!matches) return rawText
   const parts = rawText.split(regex)
-  const texified = (<div className='flex flex-wrap items-center'>{parts.map((part, index) => {
+  const texified = (<div className='flex flex-wrap gap-1 text-wrap items-center'>{parts.map((part, index) => {
     if (matches.includes(`${part}`)) { // ISSUE: case like 
-      return <div className='max-h-8 flex items-center pr-2' key={index}><InlineMath key={index}>{part.substring(1, part.length - 1)}</InlineMath></div>; // the string w/o starting and ending $
+      return <div className='max-h-8 flex flex-wrap items-center pr-2' key={index}><InlineMath key={index}>{part.substring(1, part.length - 1)}</InlineMath></div>; // the string w/o starting and ending $
     } else {
       return <p className='pr-2' key={index}>{part}</p>;
     }
