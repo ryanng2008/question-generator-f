@@ -36,7 +36,7 @@ export async function handlePostQuestion(questionString: string, rvs: RVClient[]
     }
 }
 
-export async function handlePostCategory(title: string, description: string, tags: string[], ) {
+export async function handlePostCategory(title: string, description: string, tags: string[], publicCategory: boolean) {
     const token = localStorage.getItem("token");
     try {
         const response = await fetch(`${BASE_URL}/postcategory`, {
@@ -49,7 +49,8 @@ export async function handlePostCategory(title: string, description: string, tag
             body: JSON.stringify({
                 title: title,
                 description: description,
-                tags: tags
+                tags: tags,
+                publiccategory: publicCategory
             })
         });
         if(!response.ok) {

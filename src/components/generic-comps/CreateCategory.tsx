@@ -16,6 +16,7 @@ export default function CreateCategory() {
     const [tagsInput, setTagsInput] = useState('');
     const [message, setMessage] = useState('');
     const [allowSubmit, setAllowSubmit] = useState(true);
+    const [publicCategory, setPublicCategory] = useState(false);
     const handleAddItem = () => {
         if (tagsInput.trim() !== '') {
             setTags((prevTags) => [...prevTags, tagsInput]);
@@ -31,7 +32,7 @@ export default function CreateCategory() {
             setMessage('Log in first!')
             return
         }
-        const createCategory = await handlePostCategory(title, description, tags);
+        const createCategory = await handlePostCategory(title, description, tags, publicCategory);
         if(createCategory.success) {
             setMessage('Success!')
             navigate(`/library/${createCategory.inserted_id}/questions`)
@@ -54,6 +55,27 @@ export default function CreateCategory() {
                         <h1 className="text-xl font-medium">Description</h1>
                         <textarea value={description} onChange={e => setDescription(e.target.value)} className="outline-mywhite py-2 px-3 text-md rounded-lg h-20 overflow-scroll no-scrollbar" placeholder="This category is all about learning"  />
                     </div>
+                    <div className="SETTINGS flex flex-col gap-4">
+                        <h1 className="text-xl font-medium">Configuration</h1>
+                        <div className="flex flex-col gap-4 bg-white shadow border-2 border-black py-4 px-6 rounded-lg w-max">
+                            <div className="flex gap-4 items-center">
+                            <h1 className="text-md text-darkgray">Public category</h1>
+                            <div className="inline-flex items-center">
+                                <label className="flex items-center cursor-pointer relative">
+                                  <input type="checkbox" 
+                                  onChange={() => setPublicCategory(!publicCategory)} 
+                                  checked={publicCategory} 
+                                  className="peer h-6 w-6 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 bg-white checked:border-slate-800" id="check" />
+                                  <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                                    </svg>
+                                  </span>
+                                </label>
+                            </div> 
+                            </div>
+                        </div>
+                    </div>
                     <div className="TAGS flex flex-col gap-4">
                         <h1 className="text-xl font-medium">Tags</h1>
                         <input 
@@ -63,7 +85,7 @@ export default function CreateCategory() {
                         value={tagsInput} 
                         placeholder='Type your tags here'
                         onChange={e => setTagsInput(e.target.value)} />
-                        <ul className="flex flex-wrap gap-3 h-24 p-4 overflow-scroll no-scrollbar bg-white rounded-xl border-[3px] border-midgray">
+                        <ul className="flex flex-wrap gap-3 h-24 p-4 overflow-scroll no-scrollbar bg-white rounded-xl border-[2px] border-darkgray">
                             {tags.map((tag, i) => { 
                                 return (
                                 <li key={i}><div className="bg-[#444341] rounded-xl pl-4 pr-3 py-1 flex flex-row gap-1 items-center">
