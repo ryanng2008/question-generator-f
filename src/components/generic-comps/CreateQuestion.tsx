@@ -126,7 +126,7 @@ export default function CreateQuestion() {
                 <div className="h-px w-full bg-black"/>
                 <div className="QUESTION INPUT flex flex-col gap-2">
                     <h1 className="font-medium text-2xl">Question Input Text</h1>
-                    <input className='p-2 rounded-lg outline-mywhite' placeholder="What is the value of $\frac{[[A]]}{[[B]]}$ ?" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
+                    <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="What is the value of $\frac{[[A]]}{[[B]]}$ ?" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
                 </div>
                 <div className="QUESTION PREVIEW gap-3 flex flex-col">
                     <h1 className=" text-2xl font-medium">Preview Question</h1>
@@ -150,7 +150,7 @@ export default function CreateQuestion() {
                 <div className="ANSWER flex flex-col md:grid grid-cols-2 gap-8">
                     <div className="QUESTION INPUT flex flex-col gap-2">
                         <h1 className="font-medium text-2xl">Answer Input Text</h1>
-                        <input className='p-2 my-2 rounded-lg outline-mywhite' placeholder="[[A]] is greater than [[B]]" value={answerInput} onChange={e => setAnswerInput(e.target.value)}/>
+                        <textarea className='p-2 my-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="[[A]] is greater than [[B]]" value={answerInput} onChange={e => setAnswerInput(e.target.value)}/>
                     </div>
                     <div className="QUESTION PREVIEW gap-3 flex flex-col">
                         <h1 className=" text-2xl font-medium">Preview Answer</h1>
