@@ -8,6 +8,7 @@ import { useState } from 'react';
 
 function QuestionItem({ questionObject, index }: {questionObject: Question; index: number}) {
     const formattedQuestion = toTeX(questionObject.question) // (DONE) TODO: error handling inside toTeX and safety net
+    const formattedAnswer = toTeX(questionObject.answer);
     // const longQuestion = questionObject.question && (questionObject.question.length > 200)
     // const [expanded, setExpanded] = useState(false);
     const [showAnswer, setShowAnswer] = useState(false);
@@ -32,8 +33,8 @@ function QuestionItem({ questionObject, index }: {questionObject: Question; inde
         showAnswer &&
         <div className='ANSWER flex flex-col gap-4 mb-2'>
             <div className='h-px bg-midgray' />
-            <div className='my-2'>
-                <h1 className='text-lg'>{questionObject.answer}</h1>
+            <div className='my-2 break-all'>
+                {formattedAnswer}
             </div>
         </div>
         }
