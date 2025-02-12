@@ -84,9 +84,9 @@ export default function CreateQuestion() {
         // Check if some PVs/RVs are the same name
 
         // sanitize all the pvs
-        for(const pv of fixedPVs) {
-            pv.latex = texToSympyString(pv.latex);
-        }
+        // for(const pv of fixedPVs) {
+        //     pv.latex = texToSympyString(pv.latex);
+        // }
         const createQuestion = await handlePostQuestion(sanitizedQuestion, fixedRVs, fixedPVs, sanitizedAnswer, selectedId);
         if(createQuestion.success) {
             setMessage('Success!')
