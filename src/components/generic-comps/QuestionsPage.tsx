@@ -52,7 +52,7 @@ function QuestionsPage() {
   }, 1000)
   useEffect(() => {
     fetchData();
-  }, [questionsCount])
+  }, [count])
 
   useEffect(() => {
     fetchCategoryDetails(categoryId)
