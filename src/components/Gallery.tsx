@@ -121,8 +121,8 @@ function Gallery() {
                       <div className="flex flex-row">
                           <input 
                           type="text" 
-                          className='mt-auto mb-1 outline-none bg-transparent border-b-2 border-b-darkgray pb-1 md:w-[180px] md:hover:w-[250px] duration-300' 
-                          placeholder='Quadratic equations'
+                          className='placeholder-darkgray/30 mt-auto mb-1 outline-none bg-transparent border-b-2 border-b-darkgray pb-1 md:w-[180px] md:hover:w-[250px] duration-300' 
+                          placeholder="I'm looking for..."
                           value={searchQuery}
                           onChange={e => setSearchQuery(e.target.value)}/>
                           <div onClick={() => setShowSearchBar(!showSearchBar)} className="cursor-pointer mx-4 my-auto hover:scale-105 duration-150">
