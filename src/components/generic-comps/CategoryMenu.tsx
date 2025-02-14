@@ -23,7 +23,7 @@ function CategoryMenu() {
         <h1 className='mx-4 font-semibold text-5xl py-4'>{category ? category.title : 'Untitled Category'}</h1>
         <div className='flex flex-col gap-[1px] my-4 mx-4'>
           <MenuButton text='Questions' linkedPage='questions' />
-          <MenuButton text='Test' linkedPage='test' />
+          <MenuButton text='Spaced Repetition' linkedPage='questions' />
           {/* <MenuButton text='Spaced Repetition' linkedPage='questions' />
           <MenuButton text='Create' linkedPage='main'/> */}
       </div>

@@ -12,6 +12,7 @@ import CreateQuestion from "./components/generic-comps/CreateQuestion"
 import CreateCategory from "./components/generic-comps/CreateCategory"
 import Account from "./components/Account"
 import { useAuth } from "./AuthContext"
+import EditQuestion from "./components/generic-comps/EditQuestion"
 // import Metadata from "./lib/Metadata"
 
 
@@ -36,6 +37,7 @@ function App() {
           <Route path='create/question' element={<CreateQuestion />}/>
           <Route path='create/question/:categoryId' element={<CreateQuestion />}/>
           <Route path='create/category' element={<CreateCategory />}/>
+          <Route path='edit/:categoryId/:questionId' element={<EditQuestion />} />
           {/* <Route path='test' element={<Workspace />}/> */}
           <Route path='account' element={<Account />}/>
           {/* <Route path='workspace' element={<Workspace />}/>  */}

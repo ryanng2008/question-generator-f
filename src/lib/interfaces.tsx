@@ -18,7 +18,9 @@ export interface RawQuestion {
 
 export interface Question {
     question: string,
-    answer: string
+    answer: string,
+    creator: string,
+    id: string
 }
 
 export interface RV {

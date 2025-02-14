@@ -30,6 +30,10 @@ body {
 }
 }
 
+.__Latex__ {
+  overflow-wrap: break-word;
+  white-space: normal;
+}
 /* 
 
 @font-face {

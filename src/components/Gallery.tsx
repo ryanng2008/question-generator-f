@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import GalleryItem from './generic-comps/ui/GalleryItem'
 import { fetchCategoryList } from '../lib/api/categoryListApi'
 import { Category } from '../lib/interfaces';
-import Search from '../assets/svgs/Search.svg'
 import FiltersDropdown from './generic-comps/ui/FiltersDropdown';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { useDebouncedCallback } from 'use-debounce';
+
 
 const GalleryTab = ({ text=' ', onClick, active }: { text: string, onClick: any, active: string}) => {
   return <div className="mx-2">
@@ -18,26 +20,38 @@ function Gallery() {
     setActiveTab(tab)
   }
   const [categories, setCategories] = useState<Category[]>([]);
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   useEffect(() => {
     fetchCategoryList()
     .then(data => setCategories(data))
     .catch(error => console.error(error))
   }, [])
-  //const galleryItems = categories.map((category: any) => (<li key={category.id}><GalleryItem title={category.title} tags={category.tags} description={category.description} image={category.imageLink} id={category.id} /></li>));
   const [tags, setTags] = useState<string[]>([]);
-  const filteredGallery = (tags.length == 0) 
-    ? categories 
-    : categories.filter((category) => 
-      category.tags.some((tag: string) => 
-        tags.some((selectedTag: string) => 
-          tag.toLowerCase() === selectedTag.toLowerCase()
-        )
-      )
-    );
-  const filteredLibrary: any[] = [];
-  const filteredItems = categoriesToItems((activeTab == "explore") ? filteredGallery : filteredLibrary);
+  // const [loading, setLoading] = useState(false);
+  const fetchCategories = useDebouncedCallback((searchQuery: string, tags: string[]) => {
+    console.log('fetching')
+    // setLoading(true)
+    fetchCategoryList(searchQuery, tags)
+    .then(data => setCategories(data))
+    // .then(() => setLoading(false))
+  }, 1000)
+  useEffect(() => {
+    fetchCategories(searchQuery, tags);
+  }, [searchQuery, tags])
+  // const filteredGallery = (tags.length == 0) 
+  //   ? categories 
+  //   : categories.filter((category) => 
+  //     category.tags.some((tag: string) => 
+  //       tags.some((selectedTag: string) => 
+  //         tag.toLowerCase() === selectedTag.toLowerCase()
+  //       )
+  //     )
+  //   );
+  // const libraryCategories: Category[] = [];
+  const exploreItems = categoriesToItems(categories);
 
-  function categoriesToItems(categoryList: any[]) {
+  function categoriesToItems(categoryList: Category[]) {
     return categoryList.map((category: any, i) => (
       <li key={i}>
       <GalleryItem
@@ -65,21 +79,20 @@ function Gallery() {
   }
   
   function Content() {
-    if(filteredItems.length > 0) return (
-      <ul className='grid grid-cols-2 gap-4'>{filteredItems}</ul>
-    )
     switch(activeTab) {
       case 'library': 
         return (
         <div className='items-center h-full flex flex-row justify-center gap-4 my-auto'>
           <p className='text-xl'>Looks like nothing's saved yet...</p>
           <button className='text-lg bg-darkgray text-mywhite py-2 px-4 rounded-lg font-medium hover:scale-105 duration-500' onClick={() => setActiveTab('explore')}>Explore</button>
-         </div>)
+         </div>
+         
+        )
       case 'explore':
         return (
-        <div className='items-center h-[70vh] flex flex-row justify-center gap-4'>
-          <p className='text-xl'>Loading...</p>
-        </div>
+          (exploreItems.length < 1) ?
+          <ContentSkeleton /> :
+          <ul className='grid grid-cols-2 gap-4'>{exploreItems}</ul>
         )
       default:
         return (
@@ -98,17 +111,25 @@ function Gallery() {
                   <div className={`MENUBAR my-4 mx-24 flex flex-row justify-between rounded-lg md:px-12 px-4 py-4`}>
                       <div className="flex flex-row items-center">
                           <div className=" tracking-wider">
-                              <GalleryTab text='library' onClick={handleSwitchTab} active={activeTab}/>
-                            </div>
+                            <GalleryTab text='library' onClick={handleSwitchTab} active={activeTab}/>
+                          </div>
                           <div className='w-px h-1/2 mx-1 bg-gray-600' />
                           <div className=" tracking-wider">
                             <GalleryTab text='explore' onClick={handleSwitchTab} active={activeTab} />
                           </div>
                       </div>
-                      <div className="flex flex-row items-center">
-                          <div className="mx-4"><img className="h-12" src={Search} alt="" /></div>
-                          <div className='w-px h-1/2 mx-1 bg-gray-600' />
-                          <div className='mx-4'><FiltersDropdown onInput={handleAddTag} onDelete={handleDeleteTag} tags={tags}/></div>
+                      <div className="flex flex-row">
+                          <input 
+                          type="text" 
+                          className='mt-auto mb-1 outline-none bg-transparent border-b-2 border-b-darkgray pb-1 md:w-[180px] md:hover:w-[250px] duration-300' 
+                          placeholder='Quadratic equations'
+                          value={searchQuery}
+                          onChange={e => setSearchQuery(e.target.value)}/>
+                          <div onClick={() => setShowSearchBar(!showSearchBar)} className="cursor-pointer mx-4 my-auto hover:scale-105 duration-150">
+                            <MagnifyingGlassIcon height={36} className='' />
+                          </div>
+                          <div className='w-px h-1/2 mx-1 my-auto bg-gray-600' />
+                          <div className='mx-4 my-auto'><FiltersDropdown onInput={handleAddTag} onDelete={handleDeleteTag} tags={tags}/></div>
                           
                       </div>
                   </div>
@@ -119,6 +140,19 @@ function Gallery() {
               </div>
               
           </>
+  )
+}
+
+function ContentSkeleton() {
+  return (
+    <ul className='grid grid-cols-2 gap-4'>
+      <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
+      <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
+      <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
+      <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
+      <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
+      <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
+    </ul>
   )
 }
 

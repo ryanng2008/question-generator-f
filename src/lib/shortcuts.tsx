@@ -1,4 +1,4 @@
-import { InlineMath } from 'react-katex'
+import Latex from 'react-latex-next';
 
 export function random(min: number, max: number, places: number = 0) { // MIN INCLUSIVE, MAX EXCLUSIVE
     if (typeof places !== 'number' || places < 0 || min > max) {
@@ -14,22 +14,25 @@ export function round(value: number, places: number = 0) {
     return Math.round(value * (10**dp)) / (10**dp)
 }
 
-export function toTeX(rawText: string) { // returns the stuff inside question block
-  // old regex: /(?<!\\)\$(.*?)(?<!\\)\$/g
-  if(!rawText) return ''
-  const regex = /((?<!\\)\$.*?(?<!\\)\$)/g;
-  const matches = rawText.match(regex);
-  if(!matches) return rawText
-  const parts = rawText.split(regex)
-  const texified = (<div className='flex flex-wrap gap-1 text-wrap items-center'>{parts.map((part, index) => {
-    if (matches.includes(`${part}`)) { // ISSUE: case like 
-      return <div className='max-h-8 flex flex-wrap items-center pr-2' key={index}><InlineMath key={index}>{part.substring(1, part.length - 1)}</InlineMath></div>; // the string w/o starting and ending $
-    } else {
-      return <p className='pr-2' key={index}>{part}</p>;
-    }
-  })}</div>)
-  return texified
+export function toTeX(rawText: string) {
+  return <Latex children={rawText}/>
 }
+// export function toTeXOld(rawText: string) { // returns the stuff inside question block
+//   // old regex: /(?<!\\)\$(.*?)(?<!\\)\$/g
+//   if(!rawText) return ''
+//   const regex = /((?<!\\)\$.*?(?<!\\)\$)/g;
+//   const matches = rawText.match(regex);
+//   if(!matches) return rawText
+//   const parts = rawText.split(regex)
+//   const texified = (<div className='flex flex-wrap gap-1 text-wrap items-center'>{parts.map((part, index) => {
+//     if (matches.includes(`${part}`)) { // ISSUE: case like 
+//       return <div className='max-h-8 flex flex-wrap items-center pr-2' key={index}><InlineMath key={index}>{part.substring(1, part.length - 1)}</InlineMath></div>; // the string w/o starting and ending $
+//     } else {
+//       return <p className='pr-2' key={index}>{part}</p>;
+//     }
+//   })}</div>)
+//   return texified
+// }
 
 export function texToSympyString(latex: string) {
     return latex

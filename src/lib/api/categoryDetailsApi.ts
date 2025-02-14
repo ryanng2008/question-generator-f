@@ -19,14 +19,14 @@ export async function fetchCategoryDetails(categoryId: string) {
         return data;
     } catch (error) {
         console.error(`Error fetching details for category ID ${categoryId}:`, error);
-        return []
+        return {}
     }
 }
 
 export async function searchCategory(query: string, user: string) {
     
     if(!query) {
-        return []
+        return {}
     }
     // const token = sessionStorage.getItem("token")
     try {

@@ -61,7 +61,7 @@ function QuestionsPage() {
   }, [])
 
   const questionTags = questionObjs && questionObjs.map((questionObj: Question, index: number) => {
-    return <li key={index}><QuestionItem questionObject={questionObj} index={index+1} key={index} /></li>
+    return <li key={index}><QuestionItem questionObject={questionObj} index={index+1} key={index} categoryId={categoryId} /></li>
   })
   const [dropdownShown, setDropdownShown] = useState(false);
   return (

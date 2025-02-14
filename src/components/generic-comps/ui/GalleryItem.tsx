@@ -15,9 +15,9 @@ const CategoryTag = ({ text }: { text: string }) => {
   )
 }
 function GalleryItem ({ 
-  title='I am the sigma with aura',
-  tags = ['Aura', 'Extreme Sigma', '#1 Alpha', 'Wong', 'Thing'],
-  description = 'Sigmas live a difficult life facing alphas such as Oscar "Not Sigma" So. We do our best to ensure customer satisfaction when dealing with robots or iron-based individuals.',
+  title='',
+  tags = ['Aura'],
+  description = 'Wow',
   image='No Image',
   id = '0'
   }: GIProps) {

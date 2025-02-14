@@ -35,8 +35,8 @@ function FiltersDropdown({ onInput, onDelete, tags }: { onInput: any, onDelete: 
           <div>
             <button 
               onClick={() => setShown(!shown)}
-              className="flex gap-4 outline-none justify-left rounded-md bg-darkgray hover:drop-shadow-lg hXXXover:shadow-black/50 duration-300 text-white px-4 py-2 text-lg font-medium">
-              filters
+              className="flex gap-4 outline-none justify-left rounded-md bg-darkgray hover:drop-shadow-lg hXXXover:shadow-black/50 duration-300 text-white px-4 py-2 text-lg font-normal">
+              tags
               <ChevronDownIcon
                 className="-mr-1 ml-2 my-auto h-5 w-5 text-white "
                 aria-hidden="true"
