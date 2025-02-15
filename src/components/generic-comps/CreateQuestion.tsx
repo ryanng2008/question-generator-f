@@ -260,7 +260,7 @@ function ProcessedVariableInput({
     onDelete: (index: number) => void }) {
     // const [variable, setVariable] = useState(''); // What does the variable name look like and what constraints can we put on it
     const [latex, setLatex] = useState(initialLatex);
-    const [saved, setSaved] = useState(false);
+    const [saved, setSaved] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
     // const [properties, setProperties] = useState({
     //     coefficient: false,

@@ -34,17 +34,16 @@ function QuestionItem({ questionObject, index, categoryId }: {questionObject: Qu
         <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 break-all`}>
         {formattedQuestion}
         </div>
-        {
-        showAnswer &&
-        <div className='ANSWER flex flex-col gap-4 mb-2'>
-            <div className='h-px bg-midgray' />
-            <div className='my-2 break-all'>
+
+        <div className={`ANSWER flex flex-col gap-2 mb-2 ${showAnswer ? 'h-auto' : 'h-0'}  duration-300 overflow-hidden`}>
+            <div className='h-px bg-midgray mb-2' />
+            <h1 className='text-lg font-semibold'>Answer</h1>
+            <div className='mb-2 break-all'>
                 {formattedAnswer}
             </div>
         </div>
-        }
         <div className='flex'>
-        <button className="px-4 py-1 bg-[#444341] rounded-xl text-center" onClick={() => setShowAnswer(!showAnswer)}>
+        <button className="w-[100px] py-1 bg-[#444341] rounded-xl text-center" onClick={() => setShowAnswer(!showAnswer)}>
             <h1 className="font-normal px-auto text-[#ECEAE1] text-sm tracking-wide overflow-clip">{showAnswer ? 'hide' : 'answer'}</h1>
         </button>
         </div>
