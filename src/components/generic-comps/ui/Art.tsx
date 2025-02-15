@@ -6,7 +6,7 @@ export default function Art() {
         setImage(`https://sjfmocwyjyxaksooryeg.supabase.co/storage/v1/object/public/art/${images[Math.floor(Math.random() * images.length)]}`)
     }, [])
     return (
-        <div className="ART mx-auto h-[550px]go">
+        <div className="ART mx-auto h-[550px]">
             <img 
             className="max-h-[550px] w-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
             src={image} />
