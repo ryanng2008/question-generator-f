@@ -1,9 +1,15 @@
+import { useEffect, useState } from 'react';
+
 export default function Art() {
+    const [image, setImage] = useState('');
+    useEffect(() => {
+        setImage(`https://sjfmocwyjyxaksooryeg.supabase.co/storage/v1/object/public/art/${images[Math.floor(Math.random() * images.length)]}`)
+    }, [])
     return (
-        <div className="ART mx-auto h-[550px]">
+        <div className="ART mx-auto h-[550px]go">
             <img 
             className="max-h-[550px] w-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
-            src={`https://sjfmocwyjyxaksooryeg.supabase.co/storage/v1/object/public/art/${images[Math.floor(Math.random() * images.length)]}`} />
+            src={image} />
         </div>
     )
 }
