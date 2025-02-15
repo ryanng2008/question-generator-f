@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import Tree from '../assets/svgs/Tree.svg'
+// import Tree from '../assets/svgs/Tree.svg'
 import { ArrowRightIcon } from '@heroicons/react/20/solid'
+import Art from './generic-comps/ui/Art';
 
 function Dashboard() {
     const hasProfile = false;
@@ -57,15 +58,10 @@ function Dashboard() {
         </div>)}
     return (
         <div className="grow lg:px-12 md:px-8 px-0 mx-4 flex flex-col justify-center h-full">
-            <div className="CONTENT grid grid-cols-2 justify-center items-center"> 
+            <div className="CONTENT md:grid flex grid-cols-2 gap-8 justify-center items-center"> 
                 {hasProfile ? <StatsContainer /> : <MinimalContainer />}
-                <div className='flex items-center justify-center '>
-                    <div className=' md:max-w-[90%] max-w-full overflow-hidden'>
-                    <img 
-                    className='px-4 mx-auto justify-center shrink-0'
-                    src={Tree} 
-                    alt="" />
-                    </div>
+                <div className='md:flex hidden  items-center justify-center '>
+                    <Art />
                 </div>
             </div>
         </div>

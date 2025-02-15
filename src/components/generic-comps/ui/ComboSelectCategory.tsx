@@ -90,9 +90,8 @@ export default function ComboSelectCategory({ categoryId, onChange }: { category
         <div onClick={e => e.stopPropagation()} className="font-medium p-1 z-[9999] absolute origin-top-right rounded-lg shadow-lg shadow-black/50 bg-lightgray gap-2">
           {results.length < 1 
           ? 
-          <div className="group flex cursor-default items-center gap-2 rounded-lg py-2 px-3 pr-4 select-none">
-            <div className='w-16' />
-            <h1 className=' text-darkgray text-sm/6'>Loading...</h1>
+          <div className="group flex cursor-default items-center gap-2 rounded-lg py-2 px-3 pr-4 select-none md:min-w-[150px]">
+            <h1 className=' text-darkgray text-sm/6 mx-auto'>Loading...</h1>
           </div>
           : 
           resultItems}
