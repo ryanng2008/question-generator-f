@@ -41,21 +41,23 @@ export default function CreateCategory() {
         }
     }
     return (
-        <div className="flex flex-col gap-8 mx-4 lg:px-12 md:px-8 px-0 py-8">
-            <div className="HEAD my-4">
-                <h1 className="text-6xl font-semibold">Create Category</h1>
-            </div>
-            <div className="grid grid-cols-2">
-                <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-xl flex flex-col gap-8 py-6 px-8">
-                    <div className="TITLE flex flex-col gap-4">
+            
+            <div className="md:grid flex flex-col gap-8 grid-cols-2 mx-4 lg:px-12 md:px-8 px-0 py-8 grow">
+                <div className="flex flex-col gap-8">
+                    <div className="HEAD my-4">
+                        <h1 className="md:text-6xl text-5xl font-semibold">Create category</h1>
+                    </div>
+                    <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-xl flex flex-col gap-8 py-6 px-8">
+
+                        <div className="TITLE flex flex-col gap-4">
                         <h1 className="text-xl font-medium">Title</h1>
                         <input value={title} onChange={e => setTitle(e.target.value)} className="outline-mywhite py-2 px-3 text-md rounded-lg" placeholder="Put your here (keep it concise...)"  type="text" />
-                    </div>
-                    <div className="DESC flex flex-col gap-4">
+                        </div>
+                        <div className="DESC flex flex-col gap-4">
                         <h1 className="text-xl font-medium">Description</h1>
                         <textarea value={description} onChange={e => setDescription(e.target.value)} className="outline-mywhite py-2 px-3 text-md rounded-lg h-20 overflow-scroll no-scrollbar" placeholder="This category is all about learning"  />
-                    </div>
-                    <div className="SETTINGS flex flex-col gap-3">
+                        </div>
+                        <div className="SETTINGS flex flex-col gap-3">
                         <h1 className="text-xl font-medium">Configuration</h1>
                         <ul className="flex flex-col gap-6 list-disc list-inside">
                             <li className="flex gap-3">
@@ -76,8 +78,8 @@ export default function CreateCategory() {
                             </div>
                             </li>
                         </ul>
-                    </div>
-                    <div className="TAGS flex flex-col gap-4">
+                        </div>
+                        <div className="TAGS flex flex-col gap-4">
                         <h1 className="text-xl font-medium">Tags</h1>
                         <input 
                         type="text" 
@@ -96,14 +98,16 @@ export default function CreateCategory() {
                                     </button>
                                 </div></li>)})}
                         </ul>
-                    </div>
-                    <div className="SUBMIT flex flex-row gap-16">
-                        <button onClick={onCreate} className="ml-2 bg-darkgray text-white px-6 hover:scale-105 duration-300 py-2 font-medium text-lg rounded-lg drop-shadow-xl">Submit</button>
-                        <p className="my-auto">{message}</p>
+                        </div>
+                        <div className="SUBMIT flex flex-row gap-16">
+                            <button onClick={onCreate} className="ml-2 bg-darkgray text-white px-6 hover:scale-105 duration-300 py-2 font-medium text-lg rounded-lg drop-shadow-xl">Create</button>
+                            <p className="my-auto">{message}</p>
+                        </div>
                     </div>
                 </div>
+                <div className="mx-auto my-auto md:flex hidden  ">
                 <Art />
+                </div>
             </div>
-        </div>
     )
 }

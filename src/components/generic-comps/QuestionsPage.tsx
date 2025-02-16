@@ -59,6 +59,9 @@ function QuestionsPage() {
     .then(data => setCategory(data))
     .catch(error => console.error(error))
   }, [])
+  useEffect(() => {
+    document.title = category.title;
+  }, [category.title])
 
   const questionTags = questionObjs && questionObjs.map((questionObj: Question, index: number) => {
     return <li key={index}><QuestionItem questionObject={questionObj} index={index+1} key={index} categoryId={categoryId} /></li>

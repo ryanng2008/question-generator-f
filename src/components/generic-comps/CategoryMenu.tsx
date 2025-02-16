@@ -17,6 +17,12 @@ function CategoryMenu() {
     .catch(error => console.error(error))
   }, [categoryId])
 
+  useEffect(() => {
+    if(category?.title) {
+      document.title = category?.title;
+    }
+  }, [category?.title])
+
   return (
     <div className='w-full px-4'>
       <div className='max-w-[1120px] mx-auto py-8'>
