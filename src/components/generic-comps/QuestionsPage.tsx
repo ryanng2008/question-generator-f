@@ -32,7 +32,7 @@ function QuestionsPage() {
   //const [refresh, setRefresh] = useState(false);
   const [sort, setSort] = useState<string>('Number');
   const [count, setCount] = useState(-1);
-  const questionsCount = count == -1 ? 20 : count; //questionObjs.length
+  const questionsCount = questionObjs.length === 0 ? 0 : count === -1 ? Math.max(questionObjs.length, 9) : count;
   // const [fetching, setFetching] = useState<boolean>(false);
   // async function fetfchData() {
   //   if(!fetching) {
