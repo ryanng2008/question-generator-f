@@ -9,7 +9,9 @@ export default function Art() {
         <div className="ART mx-auto h-[550px]">
             <img 
             className="max-h-[550px] w-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
-            src={image} />
+            src={image}
+            alt=''
+            />
         </div>
     )
 }

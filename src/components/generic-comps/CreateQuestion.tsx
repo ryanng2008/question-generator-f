@@ -31,9 +31,9 @@ export default function CreateQuestion() {
         dp: 0
     }]);
 
-    useEffect(() => {
-        console.log(pvs)
-    }, [pvs])
+    // useEffect(() => {
+    //     console.log(pvs)
+    // }, [pvs])
     const [rvs, setRVs] = useState<RVClient[]>([{name: '', lb: '', hb: ''}]);
     const [message, setMessage] = useState('');
     async function onCreate() {

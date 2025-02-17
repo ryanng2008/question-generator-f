@@ -60,7 +60,7 @@ function QuestionsPage() {
     .catch(error => console.error(error))
   }, [])
   useEffect(() => {
-    document.title = category.title;
+    document.title = category?.title;
   }, [category.title])
 
   const questionTags = questionObjs && questionObjs.map((questionObj: Question, index: number) => {
