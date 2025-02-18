@@ -74,7 +74,7 @@ function ComboSlider({ count, defaultValue, onSlide, shown, setShown }: { count:
 //       >
 //         <MenuItem>
 //           {({ open }) => (
-//             <div onClick={open} className="font-inter font-medium py-2 px-4 z-[9999] absolute origin-top-right divide-y divide-darkgray rounded-md bg-lightgray shadow-lg shadow-black/50">
+//             <div onClick={open} className=" font-medium py-2 px-4 z-[9999] absolute origin-top-right divide-y divide-darkgray rounded-md bg-lightgray shadow-lg shadow-black/50">
 //             <input type="number" value={defaultValue} onChange={onSlide} className='text-center max-w-[64px]' />
 //             </div>
 //   )}

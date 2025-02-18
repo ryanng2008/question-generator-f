@@ -53,7 +53,7 @@ function FiltersDropdown({ onInput, onDelete, tags }: { onInput: any, onDelete: 
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-[70%]" 
           >
-            <div className="font-inter gap-4 flex flex-col font-medium py-4 pr-4 pl-5 z-[9999] absolute origin-top-right rounded-md bg-lightgray shadow-lg shadow-black/50">
+            <div className="gap-4 flex flex-col font-medium py-4 pr-4 pl-5 z-[9999] absolute origin-top-right rounded-md bg-lightgray shadow-lg shadow-black/50">
               <div className='flex flex-row gap-4'>
                 <input 
                 type="text" 

@@ -18,7 +18,7 @@ export default function Dropdown({ title, selected, options, onSelect }: Dropdow
         {({ active }) => (
         <button
           className={clsx(
-            'group flex w-full items-center rounded-md px-2 py-2 text-md font-inter',
+            'group flex w-full items-center rounded-md px-2 py-2 text-md',
             (active) ? 'bg-darkgray text-mywhite' : 'text-darkgray',
             (selected == option) ? 'border-2 border-darkgray' : '' 
           )}
@@ -50,7 +50,7 @@ export default function Dropdown({ title, selected, options, onSelect }: Dropdow
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-[70%]" 
       >
-        <MenuItems className="p-1 font-inter font-medium z-[9999] w-[9rem] absolute origin-top-right rounded-md bg-lightgray shadow-lg shadow-black/50">
+        <MenuItems className="p-1 font-medium z-[9999] w-[9rem] absolute origin-top-right rounded-md bg-lightgray shadow-lg shadow-black/50">
             {menuItems}
         </MenuItems>
       </Transition>

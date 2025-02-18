@@ -70,7 +70,7 @@ function QuestionsPage() {
   })
   const [dropdownShown, setDropdownShown] = useState(false);
   return (
-    <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4 font-inter" onClick={() => setDropdownShown(false)}>
+    <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4" onClick={() => setDropdownShown(false)}>
         <div className="TITLE pt-12 pb-4 px-16">
             <h1 className="font-semibold text-5xl text-[#444341]">{category.title}</h1>
         </div>
@@ -84,7 +84,7 @@ function QuestionsPage() {
                 <div>
                     <button><img className='h-8 hover:scale-110 duration-300' src={Save} alt="" /></button>
                 </div>
-                <div className='font-inter'>
+                <div className=''>
                   <Dropdown 
                   title='sort by'
                   selected={sort}

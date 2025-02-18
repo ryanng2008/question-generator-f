@@ -17,7 +17,7 @@ function Navbar() {
   }
   return (
     <>
-    <div className='bg-[#444341] py-4 font-inter w-full'>
+    <div className='bg-[#444341] py-4 w-full'>
       <div className="px-8 lg:px-12 md:px-8 sm:px-0 mx-4 flex items-center justify-between gap-4">
         <Link to='/'>
           <div className="flex items-center">
