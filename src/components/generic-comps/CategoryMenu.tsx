@@ -19,7 +19,7 @@ function CategoryMenu() {
 
   useEffect(() => {
     if(category?.title) {
-      document.title = category?.title;
+      document.title = category?.title + ' - Orchard';
     }
   }, [category?.title])
 
