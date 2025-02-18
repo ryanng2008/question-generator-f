@@ -5,6 +5,9 @@ import App from './App.tsx'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './AuthContext.tsx'
+import '@fontsource-variable/inter'; // Default weight 400
+// Supports weights 200-800
+import '@fontsource-variable/karla';
 
 //if (typeof global === 'undefined') {
 //  window.global = window;

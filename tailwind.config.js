@@ -14,6 +14,7 @@ export default {
         midgray: '#787d7e',
       },
       fontFamily: {
+        sans: ['Inter', 'Helvetica', 'Arial', 'sans-serif'],
         inter: ['Inter'],
         koulen: ['Koulen'],
         interItalic: ['Inter-Italic'],

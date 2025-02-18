@@ -9,13 +9,29 @@
 body {
     background-color: #ECEBE0;
     color: #444341;
+    /* font-family: 'Inter', 'Times New Roman', sans-serif; */
+    font-family: 'Inter Variable', 'Arial', sans-serif;
 }
-
+/* 
 @layer base {
   html {
     @apply font-inter;
   }
+} */
+
+/* @font-face {
+  font-family: 'Inter';
+  src: url('fonts/Inter-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
+
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/Inter-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+} */
 
 /* add the code bellow */ 
 @layer utilities {
@@ -33,13 +49,16 @@ body {
 .__Latex__ {
   overflow-wrap: break-word;
 }
+
+
+/* 
 @layer base {
   html {
     font-family: "Inter";
     src: local("InterVariable.ttf"),
     url('./assets/fonts/InterVariable.ttf') format("truetype");
   }
-}
+} */
 /* 
 
 @font-face {

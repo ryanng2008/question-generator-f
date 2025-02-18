@@ -8,7 +8,7 @@ function Dashboard() {
     const StatsContainer = () => {
         return (
             <div className='CONTENT CONTAINER flex flex-col'>
-                <div className="HEADING my-4 pt-8 font-bold text-6xl text-[#444341]">
+                <div className="HEADING my-4 pt-8 font-bold font-serif text-6xl text-[#444341]">
                     <h1>Welcome back, user!</h1>
                 </div>
                 <div className="HEADING text-[#444341] text-2xl py-4 ml-2"> {/* w-1/2 */}
