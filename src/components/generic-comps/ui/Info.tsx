@@ -9,6 +9,7 @@ export function Info() {
             <li>Use Processed Variables in the Question Input & Answer Input</li>
             <li>Delimit Processed Variables with <strong>[[</strong>double square brackets<strong>]]</strong></li>
             <li>Render LaTeX between <strong>$</strong>dollar signs<strong>$</strong></li>
+            <li>For <a href="https://katex.org/docs/supported.html" className="hover:underline text-blue-600">all supported LaTeX commands</a></li>
         </ul>
         <h1 className="text-lg font-semibold">Additional notes</h1>
         <ul className="space-y-2">

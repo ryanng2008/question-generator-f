@@ -25,7 +25,7 @@ function App() {
     loadUser()
   }, [location])
   return (
-      <div className='font-inter min-h-screen flex flex-col'>
+      <div className='min-h-screen flex flex-col'>
         {/* <Metadata /> */}
         <Navbar />
         <Routes> 

@@ -31,7 +31,7 @@ function QuestionsPage() {
   const [questionObjs, setQuestionObjs] = useState<Question[]>([]); // useState getQuestionList(categoryId) // <Question[]>
   //const [refresh, setRefresh] = useState(false);
   const [sort, setSort] = useState<string>('Number');
-  const [count, setCount] = useState(20);
+  const [count, setCount] = useState(-1);
   // questionsCount = count;
   const questionsCount = questionObjs.length === 0 ? 0 : count === -1 ? Math.max(questionObjs.length, 9) : count;
   // const [fetching, setFetching] = useState<boolean>(false);
@@ -61,7 +61,7 @@ function QuestionsPage() {
     .catch(error => console.error(error))
   }, [])
   useEffect(() => {
-    document.title = category?.title;
+    document.title = category?.title + ' - Orchard';
   }, [category.title])
 
   const questionTags = questionObjs && questionObjs.map((questionObj: Question, index: number) => {

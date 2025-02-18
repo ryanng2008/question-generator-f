@@ -31,14 +31,14 @@ function QuestionItem({ questionObject, index, categoryId }: {questionObject: Qu
             </div>
             } */}
         </div>
-        <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 break-all`}>
+        <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 break-all whitespace-pre-line`}>
         {formattedQuestion}
         </div>
 
         <div className={`ANSWER flex flex-col gap-2 mb-2 ${showAnswer ? 'h-auto' : 'h-0'}  duration-300 overflow-hidden`}>
             <div className='h-px bg-midgray mb-2' />
             <h1 className='text-lg font-semibold'>Answer</h1>
-            <div className='mb-2 break-all'>
+            <div className='mb-2 break-all whitespace-pre-line'>
                 {formattedAnswer}
             </div>
         </div>
