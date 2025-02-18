@@ -31,7 +31,7 @@ function QuestionItem({ questionObject, index, categoryId }: {questionObject: Qu
             </div>
             } */}
         </div>
-        <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 break-all whitespace-pre-line`}>
+        <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 whitespace-pre-line`}>
         {formattedQuestion}
         </div>
 
