@@ -136,7 +136,7 @@ export default function EditQuestion() {
                 </div>
                 <div className="QUESTION PREVIEW gap-3 flex flex-col">
                     <h1 className=" text-2xl font-medium">Preview Question</h1>
-                    <div className="bg-darkgray text-white text-lg py-4 md:px-8 px-4  rounded-lg min-h-[50px]">
+                    <div className="bg-darkgray text-white text-lg py-4 md:px-8 px-4 whitespace-pre-line rounded-lg min-h-[50px]">
                         <Latex children={sanitizedQuestion} />
                     </div>
                 </div>
