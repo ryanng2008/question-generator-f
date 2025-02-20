@@ -1,23 +1,29 @@
 import { useEffect, useState } from 'react';
+import { fetchRandomArt } from '../../../lib/api/artApi';
 
 export default function Art() {
     const [image, setImage] = useState('');
     useEffect(() => {
-        const imageName = images[Math.floor(Math.random() * images.length)]
-        setImage(`https://sjfmocwyjyxaksooryeg.supabase.co/storage/v1/object/public/art/${imageName}`)
+        // const imageName = images[Math.floor(Math.random() * images.length)]
+        fetchRandomArt()
+        .then(data => setImage(data))
+        // setImage(`https://sjfmocwyjyxaksooryeg.supabase.co/storage/v1/object/public/art/${imageName}`)
     }, [])
     return (
         <div className="ART mx-auto h-[550px]">
-            <img 
+            {image 
+            ? <img 
             className="max-h-[550px] w-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
             src={image}
             alt='Something motivational'
-            />
+            /> 
+            : <div className='h-[550px] rounded-[30px] border-darkgray w-[300px]'></div>
+        }
         </div>
     )
 }
 
-const images = ['1', '2', '3', '4', '5', '6', '7', '8']
+// const images = ['1', '2', '3', '4', '5', '6', '7', '8']
 
 // https://i.pinimg.com/736x/3d/20/82/3d20826ac2a3272ebdcf7a03113f2814.jpg
 
