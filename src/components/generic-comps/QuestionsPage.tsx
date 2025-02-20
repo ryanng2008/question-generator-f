@@ -13,6 +13,7 @@ import ComboSlider from './ui/ComboSlider';
 import Create from '../../assets/svgs/Create.svg'
 import { useDebouncedCallback } from 'use-debounce';
 import { useAuth } from '../../AuthContext';
+import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 
 
 function QuestionsPage() {
@@ -34,6 +35,7 @@ function QuestionsPage() {
   const [count, setCount] = useState(-1);
   // questionsCount = count;
   const questionsCount = count === -1 ? questionObjs.length : count;
+  const [loading, setLoading] = useState(false);
   // const countUI = questionsCount === -1 ? questionObjs.length : questionsCount
   // const [fetching, setFetching] = useState<boolean>(false);
   // async function fetfchData() {
@@ -50,10 +52,13 @@ function QuestionsPage() {
   const fetchData = useDebouncedCallback(() => {
     fetchQuestionList(categoryId, count)
     .then(data => setQuestionObjs(data))
+    .then(() => setLoading(false))
     .catch(_error => {})
   }, 1000)
   useEffect(() => {
-    fetchData();
+    setLoading(true)
+    fetchData()
+    // setLoading(false);
   }, [count])
 
   useEffect(() => {
@@ -77,8 +82,19 @@ function QuestionsPage() {
         <div className="ActionBar flex px-8 mx-8 py-4 items-start gap-4">
             <div className="px-0 flex flex-row items-center gap-8">
                 <div>
-                    <button onClick={fetchData}>
-                      <img className='max-h-8 hover:scale-110 duration-300' src={Refresh} alt="" />
+                    <button onClick={() => {
+                      if(!loading) {
+                        setLoading(true);
+                        fetchData();
+                      }
+                    }}>
+                      {
+                        (loading) 
+                        ?
+                        <EllipsisHorizontalIcon height={36} />
+                        :
+                        <img className='max-h-8 hover:scale-110 duration-300' src={Refresh} alt="" />
+                      }
                     </button>
                 </div>
                 <div>
@@ -110,6 +126,13 @@ function QuestionsPage() {
         <ul className='Questions py-4 flex flex-col gap-4'>
           {questionTags}
         </ul>
+        <div className='mt-4 mb-16 flex justify-center'>
+          <button 
+          className={`bg-darkgray text-mywhite py-3 px-12 text-lg rounded-full hover:scale-105 duration-300 shadow-xl font-medium`}
+          onClick={() => {if(!loading) setCount(count + 15)}}>
+            {(loading) ? '...' : 'Show more'}
+          </button>
+        </div>
     </div>
   )
 }
