@@ -129,7 +129,7 @@ function QuestionsPage() {
         <div className='mt-4 mb-16 flex justify-center'>
           <button 
           className={`bg-darkgray text-mywhite py-3 px-12 text-lg rounded-full hover:scale-105 duration-300 shadow-xl font-medium`}
-          onClick={() => {if(!loading) setCount(count + 15)}}>
+          onClick={() => {if(!loading) setCount(questionsCount + 15)}}>
             {(loading) ? '...' : 'Show more'}
           </button>
         </div>
