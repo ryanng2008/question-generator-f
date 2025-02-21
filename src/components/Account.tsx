@@ -35,10 +35,13 @@ function LoggedIn({ username }: { username: string }) {
     <div className="justify-center flex flex-col gap-4">
       <div className="flex flex-row gap-1 text-xl">Logged in as <p className="font-bold">{username}</p></div>
       <div>
+      
       <button onClick={handleLogout} className='py-1 px-4 rounded-lg text-md font-medium text-mywhite bg-darkgray inline-block hover:scale-105 duration-500'>
         <p>Log out</p>
       </button>
       </div>
+      <div className="text-md">Email ryandoesnothing1@gmail.com with suggestions!</div>
+
     </div>
   )
 }
