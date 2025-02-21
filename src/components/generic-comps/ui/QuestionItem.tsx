@@ -20,7 +20,7 @@ function QuestionItem({ questionObject, index, categoryId }: {questionObject: Qu
         <div className='flex flex-row gap-2 justify-between'>
             <div className="flex flex-row gap-6 items-center">
                 <h1 className='text-2xl font-semibold'>Question {index}</h1>
-                <div className='rounded-lg drop-shadow my-auto text-lg py-[3px] px-4 font-bold bg-[#CDFFC9] invisible sm:visible'><p>Easy</p></div>
+                {/* <div className='rounded-lg drop-shadow my-auto text-lg py-[3px] px-4 font-bold bg-[#CDFFC9] invisible sm:visible'><p>Easy</p></div> */}
             </div>
             <Link to={`/edit/${categoryId}/${questionObject.id}`}>
                 <PencilSquareIcon className='h-8' />
