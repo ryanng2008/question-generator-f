@@ -300,7 +300,7 @@ function ProcessedVariableInput({
                 placeholder=""
                 value={pv.varName} 
                 maxLength={15} 
-                onChange={e => handleUpdateNormal('varName', e.target.value.replace(/[^A-Za-z]/g, '').toUpperCase())} />
+                onChange={e => handleUpdateNormal('varName', e.target.value.replace(/[^A-Za-z_]/g, '').toUpperCase())} />
             </div>
             <div className="flex items-end">
                 <p className="mb-1 text-[#738086] font-semibold">=</p>
@@ -333,7 +333,7 @@ function ProcessedVariableInput({
                 <EllipsisVerticalIcon height={32} /></button>
             </div>
             {menuOpen && 
-            <div className="z-[9999] flex flex-col gap-2 px-4 py-3 absolute w-[200px] right-0 -bottom-3 transform translate-y-full bg-mywhite border-2 border-darkgray/70 rounded-lg shadow-xl" onMouseLeave={() => setMenuOpen(!menuOpen)}>
+            <div className="z-[9999] flex flex-col gap-2 px-4 py-3 absolute w-[250px] right-0 -bottom-3 transform translate-y-full bg-mywhite border-2 border-darkgray/70 rounded-lg shadow-xl" onMouseLeave={() => setMenuOpen(!menuOpen)}>
             <div className="COEFFICIENT flex flex-row justify-between gap-4 mx-1 items-center">
                 <h3 className="text-sm font-medium">Coefficient</h3>
                 <div className="inline-flex items-center">
@@ -350,7 +350,9 @@ function ProcessedVariableInput({
                   </label>
                 </div> 
             </div>
+
             <div className="h-px bg-gray-500"/>
+
             <div className="DP flex justify-between gap-4 overflow-hidden items-center mx-1">
                 <h3 className="text-sm font-medium">d.p.</h3>
                 <input 
@@ -359,6 +361,25 @@ function ProcessedVariableInput({
                 value={isNaN(pv.dp) ? '' : pv.dp}
                 onChange={e => handleUpdateNormal('dp', parseInt(e.target.value))} 
                 />
+            </div>
+
+            <div className="h-px bg-gray-500"/>
+
+            <div className="SCIENTIFIC NOTATION flex flex-row justify-between gap-4 mx-1 items-center">
+                <h3 className="text-sm font-medium">Sci Notation</h3>
+                <div className="inline-flex items-center">
+                  <label className="flex items-center cursor-pointer relative">
+                    <input type="checkbox" 
+                    onChange={() => handleUpdateNormal('coefficient', !pv.coefficient)} 
+                    checked={pv.coefficient} 
+                    className="peer h-6 w-6 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 bg-white checked:border-slate-800" id="check" />
+                    <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </label>
+                </div> 
             </div>
             </div>
             }
