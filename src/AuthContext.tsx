@@ -9,7 +9,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // If you load the page and there's already JWT, this does it
     const loadUser = async () => {
         const fetchedUser = await fetchUser();
-        setUser(fetchedUser?.identity || null);
+        setUser(fetchedUser?.identity || '');
     }
     // useEffect(() => { 
     //     loadUser();

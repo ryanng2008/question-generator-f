@@ -32,9 +32,15 @@ function Navbar() {
           </ul>
           <Link to='/account'>
             {
-              (user) ?
-              <img className='max-w-[48px] hover:scale-105 duration-300 fill-mywhite' src={Menu} alt="Menu" /> :
+              (user) 
+              ?
+              <img className='max-w-[48px] hover:scale-105 duration-300 fill-mywhite' src={Menu} alt="Menu" /> 
+              :
+              (user === '') 
+              ?
               <AccountCircleIcon sx={{color: "#CBD0D2", fontSize: 50 }} className='hover:scale-105 duration-300'/>
+              :
+              <div />
             }
           </Link>
           {/* <Link to='/account'>

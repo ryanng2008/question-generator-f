@@ -156,7 +156,7 @@ export default function CreateQuestion() {
                     </div>
                     <div className="QUESTION PREVIEW gap-3 flex flex-col">
                         <h1 className=" text-2xl font-medium">Preview Answer</h1>
-                        <div className="bg-darkgray text-white text-lg py-4 px-4 rounded-lg min-h-[50px]">
+                        <div className="bg-darkgray text-white text-lg py-4 px-4 rounded-lg min-h-[50px] whitespace-pre-line">
                             <Latex children={sanitizedAnswer} />
                         </div>
                     </div>
