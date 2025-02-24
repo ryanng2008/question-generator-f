@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useAuth } from "../AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Art from "./generic-comps/ui/Art";
 
 
@@ -32,13 +32,21 @@ function LoggedIn({ username }: { username: string }) {
     navigate("/");
   }
   return (
-    <div className="justify-center flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full py-12 justify-center">
+      {/* <div>
+        <h1 className="text-4xl font-medium">Settings</h1>
+      </div> */}
+
       <div className="flex flex-row gap-1 text-xl">Logged in as <p className="font-bold">{username}</p></div>
       <div>
       
       <button onClick={handleLogout} className='py-1 px-4 rounded-lg text-md font-medium text-mywhite bg-darkgray inline-block hover:scale-105 duration-500'>
         <p>Log out</p>
       </button>
+      </div>
+      <div className="flex flex-col gap-2 mt-4">
+        <h1 className="text-2xl font-semibold">About</h1>
+        <p>Orchard generates and regenerates practice questions by randomising the numbers, so you can practice as much as you need. <Link to='/create' className="underline hover:text-blue-800 duration-300">Create a question template</Link> and set the variables — and just like that, you can generate as many versions of the same type of question as you want. </p>
       </div>
       <div className="text-md">Email ryandoesnothing1@gmail.com with suggestions!</div>
 
