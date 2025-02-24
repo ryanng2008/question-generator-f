@@ -93,7 +93,9 @@ function Login({ switchPage }: { switchPage: (page: 'login' | 'register') => voi
         onClick={() => switchPage('register')}
         >Don't have an account?</button>
       </div>
-      {message && <p className="my-1 text-md text-red-800 font-semibold">{message}</p>}
+      {message && <p className="my-1 text-md text-red-800 font-semibold">{message}</p>
+      }
+      <p className="mt-12 text-sm">Orchard generates and regenerates practice questions by randomising the numbers, so you can practice as much as you need. <Link to='/create' className="underline hover:text-blue-800 duration-300">Create a question template</Link> and set the variables — and just like that, you can generate as many versions of the same type of question as you want. </p>
     </div>
   )
 }
@@ -139,6 +141,7 @@ function Register({ switchPage }: { switchPage: (page: 'login' | 'register') => 
         >Have an account already?</button>
       </div>
       {message && <p className="my-1 text-md text-red-800 font-semibold">{message}</p>}
+      <p className="mt-12 text-sm">Orchard generates and regenerates practice questions by randomising the numbers, so you can practice as much as you need. <Link to='/create' className="underline hover:text-blue-800 duration-300">Create a question template</Link> and set the variables — and just like that, you can generate as many versions of the same type of question as you want. </p>
   </div>
   )
 }
