@@ -112,7 +112,7 @@ function QuestionsPage() {
             <div className="flex flex-row gap-4">
                 <div className="mx-1 w-px bg-gray-600 max-h-[48px]" />
                 <div className='my-auto'>
-                    <ComboSlider shown={dropdownShown} setShown={setDropdownShown} defaultValue={questionsCount} onSlide={(e: any) => setCount((e.target.value < 100 && e.target.value) || count)} count={questionsCount} />
+                    <ComboSlider shown={dropdownShown} setShown={setDropdownShown} defaultValue={questionsCount} onSlide={(e: any) => setCount((e.target.value < 1000 && e.target.value) || count)} count={questionsCount} />
                 </div>
                 <div className=' tracking-normal flex'>
                     <h1 className=' text-[#444341] text-xl font-medium tracking-normal my-auto'>questions shown</h1>
@@ -129,7 +129,7 @@ function QuestionsPage() {
         <div className='mt-4 mb-16 flex justify-center'>
           <button 
           className={`bg-darkgray text-mywhite py-3 px-12 text-lg rounded-full hover:scale-105 duration-300 shadow-xl font-medium`}
-          onClick={() => {if(!loading) setCount(questionsCount + 15)}}>
+          onClick={() => {if(!loading) setCount(questionsCount < 985 ? questionsCount + 15 : questionsCount)}}>
             {(loading) ? '...' : 'Show more'}
           </button>
         </div>
