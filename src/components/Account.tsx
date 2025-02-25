@@ -45,7 +45,7 @@ function LoggedIn({ username }: { username: string }) {
       </button>
       </div>
       <div className="flex flex-col gap-2 mt-4">
-        <h1 className="text-2xl font-semibold">About</h1>
+        {/* <h1 className="text-2xl font-semibold">About</h1> */}
         <p>Orchard generates and regenerates practice questions by randomising the numbers, so you can practice as much as you need. <Link to='/create' className="underline hover:text-blue-800 duration-300">Create a question template</Link> and set the variables — and just like that, you can generate as many versions of the same type of question as you want. </p>
       </div>
       <div className="text-md">Email ryandoesnothing1@gmail.com with suggestions!</div>
