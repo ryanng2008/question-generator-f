@@ -11,26 +11,28 @@ function Navbar() {
   // }
 
   const NavbarButton = ({ text }: {text: string}) => {
-    return <div className={`rounded-full bg-lightgray hover:underline text-[#444341] py-2 w-40 mx-auto font-semibold tracking-wide text-center`}>
+    return <div className={`rounded-full bg-lightgray hover:underline text-[#444341] py-2 md:w-40 w-20 mx-auto font-semibold tracking-wide text-center`}>
       {text}
       </div>
   }
   return (
     <>
     <div className='bg-[#444341] py-4 w-full'>
-      <div className="px-8 lg:px-12 md:px-8 sm:px-0 mx-4 flex items-center justify-between gap-4">
+      <div className="px-8 lg:px-12 md:px-8 sm:px-0 mx-4 grid grid-cols-3 justify-between gap-4">
         <Link to='/'>
           <div className="flex items-center">
             <img className="h-16" src="https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/3945274.png" alt=""/>
             {/* <img className="h-16"src="https://b.fssta.com/uploads/application/soccer/headshots/40670.vresize.350.350.medium.91.png" alt="" /> */}
           </div>
         </Link>
-        <div className="flex items-center space-x-24">
-          <ul className='flex justify-apart space-x-16'>
+
+        {/* <div className=" items-center md:flex hidden"> */}
+          <ul className='flex justify-between space-x-4 items-center'>
             <li><Link to='/library'><NavbarButton text='library'/></Link></li>
             <li><Link to='/create'><NavbarButton text='create'/></Link></li>
           </ul>
-          <Link to='/account'>
+          <div className='flex items-center justify-end'>
+          <Link to='/account' className='my-auto'>
             {
               (user) 
               ?
@@ -44,6 +46,7 @@ function Navbar() {
               <div />
             }
           </Link>
+          </div>
           {/* <Link to='/account'>
           <button className='' onClick={() => {}}>
             
@@ -52,7 +55,7 @@ function Navbar() {
           </Link> */}
         </div>
       </div>
-    </div>
+    {/* </div> */}
     </>
   )
 }

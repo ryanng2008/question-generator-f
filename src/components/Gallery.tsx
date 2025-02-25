@@ -92,7 +92,7 @@ function Gallery() {
         return (
           (exploreItems.length < 1) ?
           <ContentSkeleton /> :
-          <ul className='grid grid-cols-2 gap-4'>{exploreItems}</ul>
+          <ul className='md:grid flex flex-col grid-cols-2 gap-4'>{exploreItems}</ul>
         )
       default:
         return (
@@ -108,8 +108,8 @@ function Gallery() {
       <>
           <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col grow mb-12">
               <div className="MENUBAR CONTAINER">
-                  <div className={`MENUBAR my-4 mx-24 flex flex-row justify-between rounded-lg md:px-12 px-4 py-4`}>
-                      <div className="flex flex-row items-center">
+                  <div className={`MENUBAR my-4 flex md:flex-row flex-col gap-4 justify-between rounded-lg md:px-12 px-4 py-4`}>
+                      <div className="md:flex flex-row items-center hidden">
                           <div className=" tracking-wider">
                             <GalleryTab text='library' onClick={handleSwitchTab} active={activeTab}/>
                           </div>
@@ -118,16 +118,16 @@ function Gallery() {
                             <GalleryTab text='explore' onClick={handleSwitchTab} active={activeTab} />
                           </div>
                       </div>
-                      <div className="flex flex-row">
+                      <div className="flex flex-row justify-between">
                           <input 
                           type="text" 
-                          className='placeholder-darkgray/30 mt-auto mb-1 outline-none bg-transparent border-b-2 border-b-darkgray pb-1 md:w-[180px] md:hover:w-[250px] duration-300' 
+                          className='placeholder-darkgray/30 mt-auto mb-1 mr-8 outline-none bg-transparent border-b-2 border-b-darkgray pb-1 md:w-[180px] md:hover:w-[250px] duration-300' 
                           placeholder="I'm looking for..."
                           value={searchQuery}
                           onChange={e => setSearchQuery(e.target.value)}/>
-                          <div onClick={() => setShowSearchBar(!showSearchBar)} className="cursor-pointer mx-4 my-auto hover:scale-105 duration-150">
+                          {/* <div onClick={() => setShowSearchBar(!showSearchBar)} className="cursor-pointer mx-4 my-auto hover:scale-105 duration-150">
                             <MagnifyingGlassIcon height={36} className='' />
-                          </div>
+                          </div> */}
                           <div className='w-px h-1/2 mx-1 my-auto bg-gray-600' />
                           <div className='mx-4 my-auto'><FiltersDropdown onInput={handleAddTag} onDelete={handleDeleteTag} tags={tags}/></div>
                           

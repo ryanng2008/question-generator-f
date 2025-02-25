@@ -76,31 +76,28 @@ function QuestionsPage() {
   const [dropdownShown, setDropdownShown] = useState(false);
   return (
     <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4" onClick={() => setDropdownShown(false)}>
-        <div className="TITLE pt-12 pb-4 px-16">
-            <h1 className="font-semibold text-5xl text-[#444341]">{category.title}</h1>
+        <div className="TITLE pt-12 pb-4 md:px-16 px-4">
+            <h1 className="font-semibold md:text-5xl text-4xl text-[#444341]">{category.title}</h1>
         </div>
-        <div className="ActionBar flex px-8 mx-8 py-4 items-start gap-4">
-            <div className="px-0 flex flex-row items-center gap-8">
-                <div>
-                    <button onClick={() => {
-                      if(!loading) {
-                        setLoading(true);
-                        fetchData();
-                      }
-                    }}>
-                      {
-                        (loading) 
-                        ?
-                        <EllipsisHorizontalIcon height={36} />
-                        :
-                        <img className='max-h-8 hover:scale-110 duration-300' src={Refresh} alt="" />
-                      }
-                    </button>
-                </div>
-                <div>
-                    <button><img className='h-8 hover:scale-110 duration-300' src={Save} alt="" /></button>
-                </div>
-                <div className=''>
+        <div className="ActionBar flex flex-row md:px-8 mx-4 md:mx-8 py-4 items-start gap-8">
+            <div className="px-0 flex flex-row items-center gap-8 my-auto md:justify-normal justify-between">
+                <button className='my-auto' onClick={() => {
+                  if(!loading) {
+                    setLoading(true);
+                    fetchData();
+                  }
+                }}>
+                  {
+                    (loading) 
+                    ?
+                    <EllipsisHorizontalIcon className='my-auto' height={36} />
+                    :
+                    <img className='max-h-8 hover:scale-110 duration-300 my-auto' src={Refresh} alt="" />
+                  }
+                </button>
+                <button><img className='h-8 hover:scale-110 duration-300 my-auto' src={Save} alt="" /></button>
+                
+                <div className='md:flex hidden'>
                   <Dropdown 
                   title='sort by'
                   selected={sort}
@@ -110,7 +107,7 @@ function QuestionsPage() {
                 </div>
             </div>
             <div className="flex flex-row gap-4">
-                <div className="mx-1 w-px bg-gray-600 max-h-[48px]" />
+                <div className="mx-1 w-px bg-gray-600 max-h-[48px] md:block hidden" />
                 <div className='my-auto'>
                     <ComboSlider shown={dropdownShown} setShown={setDropdownShown} defaultValue={questionsCount} onSlide={(e: any) => setCount(parseInt((e.target.value < 100 && e.target.value) || count))} count={questionsCount} />
                 </div>
@@ -118,10 +115,12 @@ function QuestionsPage() {
                     <h1 className=' text-[#444341] text-xl font-medium tracking-normal my-auto'>questions shown</h1>
                 </div>
             </div>
-            {(category.author === 'public' || user === category.author) && <Link className='ml-auto mr-4 flex items-center' to={`/create/question/${categoryId}`}>
+            <div className='px-auto'>
+            {(category.author === 'public' || user === category.author) && <Link className='ml-auto md:mr-4 flex items-center' to={`/create/question/${categoryId}`}>
               {/* <PlusCircleIcon height={48}/> */}
-              <img src={Create} className='max-h-12'/>
+              <img src={Create} className='max-h-12 mr-0'/>
             </Link>}
+            </div>
         </div>
         <ul className='Questions py-4 flex flex-col gap-4'>
           {questionTags}
