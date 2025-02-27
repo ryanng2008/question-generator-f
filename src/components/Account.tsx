@@ -58,7 +58,7 @@ function LoggedIn({ username }: { username: string }) {
 
 function Login({ switchPage }: { switchPage: (page: 'login' | 'register') => void }) {
   const [credentials, setCredentials] = useState({ username: '', password: ''})
-  const [message, setMessage] = useState<string>('Niggger');
+  const [message, setMessage] = useState<string>('');
   const { login } = useAuth();
   // const navigate = useNavigate();
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

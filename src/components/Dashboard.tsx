@@ -26,7 +26,7 @@ function Dashboard() {
 
     const MinimalContainer = () => {
         return(
-        <div className='CONTENT CONTAINER flex flex-col justify-center'>
+        <div className='CONTENT CONTAINER flex flex-col md:justify-center'>
             <div className="HEADING my-4 font-semibold md:text-7xl text-5xl text-[#444341]">
                 <h1>Welcome back!</h1>
             </div>
@@ -57,8 +57,8 @@ function Dashboard() {
         </div>
         </div>)}
     return (
-        <div className="grow lg:px-12 md:px-8 px-0 mx-4 flex flex-col justify-center h-full">
-            <div className="CONTENT md:grid flex grid-cols-2 gap-8 justify-center items-center"> 
+        <div className="grow lg:px-12 md:px-8 px-0 mx-8 flex flex-col justify-center h-full">
+            <div className="CONTENT md:grid flex grid-cols-2 gap-8 md:justify-center items-center"> 
                 {hasProfile ? <StatsContainer /> : <MinimalContainer />}
                 <div className='md:flex hidden  items-center justify-center '>
                     <Art />

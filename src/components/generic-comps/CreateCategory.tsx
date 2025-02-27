@@ -59,9 +59,9 @@ export default function CreateCategory() {
                         </div>
                         <div className="SETTINGS flex flex-col gap-3">
                         <h1 className="text-xl font-medium">Configuration</h1>
-                        <ul className="flex flex-col gap-6 list-disc list-inside">
-                            <li className="flex gap-3">
-                            <div className="rounded-full h-[5px] w-[5px] bg-black my-auto ml-4"></div>
+                        <ul className="flex flex-col gap-6">
+                            <li className="flex gap-3 justify-between">
+                            {/* <div className="rounded-full h-[5px] w-[5px] bg-black my-auto ml-4"></div> */}
                             <h1 className="text-md text-darkgray">Public category (anyone can add questions)</h1>
                             <div className="inline-flex items-center">
                             <label className="flex items-center cursor-pointer relative">
