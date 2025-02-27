@@ -8,7 +8,7 @@ export default function Account() {
     const { user } = useAuth();
     const [page, setPage] = useState<'login' | 'register'>('login');
     return (
-      <div className="mx-4 lg:px-12 md:px-8 px-0 py-8 grid grid-cols-2 gap-4 items-center h-[85vh]"> 
+      <div className="mx-4 lg:px-12 md:px-8 px-0 py-8 md:grid flex grid-cols-2 gap-4 items-center h-[85vh]"> 
       {/* Fix the spacing here ig */}
         {
           (user) ? 
@@ -19,7 +19,9 @@ export default function Account() {
           <Register switchPage={setPage} /> :
           <div />
         }
+        <div className="md:block hidden">
         <Art />
+        </div>
       </div>
     )
 }
