@@ -3,7 +3,7 @@ import GalleryItem from './generic-comps/ui/GalleryItem'
 import { fetchCategoryList } from '../lib/api/categoryListApi'
 import { Category } from '../lib/interfaces';
 import FiltersDropdown from './generic-comps/ui/FiltersDropdown';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+// import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { useDebouncedCallback } from 'use-debounce';
 
 
@@ -20,7 +20,7 @@ function Gallery() {
     setActiveTab(tab)
   }
   const [categories, setCategories] = useState<Category[]>([]);
-  const [showSearchBar, setShowSearchBar] = useState(false);
+  // const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   useEffect(() => {
     fetchCategoryList()
