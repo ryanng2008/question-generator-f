@@ -145,7 +145,7 @@ function Gallery() {
 
 function ContentSkeleton() {
   return (
-    <ul className='grid grid-cols-2 gap-4'>
+    <ul className='md:grid grid-cols-2 flex flex-col gap-4'>
       <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
       <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
       <div className="bg-[#CBD0D2] border-2 border-gray-300 rounded-3xl h-[150px] hover:shadow-md hover:border-gray-400 duration-300" /> 
