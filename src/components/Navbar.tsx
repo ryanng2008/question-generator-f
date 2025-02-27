@@ -11,14 +11,14 @@ function Navbar() {
   // }
 
   const NavbarButton = ({ text }: {text: string}) => {
-    return <div className={`rounded-full bg-lightgray hover:underline text-[#444341] py-2 md:w-40 w-20 mx-auto font-semibold tracking-wide text-center`}>
+    return <div className={`rounded-full bg-lightgray hover:underline text-[#444341] py-2 md:w-40 w-[90px] mx-auto font-semibold tracking-wide text-center`}>
       {text}
       </div>
   }
   return (
     <>
     <div className='bg-[#444341] py-4 w-full'>
-      <div className="px-8 lg:px-12 md:px-8 sm:px-0 mx-4 grid grid-cols-3 justify-between gap-4">
+      <div className=" lg:px-12 md:px-8 px-0 mx-4 grid grid-cols-3 justify-between gap-4">
         <Link to='/'>
           <div className="flex items-center">
             <img className="h-16" src="https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/3945274.png" alt=""/>

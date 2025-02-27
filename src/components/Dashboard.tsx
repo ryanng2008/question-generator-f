@@ -7,8 +7,8 @@ function Dashboard() {
     const hasProfile = false;
     const StatsContainer = () => {
         return (
-            <div className='CONTENT CONTAINER flex flex-col'>
-                <div className="HEADING my-4 pt-8 font-bold font-serif text-6xl text-[#444341]">
+            <div className='CONTENT CONTAINER flex flex-col mx-2'>
+                <div className="HEADING my-4 pt-8 font-bold font-serif md:text-6xl text-5xl text-[#444341]">
                     <h1>Welcome back, user!</h1>
                 </div>
                 <div className="HEADING text-[#444341] text-2xl py-4 ml-2"> {/* w-1/2 */}
@@ -27,7 +27,7 @@ function Dashboard() {
     const MinimalContainer = () => {
         return(
         <div className='CONTENT CONTAINER flex flex-col justify-center'>
-            <div className="HEADING my-4 font-semibold text-7xl text-[#444341]">
+            <div className="HEADING my-4 font-semibold md:text-7xl text-5xl text-[#444341]">
                 <h1>Welcome back!</h1>
             </div>
             <div className='ml-1 my-2'>
