@@ -75,9 +75,9 @@ export default function RepetitionPage() {
                 onClick={() => handleFeedbackClick(4)}
                 >Very hard</button>
             </div>
-            <div className="px-6 py-3 my-2 mx-auto bg-darkgray text-white inline font-medium text-lg rounded-xl shadow-lg">
+            {aptitude && <div className="px-6 py-3 my-2 mx-auto bg-darkgray text-white inline font-medium text-lg rounded-xl shadow-lg">
                 {aptitude}% proficient
-            </div>
+            </div>}
         </div>
     )
 }
