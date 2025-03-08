@@ -32,6 +32,7 @@ export default function EditQuestion() {
                 return
             }
             if(data.creator !== 'public' && data.creator !== user) {
+                setMessage("Error: you don't have permission to edit this question")
                 return
             }
             console.log(data)
@@ -107,7 +108,7 @@ export default function EditQuestion() {
     if(!loaded) {
        return (
        <div className="mx-auto my-auto">
-        <h1 className="text-xl">Loading...</h1>
+        <h1 className="text-xl">{message ? message : 'Loading...'}</h1>
        </div> )
     }
     return (

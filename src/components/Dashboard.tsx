@@ -27,14 +27,14 @@ function Dashboard() {
     const MinimalContainer = () => {
         return(
         <div className='CONTENT CONTAINER flex flex-col md:justify-center'>
-            <div className="HEADING my-4 font-semibold md:text-7xl text-5xl text-[#444341]">
-                <h1>Welcome back!</h1>
+            <div className="HEADING my-4 font-semibold md:text-6xl text-5xl text-[#444341]">
+                <h1>Study faster & better</h1>
             </div>
             <div className='ml-1 my-2'>
                 <Link to="./library">
                 <div className='py-2 px-4 rounded-lg text-lg font-medium text-mywhite bg-darkgray inline-block hover:scale-105 duration-500'>
                     <div className='flex flex-row gap-3'>
-                        <p className=''>Get started</p>
+                        <p className=''>Find resources</p>
                         <ArrowRightIcon className='h-6 my-auto'/>
                     </div>
                 </div>
@@ -58,9 +58,12 @@ function Dashboard() {
         </div>)}
     return (
         <div className="grow lg:px-12 md:px-8 px-0 mx-8 flex flex-col justify-center h-full">
-            <div className="CONTENT md:grid flex grid-cols-2 gap-8 md:justify-center items-center"> 
+            <div className="CONTENT md:grid flex grid-cols-5 gap-8 md:justify-center items-center"> 
+                <div className='col-span-3'>
                 {hasProfile ? <StatsContainer /> : <MinimalContainer />}
-                <div className='md:flex hidden  items-center justify-center '>
+                </div>
+                
+                <div className='md:flex hidden col-span-2 items-center justify-center '>
                     <Art />
                 </div>
             </div>

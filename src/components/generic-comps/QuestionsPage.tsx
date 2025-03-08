@@ -115,10 +115,10 @@ function QuestionsPage() {
                     <h1 className=' text-[#444341] text-xl font-medium tracking-normal my-auto'>questions shown</h1>
                 </div>
             </div>
-            <div className='px-auto'>
-            {(category.author === 'public' || user === category.author) && <Link className='ml-auto md:mr-4 flex items-center' to={`/create/question/${categoryId}`}>
+            <div className='px-auto h-12'>
+            {(category.author === 'public' || user === category.author) && <Link className='h-12 flex items-center' to={`/create/question/${categoryId}`}>
               {/* <PlusCircleIcon height={48}/> */}
-              <img src={Create} className='max-h-12 mr-0'/>
+              <img src={Create} className='h-12'/>
             </Link>}
             </div>
         </div>

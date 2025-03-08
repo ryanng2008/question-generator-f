@@ -13,6 +13,7 @@ import CreateCategory from "./components/generic-comps/CreateCategory"
 import Account from "./components/Account"
 import { useAuth } from "./AuthContext"
 import EditQuestion from "./components/generic-comps/EditQuestion"
+import RepetitionPage from "./components/generic-comps/RepetitionPage"
 // import Metadata from "./lib/Metadata"
 
 
@@ -33,6 +34,7 @@ function App() {
           <Route path='library' element={<Gallery />} /> 
           <Route path='library/:categoryId' element={<CategoryMenu />} />
           <Route path='library/:categoryId/questions' element={<QuestionsPage />}/>
+          <Route path='library/:categoryId/adaptive' element={<RepetitionPage />}/>
           <Route path='create' element={<CreateMenu />}/>
           <Route path='create/question' element={<CreateQuestion />}/>
           <Route path='create/question/:categoryId' element={<CreateQuestion />}/>
