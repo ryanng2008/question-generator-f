@@ -41,7 +41,7 @@ function Navbar() {
               :
               (user === '') 
               ?
-              <div className='text-white rounded-full py-2 px-6 hover:scale-105 md:text-md text-sm duration-300 font-semibold hover:underline'>Log in</div>
+              <div className='text-darkgray bg-[#ebebeb] rounded-xl py-2 px-6 hover:scale-105 md:text-md text-sm duration-300 font-semibold hover:underline'>Log in</div>
               // <AccountCircleIcon sx={{color: "#CBD0D2", fontSize: 50 }} className=' hover:scale-105 duration-300'/>
               :
               <div />
