@@ -19,12 +19,13 @@ function Navbar() {
     <>
     <div className='bg-[#444341] py-4 w-full'>
       <div className=" lg:px-12 md:px-8 px-0 mx-4 md:grid grid-cols-3 flex justify-between md:gap-4 gap-2">
-        <Link to='/'>
           <div className="flex items-center">
+          <Link to='/'>
+
             <img className="md:h-12 h-10" src="https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/3945274.png" alt=""/>
             {/* <img className="h-16"src="https://b.fssta.com/uploads/application/soccer/headshots/40670.vresize.350.350.medium.91.png" alt="" /> */}
+          </Link>
           </div>
-        </Link>
 
         {/* <div className=" items-center md:flex hidden"> */}
           <ul className='flex justify-between space-x-6 items-center'>
