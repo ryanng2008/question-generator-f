@@ -1,13 +1,15 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Category, Question } from "../../lib/interfaces";
 import { PencilSquareIcon } from "@heroicons/react/20/solid";
 import { toTeX } from "../../lib/shortcuts";
 import { useEffect, useState } from "react";
 import { fetchCategoryDetails } from "../../lib/api/categoryDetailsApi";
 import { fetchNextSR, fetchStartSR } from "../../lib/api/spacedRepetitionApi";
-
+import { useAuth } from "../../AuthContext";
 export default function RepetitionPage() {
     const categoryId = useParams().categoryId || '';
+    const navigate = useNavigate();
+    const { currentUser } = useAuth();
     const [category, setCategory] = useState<Category>({
         _id: '',
         title: '',
@@ -16,23 +18,40 @@ export default function RepetitionPage() {
         tags: [],
         author: '',
         questions: [],
-      });
+    });
     const [question, setQuestion] = useState<Question | null>(null);
     const [aptitude, setAptitude] = useState<number>(0);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        fetchCategoryDetails(categoryId)
-        .then(data => setCategory(data))
-        .catch(error => console.error(error))
-        fetchStartSR(categoryId)
-        .then(data => {
-            setQuestion(data.question)
-            setAptitude(data.aptitude)
+        if (!currentUser) {
+            navigate('/signin', { state: { message: 'Please sign in to access spaced repetition.' } });
+            return;
+        }
+
+        setLoading(true);
+        Promise.all([
+            fetchCategoryDetails(categoryId),
+            fetchStartSR(categoryId)
+        ])
+        .then(([categoryData, srData]) => {
+            setCategory(categoryData);
+            setQuestion(srData.question);
+            setAptitude(srData.aptitude);
         })
-        .catch(error => console.error(error))
-    }, [])
+        .catch(error => {
+            console.error(error);
+            // Handle specific error cases if needed
+        })
+        .finally(() => {
+            setLoading(false);
+        });
+    }, [currentUser, categoryId, navigate]);
+
     useEffect(() => {
         document.title = category?.title + ' - Orchard';
     }, [category.title])
+
     async function handleFeedbackClick(difficulty: number) {
         // console.log('clicked')
         if(!question?.id) {
@@ -47,6 +66,19 @@ export default function RepetitionPage() {
         setQuestion(newQuestion.question)
         setAptitude(newQuestion.aptitude)
     }
+
+    if (!currentUser) {
+        return null; // Component will unmount due to navigation
+    }
+
+    if (loading) {
+        return (
+            <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4 grow items-center justify-center">
+                <div className="text-xl">Loading...</div>
+            </div>
+        );
+    }
+
     return (
         <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4 grow">
             <div className="TITLE pt-12 pb-4 md:px-16 px-4">
