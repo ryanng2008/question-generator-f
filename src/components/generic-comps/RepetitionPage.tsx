@@ -9,7 +9,7 @@ import { useAuth } from "../../AuthContext";
 export default function RepetitionPage() {
     const categoryId = useParams().categoryId || '';
     const navigate = useNavigate();
-    const { currentUser } = useAuth();
+    const { user } = useAuth();
     const [category, setCategory] = useState<Category>({
         _id: '',
         title: '',
@@ -24,8 +24,8 @@ export default function RepetitionPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!currentUser) {
-            navigate('/signin', { state: { message: 'Please sign in to access spaced repetition.' } });
+        if (!user) {
+            navigate('/account', { state: { message: 'Please sign in to access spaced repetition.' } });
             return;
         }
 
@@ -46,7 +46,7 @@ export default function RepetitionPage() {
         .finally(() => {
             setLoading(false);
         });
-    }, [currentUser, categoryId, navigate]);
+    }, [user, categoryId, navigate]);
 
     useEffect(() => {
         document.title = category?.title + ' - Orchard';
@@ -67,7 +67,7 @@ export default function RepetitionPage() {
         setAptitude(newQuestion.aptitude)
     }
 
-    if (!currentUser) {
+    if (!user) {
         return null; // Component will unmount due to navigation
     }
 
@@ -107,9 +107,9 @@ export default function RepetitionPage() {
                 onClick={() => handleFeedbackClick(4)}
                 >Very hard</button>
             </div>
-            {aptitude && <div className="px-6 py-3 my-2 mx-auto bg-darkgray text-white inline font-medium text-lg rounded-xl shadow-lg">
+            {aptitude ? <div className="px-6 py-3 my-2 mx-auto bg-darkgray text-white inline font-medium text-lg rounded-xl shadow-lg">
                 {aptitude}% proficient
-            </div>}
+            </div> : <div />}
         </div>
     )
 }
