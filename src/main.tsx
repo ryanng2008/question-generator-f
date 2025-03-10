@@ -8,7 +8,7 @@ import { AuthProvider } from './AuthContext.tsx'
 import '@fontsource-variable/inter'; // Default weight 400
 // Supports weights 200-800
 import '@fontsource-variable/karla';
-
+import '@fontsource/poppins/500.css';
 //if (typeof global === 'undefined') {
 //  window.global = window;
 //}
