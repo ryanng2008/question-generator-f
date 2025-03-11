@@ -57,7 +57,7 @@ function Dashboard() {
         </div>
         </div>)}
     return (
-        <div className="grow lg:px-12 md:px-8 px-0 mx-8 flex flex-col justify-center h-full">
+        <div className="grow lg:px-12 md:px-8 px-0 mx-8 flex flex-col justify-center h-full gap-16 py-16">
             <div className="CONTENT md:grid flex grid-cols-5 gap-8 md:justify-center items-center"> 
                 <div className='col-span-3'>
                 {hasProfile ? <StatsContainer /> : <MinimalContainer />}
@@ -65,6 +65,16 @@ function Dashboard() {
                 
                 <div className='md:flex hidden col-span-2 items-center justify-center '>
                     <Art />
+                </div>
+            </div>
+            <div className="w-full flex flex-row gap-24 mb-16">
+                <div className='col-span-1 flex flex-col gap-4'>
+                <h1 className='text-3xl font-semibold '>2025 Hong Kong Wiki Finance Expo</h1>
+                <p>Join the Hong Kong Wiki Finance Expo on March 27 — one of the largest FinTech, Web3.0, AI, Crypto & Forex events in Asia. It will be held on the <strong>Sky100 Observation Deck</strong>.</p>
+                <p>The event is free to attend! Get free tickets <a href="https://www.wikiexpo.com/HongKong/2025/en/index.html?c=Bf34Yo8a" className='text-blue-500'>here</a>.</p>
+                </div>
+                <div className='col-span-2'>
+                    <img src="/wikiexpo.jpg" className='w-[1000px] rounded-lg outline outline-[4px] ring ring-offset-[4px] ring-darkgray outline-white shadow-lg' alt="Announcement" />
                 </div>
             </div>
         </div>
