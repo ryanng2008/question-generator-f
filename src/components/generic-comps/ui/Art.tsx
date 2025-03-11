@@ -11,10 +11,10 @@ export default function Art() {
     }, [])
     // 550px
     return (
-        <div className="ART mx-auto">
+        <div className="ART mx-auto h-[550px]">
             {image 
             ? <img 
-            className="max-h-[450px] w-auto mx-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
+            className="max-h-[550px]w-auto mx-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
             src={image}
             alt='Something motivational'
             /> 
