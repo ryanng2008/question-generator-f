@@ -9,11 +9,12 @@ export default function Art() {
         .then(data => setImage(data))
         // setImage(`https://sjfmocwyjyxaksooryeg.supabase.co/storage/v1/object/public/art/${imageName}`)
     }, [])
+    // 550px
     return (
-        <div className="ART mx-auto h-[550px]">
+        <div className="ART mx-auto">
             {image 
             ? <img 
-            className="max-h-[550px] w-auto mx-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
+            className="max-h-[450px] w-auto mx-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
             src={image}
             alt='Something motivational'
             /> 
