@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function QuestionItem({ questionObject, index, categoryId }: {questionObject: Question; index: number, categoryId: string }) {
+function QuestionItem({ questionObject, index=0, categoryId='' }: {questionObject: Question; index: number, categoryId: string }) {
     const formattedQuestion = toTeX(questionObject.question) // (DONE) TODO: error handling inside toTeX and safety net
     const formattedAnswer = toTeX(questionObject.answer);
     // const longQuestion = questionObject.question && (questionObject.question.length > 200)

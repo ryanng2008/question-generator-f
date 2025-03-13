@@ -5,11 +5,12 @@ import Latex from "react-latex-next";
 import { EditableMathField } from "react-mathquill";
 import { CheckCircleIcon, EllipsisVerticalIcon, InformationCircleIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { PVClient, RVClient } from "../../lib/interfaces";
-import { sanitizeLatex } from "../../lib/shortcuts";
+import { sanitizeLatex, toTeX } from "../../lib/shortcuts";
 import { handlePostQuestion } from "../../lib/api/createApi";
 import ComboSelectCategory from "./ui/ComboSelectCategory";
 import { useAuth } from "../../AuthContext";
 import { Info } from "./ui/Info";
+import { handleFetchSample } from "../../lib/api/questionSampleApi";
 
 export default function CreateQuestion() {
     const { user } = useAuth(); // BOUTTA GET RID O FHTISSSSS (why, for google auth??)
@@ -36,6 +37,53 @@ export default function CreateQuestion() {
     // }, [pvs])
     const [rvs, setRVs] = useState<RVClient[]>([{name: '', lb: '', hb: ''}]);
     const [message, setMessage] = useState('');
+    const [sample, setSample] = useState({
+        question: '',
+        answer: ''
+    })
+
+    async function onRefresh() {
+        const seenVarNames = new Set();
+        for (let i = 0; i < pvs.length; i++) {
+            if(seenVarNames.has(pvs[i].varName)) {
+                setMessage('You have some duplicate variables')
+                return
+                // setPVs(p => p.map((pv, index) => { return i === index ? { varName: '', latex: pv.latex } : pv}))
+            }
+            seenVarNames.add(pvs[i].varName)
+        }
+        const seenNames = new Set();
+        for (let i = 0; i < rvs.length; i++) {
+            if(seenNames.has(rvs[i].name)) {
+                setMessage('You have some duplicate variables')
+                return
+                // setRVs(r => r.map((rv, index) => { return i === index ? { name: '', lb: rv.lb, hb: rv.hb } : rv}))
+            }
+            seenVarNames.add(rvs[i].name);
+        }
+
+        let fixedPVs: PVClient[] = (pvs[pvs.length - 1].latex === `` && pvs[pvs.length - 1].varName === '') ? pvs.slice(0, -1) : pvs
+        let fixedRVs = (rvs[rvs.length - 1].name === '' && rvs[rvs.length - 1].lb === '' && rvs[rvs.length - 1].hb === '') ? rvs.slice(0, -1) : rvs;
+        
+        const somePVsEmpty = fixedPVs.some(pv => pv.varName === '' || pv.latex === '');
+        const someRVsEmpty = fixedRVs.some(rv => rv.name === '' || rv.lb === '' || rv.hb === '');
+        if(somePVsEmpty || someRVsEmpty || questionInput.length === 0) {
+            setMessage('Some of your fields are empty. Fill them in!') 
+            return
+        } 
+        const fetchSample = await handleFetchSample(sanitizedQuestion, fixedRVs, fixedPVs, sanitizedAnswer);
+        if(fetchSample.success) {
+            setSample({
+                question: fetchSample.question,
+                answer: fetchSample.answer
+            })
+        } else {
+            setSample({
+                question: 'Sample failed - check your inputs',
+                answer: ''
+            })
+        }
+    }
     async function onCreate() {
         if(!user) {
             setMessage('Log in first!')
@@ -67,14 +115,6 @@ export default function CreateQuestion() {
 
         let fixedPVs: PVClient[] = (pvs[pvs.length - 1].latex === `` && pvs[pvs.length - 1].varName === '') ? pvs.slice(0, -1) : pvs
         let fixedRVs = (rvs[rvs.length - 1].name === '' && rvs[rvs.length - 1].lb === '' && rvs[rvs.length - 1].hb === '') ? rvs.slice(0, -1) : rvs;
-        // if(fixedRVs.length < 1) {
-        //     setMessage('Make Random Variables to use in Processed Variables!')
-        //     return
-        // }
-        // if(fixedPVs.length < 1) {
-        //     setMessage('Make Processed Variables! If you don\'t need processing, put the lone variable in the expression. e.g. A = a')
-        //     return
-        // }
         
         const somePVsEmpty = fixedPVs.some(pv => pv.varName === '' || pv.latex === '');
         const someRVsEmpty = fixedRVs.some(rv => rv.name === '' || rv.lb === '' || rv.hb === '');
@@ -83,12 +123,6 @@ export default function CreateQuestion() {
             return
         } 
         
-        // Check if some PVs/RVs are the same name
-
-        // sanitize all the pvs
-        // for(const pv of fixedPVs) {
-        //     pv.latex = texToSympyString(pv.latex);
-        // }
         const createQuestion = await handlePostQuestion(sanitizedQuestion, fixedRVs, fixedPVs, sanitizedAnswer, selectedId);
         if(createQuestion.success) {
             setMessage('Success!')
@@ -98,17 +132,14 @@ export default function CreateQuestion() {
             setMessage(`Failed to upload this question: ${createQuestion.message}`)
         }
     }
-    // useEffect(() => {
-    //     setMessage('')
-    // }, [pvs, rvs])
 
     const [showInfo, setShowInfo] = useState(false);
     return (
-        <div className="flex flex-col gap-8 mx-4 lg:px-12 md:px-8 px-0 py-8">
+        <div className="flex flex-col gap-12 mx-4 lg:px-12 md:px-8 px-0 py-8">
             <div className="HEAD my-4">
                 <h1 className="text-6xl font-semibold">Create Question</h1>
             </div>
-            <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-xl flex flex-col gap-8 py-6 px-8">
+            <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-md flex flex-col gap-8 py-6 px-8">
                 <div className="CATEGORY SELECT flex md:flex-row flex-col gap-4 md:justify-between md:items-center">
                     <div className="flex flex-row gap-8 justify-left">
                     <h1 className="font-medium text-2xl">Category</h1>
@@ -127,11 +158,11 @@ export default function CreateQuestion() {
                 </div>
                 <div className="h-px w-full bg-black"/>
                 <div className="QUESTION INPUT flex flex-col gap-2">
-                    <h1 className="font-medium text-2xl">Question Input Text</h1>
+                    <h1 className="font-medium text-2xl">Question</h1>
                     <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="What is the value of $\frac{[[A]]}{[[B]]}$ ?" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
                 </div>
                 <div className="QUESTION PREVIEW gap-3 flex flex-col">
-                    <h1 className=" text-2xl font-medium">Preview Question</h1>
+                    <h1 className=" text-2xl font-medium">Preview</h1>
                     <div className="bg-darkgray text-white text-lg py-4 md:px-8 px-4 whitespace-pre-line rounded-lg min-h-[50px]">
                         <Latex children={sanitizedQuestion} />
                     </div>
@@ -148,29 +179,54 @@ export default function CreateQuestion() {
                         <PVParent variables={pvs} setVariables={setPVs}/>
                     </div>
                 </div>
-                <div className="h-px w-full bg-black"/>
                 <div className="ANSWER flex flex-col md:grid grid-cols-2 gap-8">
                     <div className="QUESTION INPUT flex flex-col gap-2">
-                        <h1 className="font-medium text-2xl">Answer Input Text</h1>
+                        <h1 className="font-medium text-2xl">Answer</h1>
                         <textarea className='p-2 my-2 rounded-lg outline-mywhite whitespace-normal' placeholder="[[A]] is greater than [[B]]" value={answerInput} onChange={e => setAnswerInput(e.target.value)}/>
                     </div>
                     <div className="QUESTION PREVIEW gap-3 flex flex-col">
-                        <h1 className=" text-2xl font-medium">Preview Answer</h1>
+                        <h1 className=" text-2xl font-medium">Preview</h1>
                         <div className="bg-darkgray text-white text-lg py-4 px-4 rounded-lg min-h-[50px] whitespace-pre-line">
                             <Latex children={sanitizedAnswer} />
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="SUBMIT flex flex-row gap-16">
-                <button onClick={onCreate} className="ml-2 bg-darkgray text-white px-6 hover:scale-105 duration-300 py-2 font-medium text-lg rounded-lg drop-shadow-xl">Submit</button>
-                <p className="my-auto">{message}</p>
-            </div>
+                {/* <div className="h-px w-full bg-black"/> */}
+                </div>
+                <QuestionSample question={sample.question} answer={sample.answer} onRefresh={onRefresh}/>
+                <div className="SUBMIT flex flex-row gap-16">
+                    <button onClick={onCreate} className="ml-2 bg-darkgray text-white px-6 hover:scale-105 duration-300 py-2 font-medium text-lg rounded-lg drop-shadow-xl">Submit</button>
+                    <p className="my-auto">{message}</p>
+                </div>
+            
         </div>
     )
 }
 
+export function QuestionSample({ question, answer, onRefresh }: { question: string, answer: string, onRefresh: () => void }) {
+    const formattedQuestion = toTeX(question)
+    const formattedAnswer = toTeX(answer)
+    return (
+        <div className='p-6 my-2 rounded-3xl bg-lightgray md:px-8 px-4 drop-shadow flex flex-col max-w-[700px] gap-2'>
+        <div className='flex flex-row gap-2 justify-between'>
+            <div className="flex flex-row gap-8 items-center">
+                    <h1 className="font-medium text-2xl">Generate a sample</h1>
+                    <button onClick={onRefresh} className="bg-darkgray text-white hover:outline outline-gray-600 px-4 py-2 font-medium rounded-lg drop-shadow-xl">Refresh</button>
+            </div>
 
+        </div>
+        <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 whitespace-pre-line`}>
+        {formattedQuestion}
+        </div>
+
+        <div className='h-px bg-midgray mb-2' />
+        <h1 className='text-lg font-semibold'>Answer</h1>
+        <div className='mb-2 break-all whitespace-pre-line'>
+        {formattedAnswer}
+        </div>
+    </div>
+    )
+}
 
 export function PVParent({
     variables,
