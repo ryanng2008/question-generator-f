@@ -11,6 +11,7 @@ import ComboSelectCategory from "./ui/ComboSelectCategory";
 import { useAuth } from "../../AuthContext";
 import { Info } from "./ui/Info";
 import { handleFetchSample } from "../../lib/api/questionSampleApi";
+import { handleGenerateTemplate } from "../../lib/api/llmApi";
 
 export default function CreateQuestion() {
     const { user } = useAuth(); // BOUTTA GET RID O FHTISSSSS (why, for google auth??)
@@ -37,11 +38,14 @@ export default function CreateQuestion() {
     // }, [pvs])
     const [rvs, setRVs] = useState<RVClient[]>([{name: '', lb: '', hb: ''}]);
     const [message, setMessage] = useState('');
+    const [templateMessage, setTemplateMessage] = useState('');
     const [sample, setSample] = useState({
         question: '',
         answer: ''
     })
-
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [genInputQuestion, setGenInputQuestion] = useState('');
+    const [genInputAnswer, setGenInputAnswer] = useState('');
     async function onRefresh() {
         const seenVarNames = new Set();
         for (let i = 0; i < pvs.length; i++) {
@@ -113,17 +117,17 @@ export default function CreateQuestion() {
             seenVarNames.add(rvs[i].name);
         }
 
-        let fixedPVs: PVClient[] = (pvs[pvs.length - 1].latex === `` && pvs[pvs.length - 1].varName === '') ? pvs.slice(0, -1) : pvs
-        let fixedRVs = (rvs[rvs.length - 1].name === '' && rvs[rvs.length - 1].lb === '' && rvs[rvs.length - 1].hb === '') ? rvs.slice(0, -1) : rvs;
+        // let fixedPVs: PVClient[] = (pvs[pvs.length - 1].latex === `` && pvs[pvs.length - 1].varName === '') ? pvs.slice(0, -1) : pvs
+        // let fixedRVs = (rvs[rvs.length - 1].name === '' && rvs[rvs.length - 1].lb === '' && rvs[rvs.length - 1].hb === '') ? rvs.slice(0, -1) : rvs;
         
-        const somePVsEmpty = fixedPVs.some(pv => pv.varName === '' || pv.latex === '');
-        const someRVsEmpty = fixedRVs.some(rv => rv.name === '' || rv.lb === '' || rv.hb === '');
+        const somePVsEmpty = pvs.some(pv => pv.varName === '' || pv.latex === '');
+        const someRVsEmpty = rvs.some(rv => rv.name === '' || rv.lb === '' || rv.hb === '');
         if(somePVsEmpty || someRVsEmpty || questionInput.length === 0) {
             setMessage('Some of your fields are empty. Fill them in!') 
             return
         } 
         
-        const createQuestion = await handlePostQuestion(sanitizedQuestion, fixedRVs, fixedPVs, sanitizedAnswer, selectedId);
+        const createQuestion = await handlePostQuestion(sanitizedQuestion, rvs, pvs, sanitizedAnswer, selectedId);
         if(createQuestion.success) {
             setMessage('Success!')
             navigate(`/library/${selectedId}/questions`)
@@ -132,6 +136,25 @@ export default function CreateQuestion() {
             setMessage(`Failed to upload this question: ${createQuestion.message}`)
         }
     }
+    const onGenerateTemplate = async () => {
+        setIsGenerating(true);
+        try {
+            const template = await handleGenerateTemplate(genInputQuestion, genInputAnswer);
+            if(template.success) {
+                setRVs(template.template.rvs)
+                setPVs(template.template.pvs)
+                setQuestionInput(template.template.question)
+                setAnswerInput(template.template.answer)
+            } else {
+                setTemplateMessage(`Failed to generate template: ${template.message}`)
+            }
+        } catch (error) {
+            console.error('Error generating template:', error);
+            setTemplateMessage('Failed to generate template');
+        } finally {
+            setIsGenerating(false);
+        }
+    };
 
     const [showInfo, setShowInfo] = useState(false);
     return (
@@ -140,6 +163,36 @@ export default function CreateQuestion() {
                 <h1 className="text-6xl font-semibold">Create Question</h1>
             </div>
             <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-md flex flex-col gap-8 py-6 px-8">
+                <div className="flex flex-col gap-4"> 
+                <div className="flex flex-row gap-6 items-center">
+                    <h1 className="text-2xl font-medium">Create template using AI</h1>
+                    <div className="rounded-lg py-1 px-3  bg-green-300 text-green-600 font-medium text-lg shadow-md">NEW</div>
+                </div>
+                <div className="md:grid grid-cols-2 gap-8 flex flex-col">
+                    <div className="flex flex-col gap-2">
+                        <h3 className="text-lg font-medium">Question</h3>
+                        <input type="text" placeholder="What is the derivative of $x^2$?" className="w-full p-2 rounded-lg outline-none border-darkgray border" value={genInputQuestion} onChange={e => setGenInputQuestion(e.target.value)}/>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <h3 className="text-lg font-medium">Solution</h3>
+                        <input type="text" placeholder="By the power rule, the derivative of $x^2$ is $2x$." className="w-full p-2 rounded-lg outline-none border-darkgray border" value={genInputAnswer} onChange={e => setGenInputAnswer(e.target.value)} />
+                    </div>
+                </div>
+                <div className="flex gap-8">
+                    <button 
+                        onClick={onGenerateTemplate} 
+                        disabled={isGenerating}
+                        className={`py-2 px-4 outline outline-2 outline-darkgray font-medium rounded-lg shadow-md duration-300 ${
+                            isGenerating 
+                            ? 'bg-gray-200 cursor-not-allowed opacity-70' 
+                            : 'bg-white text-darkgray hover:scale-105'
+                        }`}
+                    >
+                        {isGenerating ? 'Thinking...' : 'Generate'}
+                    </button>
+                    <p className="my-auto">{templateMessage}</p>
+                </div>
+                </div>
                 <div className="CATEGORY SELECT flex md:flex-row flex-col gap-4 md:justify-between md:items-center">
                     <div className="flex flex-row gap-8 justify-left">
                     <h1 className="font-medium text-2xl">Category</h1>
@@ -514,7 +567,7 @@ function RandomVariableInput({
     }) {
     function onInput(e: React.ChangeEvent<HTMLInputElement>) {
         if(e.target.name === 'name') {
-            onVariableChange(index, 'name', e.target.value.replace(/[^A-Za-z]/g, '').toLowerCase())
+            onVariableChange(index, 'name', e.target.value.toLowerCase()) // .replace(/[^A-Za-z]/g, '')
             return
         }
         onVariableChange(index, e.target.name as 'lb' | 'hb', e.target.value)
@@ -530,7 +583,7 @@ function RandomVariableInput({
                 className="max-w-full break-all p-1 rounded-md text-sm bg-white outline-mywhite" 
                 placeholder=""
                 value={variable.name} 
-                maxLength={15} 
+                maxLength={5} 
                 onChange={onInput} // e.target.value.replace(/[^A-Za-z]/g, '')
                  />
             </div>

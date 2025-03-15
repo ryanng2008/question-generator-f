@@ -32,7 +32,8 @@ export interface RV {
 export interface RVClient {
     name: string,
     lb: string,
-    hb: string
+    hb: string,
+    dp?: number
 }
 
 
