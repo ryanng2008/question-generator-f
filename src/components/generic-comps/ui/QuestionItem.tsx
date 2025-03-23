@@ -1,14 +1,14 @@
 // import Expand from '../../../assets/svgs/Expand.svg'
 // import Retract from '../../../assets/svgs/Retract.svg'
 import { toTeX } from '../../../lib/shortcuts';
-import { Question } from '../../../lib/interfaces';
+import { GeneratedQuestionType } from '../../../lib/interfaces';
 import { useState } from 'react';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { Link } from 'react-router-dom';
 
 
 
-function QuestionItem({ questionObject, index=0, categoryId='' }: {questionObject: Question; index: number, categoryId: string }) {
+function QuestionItem({ questionObject, index=0, categoryId='' }: {questionObject: GeneratedQuestionType; index: number, categoryId: string }) {
     const formattedQuestion = toTeX(questionObject.question) // (DONE) TODO: error handling inside toTeX and safety net
     const formattedAnswer = toTeX(questionObject.answer);
     // const longQuestion = questionObject.question && (questionObject.question.length > 200)
@@ -25,11 +25,6 @@ function QuestionItem({ questionObject, index=0, categoryId='' }: {questionObjec
             <Link to={`/edit/${categoryId}/${questionObject.id}`}>
                 <PencilSquareIcon className='h-8' />
             </Link>
-            {/* {longQuestion && 
-            <div>
-                <button onClick={() => setExpanded(!expanded)}><img className='max-w-[24px]' src={expanded ? Retract : Expand} alt="" /></button>
-            </div>
-            } */}
         </div>
         <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 whitespace-pre-line`}>
         {formattedQuestion}

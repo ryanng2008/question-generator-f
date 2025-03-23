@@ -1,7 +1,7 @@
 import DOMPurify from "dompurify";
 import { useEffect, useState, Fragment } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
-import Latex from "react-latex-next";
+// import Latex from "react-latex-next";
 import { EditableMathField } from "react-mathquill";
 import { CheckCircleIcon, EllipsisVerticalIcon, InformationCircleIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { PVClient, RVClient } from "../../lib/interfaces";
@@ -36,7 +36,13 @@ export default function CreateQuestion() {
     // useEffect(() => {
     //     console.log(pvs)
     // }, [pvs])
-    const [rvs, setRVs] = useState<RVClient[]>([{name: '', lb: '', hb: ''}]);
+    const [rvs, setRVs] = useState<RVClient[]>([{
+        name: '', 
+        lb: '', 
+        hb: '',
+        coefficient: false,
+        dp: 0
+    }]);
     const [message, setMessage] = useState('');
     const [templateMessage, setTemplateMessage] = useState('');
     const [sample, setSample] = useState({
@@ -160,12 +166,12 @@ export default function CreateQuestion() {
     return (
         <div className="flex flex-col gap-12 mx-4 lg:px-12 md:px-8 px-0 py-8">
             <div className="HEAD my-4">
-                <h1 className="text-6xl font-semibold">Create Question</h1>
+                <h1 className="text-6xl font-semibold">Create Question Template</h1>
             </div>
             <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-md flex flex-col gap-8 py-6 px-8">
                 <div className="flex flex-col gap-4"> 
                 <div className="flex flex-row gap-6 items-center">
-                    <h1 className="text-2xl font-medium">Create template using AI</h1>
+                    <h1 className="text-2xl font-medium">Generate template from a question</h1>
                     <div className="rounded-lg py-1 px-3  bg-green-300 text-green-600 font-medium text-lg shadow-md">NEW</div>
                 </div>
                 <div className="md:grid grid-cols-2 gap-8 flex flex-col">
@@ -182,10 +188,10 @@ export default function CreateQuestion() {
                     <button 
                         onClick={onGenerateTemplate} 
                         disabled={isGenerating}
-                        className={`py-2 px-4 outline outline-2 outline-darkgray font-medium rounded-lg shadow-md duration-300 ${
+                        className={`py-2 px-4 font-medium rounded-lg shadow-md duration-300 bg-darkgray text-white ${
                             isGenerating 
-                            ? 'bg-gray-200 cursor-not-allowed opacity-70' 
-                            : 'bg-white text-darkgray hover:scale-105'
+                            ? 'cursor-not-allowed opacity-70' 
+                            : 'hover:scale-105'
                         }`}
                     >
                         {isGenerating ? 'Thinking...' : 'Generate'}
@@ -210,31 +216,32 @@ export default function CreateQuestion() {
                     </div>
                 </div>
                 <div className="h-px w-full bg-black"/>
-                <div className="QUESTION INPUT flex flex-col gap-2">
-                    <h1 className="font-medium text-2xl">Question</h1>
-                    <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="What is the value of $\frac{[[A]]}{[[B]]}$ ?" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
+                <div className="grid grid-cols-2 gap-8">
+                    <div className="QUESTION INPUT flex flex-col gap-2">
+                        <h1 className="font-medium text-2xl">Question template</h1>
+                        <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="What is the derivative of $x^[[a]]$ ?" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
+                    </div>
+                    <div className="ANSWER INPUT flex flex-col gap-2">
+                        <h1 className="font-medium text-2xl">Answer template</h1>
+                        <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="[[a]]x^[[B]]" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
+                    </div>
                 </div>
-                <div className="QUESTION PREVIEW gap-3 flex flex-col">
+                {/* <div className="QUESTION PREVIEW gap-3 flex flex-col">
                     <h1 className=" text-2xl font-medium">Preview</h1>
                     <div className="bg-darkgray text-white text-lg py-4 md:px-8 px-4 whitespace-pre-line rounded-lg min-h-[50px]">
                         <Latex children={sanitizedQuestion} />
                     </div>
-                </div>
-                {/* <div className="ANSWER grid grid-cols-2 gap-8">
-                    <div>answer</div>
-                    <div>input</div>
                 </div> */}
                 <div className="VARIABLES flex flex-col md:grid grid-cols-3 gap-8">
-                    {/* Maybe you need to make it a flex with changeable size,  */}
                     <RVParent variables={rvs} setVariables={setRVs}/>
                     <div className="PVS flex flex-col col-span-2">
                         <h2 className="text-xl font-medium py-2">Processed Variables</h2>
                         <PVParent variables={pvs} setVariables={setPVs}/>
                     </div>
                 </div>
-                <div className="ANSWER flex flex-col md:grid grid-cols-2 gap-8">
+                {/* <div className="ANSWER flex flex-col md:grid grid-cols-2 gap-8">
                     <div className="QUESTION INPUT flex flex-col gap-2">
-                        <h1 className="font-medium text-2xl">Answer</h1>
+                        <h1 className="font-medium text-2xl">Answer template</h1>
                         <textarea className='p-2 my-2 rounded-lg outline-mywhite whitespace-normal' placeholder="[[A]] is greater than [[B]]" value={answerInput} onChange={e => setAnswerInput(e.target.value)}/>
                     </div>
                     <div className="QUESTION PREVIEW gap-3 flex flex-col">
@@ -243,10 +250,11 @@ export default function CreateQuestion() {
                             <Latex children={sanitizedAnswer} />
                         </div>
                     </div>
-                </div>
+                </div> */}
                 {/* <div className="h-px w-full bg-black"/> */}
-                </div>
                 <QuestionSample question={sample.question} answer={sample.answer} onRefresh={onRefresh}/>
+                </div>
+                
                 <div className="SUBMIT flex flex-row gap-16">
                     <button onClick={onCreate} className="ml-2 bg-darkgray text-white px-6 hover:scale-105 duration-300 py-2 font-medium text-lg rounded-lg drop-shadow-xl">Submit</button>
                     <p className="my-auto">{message}</p>
@@ -260,7 +268,7 @@ export function QuestionSample({ question, answer, onRefresh }: { question: stri
     const formattedQuestion = toTeX(question)
     const formattedAnswer = toTeX(answer)
     return (
-        <div className='p-6 my-2 rounded-3xl bg-lightgray md:px-8 px-4 drop-shadow flex flex-col max-w-[700px] gap-2'>
+        <div className='p-6 my-2 rounded-3xl bg-white text-darkgray md:px-8 px-4 drop-shadow flex flex-col max-w-[700px] gap-2'>
         <div className='flex flex-row gap-2 justify-between'>
             <div className="flex flex-row gap-8 items-center">
                     <h1 className="font-medium text-2xl">Generate a sample</h1>
@@ -271,8 +279,7 @@ export function QuestionSample({ question, answer, onRefresh }: { question: stri
         <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 whitespace-pre-line`}>
         {formattedQuestion}
         </div>
-
-        <div className='h-px bg-midgray mb-2' />
+        <div className="h-px bg-midgray mb-2" />
         <h1 className='text-lg font-semibold'>Answer</h1>
         <div className='mb-2 break-all whitespace-pre-line'>
         {formattedAnswer}
@@ -460,9 +467,9 @@ function ProcessedVariableInput({
                 </div> 
             </div>
 
-            <div className="h-px bg-gray-500"/>
+            {/* <div className="h-px bg-gray-500"/> */}
 
-            <div className="DP flex justify-between gap-4 overflow-hidden items-center mx-1">
+            <div className="DP flex justify-between gap-4 overflow-hidden items-center ml-1">
                 <h3 className="text-sm font-medium">d.p.</h3>
                 <input 
                 type="number" 
@@ -472,7 +479,7 @@ function ProcessedVariableInput({
                 />
             </div>
 
-            <div className="h-px bg-gray-500"/>
+            {/* <div className="h-px bg-gray-500"/> */}
 
             <div className="SCIENTIFIC NOTATION flex flex-row justify-between gap-4 mx-1 items-center">
                 <h3 className="text-sm font-medium">Sci Notation</h3>
@@ -506,7 +513,7 @@ export function RVParent({
     setVariables: (variables: RVClient[]) => void
     }) {
     
-    function modifyVariable(index: number, type: 'name' | 'lb' | 'hb', value: string) {
+    function modifyVariable(index: number, type: 'name' | 'lb' | 'hb' | 'coefficient' | 'dp', value: string | number | boolean) {
         const nextVariables = variables.map((variable, i) => {
             return (i === index) ? {...variable, [type]: value} : variable
         })
@@ -531,7 +538,7 @@ export function RVParent({
             </Fragment>)
     })
     function handleAdd() {
-        setVariables([...variables, {name: '', lb: '', hb: ''}])
+        setVariables([...variables, {name: '', lb: '', hb: '', coefficient: false, dp: 0}])
     }
     return (
         <div className="RVS flex flex-col col-span-1">
@@ -562,7 +569,7 @@ function RandomVariableInput({
     onDelete }: {
     index: number,
     variable: RVClient,
-    onVariableChange: (index: number, type: 'name' | 'lb' | 'hb', value: string) => void,
+    onVariableChange: (index: number, type: 'name' | 'lb' | 'hb' | 'coefficient' | 'dp', value: string | number | boolean) => void,
     onDelete: (index: number) => void
     }) {
     function onInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -572,9 +579,9 @@ function RandomVariableInput({
         }
         onVariableChange(index, e.target.name as 'lb' | 'hb', e.target.value)
     }
-
+    const [menuOpen, setMenuOpen] = useState(false);
     return (
-        <div className="grid grid-cols-5 lg:gap-4 md:gap-2 gap-4 pb-[2.5px]">
+        <div className="grid grid-cols-6 lg:gap-4 md:gap-2 gap-4 pb-[2.5px]">
             <div className="justify-between col-span-2">
                 <h2 className="text-xs text-[#738086] pl-[1px] pb-1 tracking-wider font-medium">Name</h2>
                 <input 
@@ -611,8 +618,43 @@ function RandomVariableInput({
                 onChange={onInput} // e.target.value.replace(/[^A-Za-z]/g, '')
                  />
             </div>
-            <div className="flex justify-end items-end col-span-1">
+            <div className="relative flex items-end justify-end col-span-2">
+            <div className="flex justify-between gap-1">
                 <button onClick={() => onDelete(index)} className="hover:scale-105 duration-150 hover:text-darkgray/60"><TrashIcon height={32} /></button>
+                <button className="hover:scale-[105%] hover:text-darkgray/60 duration-150" onClick={() => setMenuOpen(!menuOpen)}>
+                <EllipsisVerticalIcon height={32} /></button>
+            </div>
+            {menuOpen && 
+            <div className="z-[9999] flex flex-col gap-2 px-4 py-3 absolute w-[250px] right-0 -bottom-3 transform translate-y-full bg-mywhite border-2 border-darkgray/70 rounded-lg shadow-xl" onMouseLeave={() => setMenuOpen(!menuOpen)}>
+            <div className="COEFFICIENT flex flex-row justify-between gap-4 mx-1 items-center">
+                <h3 className="text-sm font-medium">Coefficient</h3>
+                <div className="inline-flex items-center">
+                  <label className="flex items-center cursor-pointer relative">
+                    <input type="checkbox" 
+                    name="coefficient"
+                    onChange={e => onVariableChange(index, 'coefficient', e.target.checked)}
+                    checked={variable.coefficient ?? false}
+                    className="peer h-6 w-6 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 bg-white checked:border-slate-800" id="check" />
+                    <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </label>
+                </div> 
+            </div>
+            <div className="DP flex justify-between gap-4 overflow-hidden items-center ml-1">
+                <h3 className="text-sm font-medium">d.p.</h3>
+                <input 
+                type="number" 
+                className="min-w-0 max-w-[60px] py-1 px-2 text-sm rounded-md flex-grow box-border m-1 shadow-md " 
+                value={variable.dp ?? 0}
+                onChange={e => onVariableChange(index, 'dp', parseInt(e.target.value))} 
+                />
+            </div>
+
+            </div>
+            }
             </div>
         </div>
     )

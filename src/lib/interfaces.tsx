@@ -8,15 +8,15 @@ export interface Category {
     title: string;
 }
 
-export interface RawQuestion {
+export interface QuestionTemplateType {
     question: string,
-    rvs: RV[],
-    pvs: ProcessedVariables,
-    answer_expressions: ProcessedVariables
+    rvs: RVClient[],
+    pvs: PVClient[],
+    // answer_expressions: ProcessedVariables
     answer: string
 }
 
-export interface Question {
+export interface GeneratedQuestionType {
     question: string,
     answer: string,
     creator: string,
@@ -31,9 +31,10 @@ export interface RV {
 
 export interface RVClient {
     name: string,
-    lb: string,
-    hb: string,
-    dp?: number
+    lb: string | number,
+    hb: string | number,
+    dp?: number,
+    coefficient?: boolean
 }
 
 
@@ -44,6 +45,16 @@ export interface PVClient {
     dp: number
 }
 
-interface ProcessedVariables {
-    [variable: string]: string // evalString
+// interface ProcessedVariables {
+//     [variable: string]: string // evalString
+// }
+export interface BulkInputQuestion {
+    questionInput: string,
+    solutionInput: string,
+    template: QuestionTemplateType,
+    checked: boolean | null,
+    sample: {
+        question: string,
+        answer: string
+    }
 }

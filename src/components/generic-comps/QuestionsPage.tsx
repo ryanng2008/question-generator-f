@@ -4,7 +4,7 @@ import 'katex/dist/katex.min.css';
 import QuestionItem from './ui/QuestionItem'
 import { useState, useEffect } from 'react'
 import { fetchCategoryDetails } from '../../lib/api/categoryDetailsApi';
-import { Category, Question } from '../../lib/interfaces';
+import { Category, GeneratedQuestionType } from '../../lib/interfaces';
 import Refresh from '../../assets/svgs/Refresh.svg'
 import Save from '../../assets/svgs/Save.svg'
 import Dropdown from './ui/Dropdown';
@@ -29,7 +29,7 @@ function QuestionsPage() {
     questions: [],
   });
   
-  const [questionObjs, setQuestionObjs] = useState<Question[]>([]); // useState getQuestionList(categoryId) // <Question[]>
+  const [questionObjs, setQuestionObjs] = useState<GeneratedQuestionType[]>([]); // useState getQuestionList(categoryId) // <Question[]>
   //const [refresh, setRefresh] = useState(false);
   const [sort, setSort] = useState<string>('Number');
   const [count, setCount] = useState(-1);
@@ -70,7 +70,7 @@ function QuestionsPage() {
     document.title = category?.title + ' - Orchard';
   }, [category.title])
 
-  const questionTags = questionObjs && questionObjs.map((questionObj: Question, index: number) => {
+  const questionTags = questionObjs && questionObjs.map((questionObj: GeneratedQuestionType, index: number) => {
     return <li key={index}><QuestionItem questionObject={questionObj} index={index+1} key={index} categoryId={categoryId} /></li>
   })
   const [dropdownShown, setDropdownShown] = useState(false);

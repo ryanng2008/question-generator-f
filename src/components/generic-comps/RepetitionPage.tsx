@@ -1,5 +1,5 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Category, Question } from "../../lib/interfaces";
+import { Category, GeneratedQuestionType } from "../../lib/interfaces";
 import { PencilSquareIcon } from "@heroicons/react/20/solid";
 import { toTeX } from "../../lib/shortcuts";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ export default function RepetitionPage() {
         author: '',
         questions: [],
     });
-    const [question, setQuestion] = useState<Question | null>(null);
+    const [question, setQuestion] = useState<GeneratedQuestionType | null>(null);
     const [aptitude, setAptitude] = useState<number>(0);
     const [loading, setLoading] = useState(true);
 
@@ -114,7 +114,7 @@ export default function RepetitionPage() {
     )
 }
 
-function RepetitionQuestionItem({ questionObject, categoryId }: {questionObject: Question | null, categoryId: string }) {
+function RepetitionQuestionItem({ questionObject, categoryId }: {questionObject: GeneratedQuestionType | null, categoryId: string }) {
     const [showAnswer, setShowAnswer] = useState(false);
 
     if(!questionObject) {

@@ -14,6 +14,7 @@ import Account from "./components/Account"
 import { useAuth } from "./AuthContext"
 import EditQuestion from "./components/generic-comps/EditQuestion"
 import RepetitionPage from "./components/generic-comps/RepetitionPage"
+import BulkCreate from "./components/BulkCreate"
 // import Metadata from "./lib/Metadata"
 
 
@@ -42,6 +43,7 @@ function App() {
           <Route path='edit/:categoryId/:questionId' element={<EditQuestion />} />
           {/* <Route path='test' element={<Workspace />}/> */}
           <Route path='account' element={<Account />}/>
+          <Route path='lab' element={<BulkCreate />} />
           {/* <Route path='workspace' element={<Workspace />}/>  */}
         </Routes>
       </div>

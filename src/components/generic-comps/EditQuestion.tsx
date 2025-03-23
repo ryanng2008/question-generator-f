@@ -117,7 +117,7 @@ export default function EditQuestion() {
                 <h1 className="text-6xl font-semibold">Edit Question</h1>
             </div>
             <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-xl flex flex-col gap-8 py-6 px-8">
-                <div className="CATEGORY SELECT flex md:flex-row flex-col gap-4 md:justify-between md:items-center">
+                <div className="CATEGORY SELECT flex md:flex-row flex-col gap-4 md:justify-end md:items-center">
                     
                     {/* <div className="bg-darkgray py-1 px-2 text-white font-medium rounded-lg"><p>{selectedId}</p></div> */}
                     {/* <ComboBox /> */}

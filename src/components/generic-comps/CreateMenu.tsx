@@ -10,7 +10,7 @@ export default function CreateMenu() {
     //     </div> */}
         <div className="md:grid grid-cols-2 min-h-[60vh] mx-4 lg:px-12 px-0 py-8 grow">
             <div className="MENU BUTTONS flex flex-col gap-4 pt-8">
-            <h1 className="text-6xl font-semibold">Create</h1>
+                <h1 className="text-6xl font-semibold mb-6">Create</h1>
                 <Link to='/create/category' className="bg-lightgray py-4 px-4 text-xl hover:scale-[101%] duration-300 text-darkgray font-medium rounded-2xl">
                 <p>Create category</p>
                 </Link>
