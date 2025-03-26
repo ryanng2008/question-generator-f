@@ -186,7 +186,7 @@ function InputQuestion({
     return (
         <div className="bg-lightgray flex flex-col gap-0 rounded-xl shadow-lg">
             <div className="bg-lightgray rounded-xl px-8 py-6 flex flex-col gap-8 shadow-xl">
-            <div className="MENU BAR flex flex-row gap-4 justify-between">
+            <div className="MENU BAR flex flex-row gap-4 justify-between px-8">
                 {/** Check & cross, show preview, regenerate */}
                 <div className="TABS: Input/Preview/Template flex flex-row gap-4">
                 <div className="flex bg-darkgray rounded-2xl p-1 gap-2">
