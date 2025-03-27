@@ -223,7 +223,7 @@ export default function CreateQuestion() {
                     </div>
                     <div className="ANSWER INPUT flex flex-col gap-2">
                         <h1 className="font-medium text-2xl">Answer template</h1>
-                        <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="[[a]]x^[[B]]" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
+                        <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="[[a]]x^[[B]]" value={answerInput} onChange={e => setAnswerInput(e.target.value)}/>
                     </div>
                 </div>
                 {/* <div className="QUESTION PREVIEW gap-3 flex flex-col">
