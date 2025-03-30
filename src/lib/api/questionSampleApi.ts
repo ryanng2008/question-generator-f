@@ -7,7 +7,9 @@ export async function handleFetchSample(question: string, rvs: RVClient[], pvs: 
             method: 'POST',
             body: JSON.stringify({ question, rvs, pvs, answer }),
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Cache-Control': 'no-store, no-cache, must-revalidate',
+                'Pragma': 'no-cache'
             }
         })
         if(!response.ok) throw new Error(`It didn't fetch`)
@@ -28,7 +30,9 @@ export async function handleFetchSampleBulk(items: QuestionTemplateType[]) {
             method: 'POST',
             body: JSON.stringify({ items }),
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Cache-Control': 'no-store, no-cache, must-revalidate',
+                'Pragma': 'no-cache'
             }
         })
         if(!response.ok) throw new Error(`It didn't fetch`) 

@@ -121,6 +121,13 @@ function QuestionsPage() {
               <img src={Create} className='h-12'/>
             </Link>}
             </div>
+            <div className='lg:flex hidden flex-row gap-4 items-center my-auto'>
+              {/* <Link to={`/create/bulk/${categoryId}`} className='bg-darkgray text-white px-6 hover:scale-[101%] duration-300 py-2 font-medium text-lg rounded-lg flex drop-shadow-xl'>
+                <p>Import </p>
+                
+              </Link> */}
+              <div className="rounded-lg py-1 px-3 my-auto bg-green-300 text-green-600 font-medium text-lg shadow-md">NEW</div>
+            </div>
         </div>
         <ul className='Questions py-4 flex flex-col gap-4'>
           {questionTags}

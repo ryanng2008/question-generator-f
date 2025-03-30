@@ -1,5 +1,30 @@
-import { PVClient, RVClient } from "../interfaces";
+import { PVClient, QuestionTemplateType, RVClient } from "../interfaces";
 import BASE_URL from "./apiConfig";
+
+export async function handlePostQuestions(questions: QuestionTemplateType[], categoryId: string) {
+    const token = localStorage.getItem("token")
+    try {
+        const response = await fetch(`${BASE_URL}/postquestions`, {
+            method: 'POST', 
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                questions: questions,
+                categoryid: categoryId
+            })
+        });
+        if(!response.ok) {
+            throw new Error(`Failed to post questions. Server responded with status ${response.status}`);
+        }
+        const data = response.json();
+        return data;
+    } catch (error) {
+        console.error('Error posting questions:', error);
+        return { success: false, message: 'An error occurred while posting the questions.' };
+    }
+}
 
 export async function handlePostQuestion(questionString: string, rvs: RVClient[], pvs: PVClient[], answerString: string, categoryId: string) {
     const token = localStorage.getItem("token")

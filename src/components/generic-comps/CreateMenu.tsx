@@ -17,6 +17,9 @@ export default function CreateMenu() {
                 <Link to='/create/question' className="bg-lightgray py-4 px-4 text-xl hover:scale-[101%] duration-300 text-darkgray font-medium rounded-2xl">
                 <p>Create question</p>
                 </Link>
+                <Link to='/create/bulk' className="bg-lightgray py-4 px-4 text-xl hover:scale-[101%] duration-300 text-darkgray font-medium rounded-2xl">
+                <p>Create questions in bulk</p>
+                </Link>
             </div>
             <div className="my-auto mx-auto md:block hidden">
             <Art />

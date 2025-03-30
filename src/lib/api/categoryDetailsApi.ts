@@ -26,7 +26,7 @@ export async function fetchCategoryDetails(categoryId: string) {
 export async function searchCategory(query: string, user: string) {
     
     if(!query) {
-        return {}
+        return []
     }
     // const token = sessionStorage.getItem("token")
     try {

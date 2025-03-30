@@ -60,7 +60,7 @@ export default function ComboSelectCategory({ categoryId, onChange }: { category
         .catch(error => console.error(error))
     }, 300);
     useEffect(() => {
-      if(categoryId !== '0') {
+      if(categoryId !== '-1') {
         fetchCategoryDetails(categoryId)
         .then(data => {
           // setCategory(data)

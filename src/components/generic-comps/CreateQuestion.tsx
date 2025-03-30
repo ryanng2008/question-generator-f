@@ -5,13 +5,16 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { EditableMathField } from "react-mathquill";
 import { CheckCircleIcon, EllipsisVerticalIcon, InformationCircleIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { PVClient, RVClient } from "../../lib/interfaces";
-import { sanitizeLatex, toTeX } from "../../lib/shortcuts";
+import { sanitizeLatex } from "../../lib/shortcuts";
 import { handlePostQuestion } from "../../lib/api/createApi";
 import ComboSelectCategory from "./ui/ComboSelectCategory";
 import { useAuth } from "../../AuthContext";
 import { Info } from "./ui/Info";
 import { handleFetchSample } from "../../lib/api/questionSampleApi";
 import { handleGenerateTemplate } from "../../lib/api/llmApi";
+import Latex from "react-latex-next";
+import TextareaAutosize from 'react-textarea-autosize';
+
 
 export default function CreateQuestion() {
     const { user } = useAuth(); // BOUTTA GET RID O FHTISSSSS (why, for google auth??)
@@ -177,11 +180,11 @@ export default function CreateQuestion() {
                 <div className="md:grid grid-cols-2 gap-8 flex flex-col">
                     <div className="flex flex-col gap-2">
                         <h3 className="text-lg font-medium">Question</h3>
-                        <input type="text" placeholder="What is the derivative of $x^2$?" className="w-full p-2 rounded-lg outline-none border-darkgray border" value={genInputQuestion} onChange={e => setGenInputQuestion(e.target.value)}/>
+                        <TextareaAutosize placeholder="What is the derivative of $x^2$?" className="w-full p-2 rounded-lg outline-none border-darkgray border" value={genInputQuestion} onChange={e => setGenInputQuestion(e.target.value)}/>
                     </div>
                     <div className="flex flex-col gap-2">
                         <h3 className="text-lg font-medium">Solution</h3>
-                        <input type="text" placeholder="By the power rule, the derivative of $x^2$ is $2x$." className="w-full p-2 rounded-lg outline-none border-darkgray border" value={genInputAnswer} onChange={e => setGenInputAnswer(e.target.value)} />
+                        <TextareaAutosize placeholder="By the power rule, the derivative of $x^2$ is $2x$." className="w-full p-2 rounded-lg outline-none border-darkgray border" value={genInputAnswer} onChange={e => setGenInputAnswer(e.target.value)} />
                     </div>
                 </div>
                 <div className="flex gap-8">
@@ -219,11 +222,11 @@ export default function CreateQuestion() {
                 <div className="grid grid-cols-2 gap-8">
                     <div className="QUESTION INPUT flex flex-col gap-2">
                         <h1 className="font-medium text-2xl">Question template</h1>
-                        <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="What is the derivative of $x^[[a]]$ ?" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
+                        <TextareaAutosize className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="What is the derivative of $x^[[a]]$ ?" value={questionInput} onChange={e => setQuestionInput(e.target.value)}/>
                     </div>
                     <div className="ANSWER INPUT flex flex-col gap-2">
                         <h1 className="font-medium text-2xl">Answer template</h1>
-                        <textarea className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="[[a]]x^[[B]]" value={answerInput} onChange={e => setAnswerInput(e.target.value)}/>
+                        <TextareaAutosize className='p-2 rounded-lg outline-mywhite min-h-[100px]' placeholder="[[a]]x^[[B]]" value={answerInput} onChange={e => setAnswerInput(e.target.value)}/>
                     </div>
                 </div>
                 {/* <div className="QUESTION PREVIEW gap-3 flex flex-col">
@@ -265,8 +268,6 @@ export default function CreateQuestion() {
 }
 
 export function QuestionSample({ question, answer, onRefresh }: { question: string, answer: string, onRefresh: () => void }) {
-    const formattedQuestion = toTeX(question)
-    const formattedAnswer = toTeX(answer)
     return (
         <div className='p-6 my-2 rounded-3xl bg-white text-darkgray md:px-8 px-4 drop-shadow flex flex-col max-w-[700px] gap-2'>
         <div className='flex flex-row gap-2 justify-between'>
@@ -277,12 +278,12 @@ export function QuestionSample({ question, answer, onRefresh }: { question: stri
 
         </div>
         <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 whitespace-pre-line`}>
-        {formattedQuestion}
+        <Latex children={question} />
         </div>
         <div className="h-px bg-midgray mb-2" />
         <h1 className='text-lg font-semibold'>Answer</h1>
         <div className='mb-2 break-all whitespace-pre-line'>
-        {formattedAnswer}
+        <Latex children={answer} />
         </div>
     </div>
     )
@@ -416,7 +417,7 @@ function ProcessedVariableInput({
                 placeholder=""
                 value={pv.varName} 
                 maxLength={15} 
-                onChange={e => handleUpdateNormal('varName', e.target.value.replace(/[^A-Za-z_]/g, '').toUpperCase())} />
+                onChange={e => handleUpdateNormal('varName', e.target.value.replace(/[^A-Za-z_]/g, ''))} />
             </div>
             <div className="flex items-end">
                 <p className="mb-1 text-[#738086] font-semibold">=</p>

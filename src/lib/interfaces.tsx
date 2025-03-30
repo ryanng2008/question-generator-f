@@ -56,5 +56,6 @@ export interface BulkInputQuestion {
     sample: {
         question: string,
         answer: string
-    }
+    },
+    tab?: 'input' | 'preview' | null
 }

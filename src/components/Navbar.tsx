@@ -18,7 +18,7 @@ function Navbar() {
   }
   return (
     <>
-    <div className='bg-[#444341] md:py-2 py-4 w-full'>
+    <div className='bg-[#444341] md:py-2 py-4 w-full inset-0'>
       <div className=" lg:px-12 md:px-8 px-0 mx-4 md:grid grid-cols-3 flex justify-between md:gap-4 gap-2">
           <div className="flex items-center">
           <Link to='/' className='flex flex-row gap-4 items-center'>

@@ -27,7 +27,7 @@ function App() {
     loadUser()
   }, [location])
   return (
-      <div className='min-h-screen flex flex-col'>
+      <div className='min-h-screen'>
         {/* <Metadata /> */}
         <Navbar />
         <Routes> 
@@ -41,6 +41,8 @@ function App() {
           <Route path='create/question/:categoryId' element={<CreateQuestion />}/>
           <Route path='create/category' element={<CreateCategory />}/>
           <Route path='edit/:categoryId/:questionId' element={<EditQuestion />} />
+          <Route path='create/bulk/:categoryId' element={<BulkCreate />} />
+          <Route path='create/bulk' element={<BulkCreate />} />
           {/* <Route path='test' element={<Workspace />}/> */}
           <Route path='account' element={<Account />}/>
           <Route path='lab' element={<BulkCreate />} />

@@ -67,16 +67,7 @@ function Dashboard() {
                     <Art />
                 </div>
             </div>
-            <div className="w-full flex md:flex-row flex-col gap-24 mb-16">
-                <div className='flex flex-col gap-4'>
-                <h1 className='text-3xl font-semibold '>2025 Hong Kong Wiki Finance Expo</h1>
-                <p>Join the Hong Kong Wiki Finance Expo on March 27 — one of the largest FinTech, Web3.0, AI, Crypto & Forex events in Asia. It will be held on the <strong>Sky100 Observation Deck</strong>.</p>
-                <p>The event is free to attend! Get free tickets <a href="https://www.wikiexpo.com/HongKong/2025/en/index.html?c=Bf34Yo8a" className='text-blue-500'>here</a>.</p>
-                </div>
-                <div className=''>
-                    <img src="/wikiexpo.jpg" className='w-[1000px] rounded-lg outline outline-[4px] ring ring-offset-[4px] ring-darkgray outline-white shadow-lg' alt="Announcement" />
-                </div>
-            </div>
+            
         </div>
     )
 }
