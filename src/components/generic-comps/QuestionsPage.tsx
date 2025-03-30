@@ -116,7 +116,7 @@ function QuestionsPage() {
                 </div>
             </div>
             <div className='px-auto h-12'>
-            {(category.author === 'public' || user === category.author) && <Link className='h-12 flex items-center' to={`/create/question/${categoryId}`}>
+            {(category.author === 'public' || user === category.author) && <Link className='h-12 flex items-center' to={`/create/bulk/${categoryId}`}>
               {/* <PlusCircleIcon height={48}/> */}
               <img src={Create} className='h-12'/>
             </Link>}
