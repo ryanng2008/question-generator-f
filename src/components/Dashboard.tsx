@@ -38,6 +38,9 @@ function Dashboard() {
                         <ArrowRightIcon className='h-6 my-auto'/>
                     </div>
                 </div>
+                <div className='my-4 text-xl hover:underline text-darkgray ml-1'>
+                    Create a set
+                </div>
                 </Link>
             </div>
         </div>)

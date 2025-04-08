@@ -9,13 +9,12 @@ import QuestionsPage from "./components/generic-comps/QuestionsPage"
 import CreateMenu from "./components/generic-comps/CreateMenu"
 import { addStyles } from "react-mathquill";
 import CreateQuestion from "./components/generic-comps/CreateQuestion"
-import CreateCategory from "./components/generic-comps/CreateCategory"
 import Account from "./components/Account"
 import { useAuth } from "./AuthContext"
 import EditQuestion from "./components/generic-comps/EditQuestion"
 import RepetitionPage from "./components/generic-comps/RepetitionPage"
 import BulkCreate from "./components/BulkCreate"
-import SmartCategory from "./components/SmartCategory"
+import SmartCategory from "./components/CreateSet"
 // import Metadata from "./lib/Metadata"
 
 
@@ -40,7 +39,7 @@ function App() {
           <Route path='create' element={<CreateMenu />}/>
           <Route path='create/question' element={<CreateQuestion />}/>
           <Route path='create/question/:categoryId' element={<CreateQuestion />}/>
-          <Route path='create/category' element={<CreateCategory />}/>
+          <Route path='create/set' element={<SmartCategory />}/>
           <Route path='edit/:categoryId/:questionId' element={<EditQuestion />} />
           <Route path='create/bulk/:categoryId' element={<BulkCreate />} />
           <Route path='create/bulk' element={<BulkCreate />} />

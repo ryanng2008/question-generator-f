@@ -32,7 +32,7 @@ function Navbar() {
         {/* <div className=" items-center md:flex hidden"> */}
           <ul className='flex justify-between space-x-6 items-center'>
             <li><Link to='/library'><NavbarButton text='library'/></Link></li>
-            <li><Link to='/create'><NavbarButton text='create'/></Link></li>
+            <li><Link to='/create/set'><NavbarButton text='create'/></Link></li>
           </ul>
           <div className='flex items-center justify-end'>
           <Link to='/account' className='my-auto'>

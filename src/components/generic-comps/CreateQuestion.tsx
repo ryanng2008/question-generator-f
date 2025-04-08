@@ -582,7 +582,7 @@ function RandomVariableInput({
     }
     const [menuOpen, setMenuOpen] = useState(false);
     return (
-        <div className="grid grid-cols-6 lg:gap-4 md:gap-2 gap-4 pb-[2.5px]">
+        <div className="grid lg:grid-cols-5 md:grid-cols-6 grid-cols-5 md:gap-2 gap-4 pb-[2.5px]">
             <div className="justify-between col-span-2">
                 <h2 className="text-xs text-[#738086] pl-[1px] pb-1 tracking-wider font-medium">Name</h2>
                 <input 
@@ -619,7 +619,7 @@ function RandomVariableInput({
                 onChange={onInput} // e.target.value.replace(/[^A-Za-z]/g, '')
                  />
             </div>
-            <div className="relative flex items-end justify-end col-span-2">
+            <div className="relative flex items-end justify-end lg:col-span-1 md:col-span-2">
             <div className="flex justify-between gap-1">
                 <button onClick={() => onDelete(index)} className="hover:scale-105 duration-150 hover:text-darkgray/60"><TrashIcon height={32} /></button>
                 <button className="hover:scale-[105%] hover:text-darkgray/60 duration-150" onClick={() => setMenuOpen(!menuOpen)}>
