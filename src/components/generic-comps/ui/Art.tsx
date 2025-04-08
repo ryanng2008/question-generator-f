@@ -11,7 +11,7 @@ export default function Art() {
     }, [])
     // 550px
     return (
-        <div className="ART mx-auto max-h-[550px]">
+        <div className="ART mx-auto min-h-[550px]">
             {image 
             ? <img 
             className="max-h-[550px] w-auto mx-auto rounded-[30px] shadow-2xl border-2 border-darkgray"
