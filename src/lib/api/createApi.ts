@@ -61,6 +61,34 @@ export async function handlePostQuestion(questionString: string, rvs: RVClient[]
     }
 }
 
+export async function handlePostCategoryQuestions(title: string, description: string, tags: string[], publicCategory: boolean, questions: QuestionTemplateType[]) {
+    const token = localStorage.getItem("token")
+    try {
+        const response = await fetch(`${BASE_URL}/postcategoryquestions`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                description: description,
+                tags: tags, 
+                publiccategory: publicCategory,
+                questions: questions
+            })
+        });
+        if(!response.ok) {
+            throw new Error(`Failed to post category questions. Server responded with status ${response.status}`);
+        }
+        const data = response.json();
+        return data;
+    } catch (error) {
+        console.error('Error posting category questions:', error);
+        return { success: false, message: 'An error occurred while posting the category questions.' };  
+    }
+}   
+
 export async function handlePostCategory(title: string, description: string, tags: string[], publicCategory: boolean) {
     const token = localStorage.getItem("token");
     try {

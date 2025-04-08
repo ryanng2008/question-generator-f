@@ -1,5 +1,7 @@
 import BASE_URL from "./apiConfig";
 
+
+
 export async function getOCRPDF(file: File) {
     const token = localStorage.getItem("token")
 

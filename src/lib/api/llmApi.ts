@@ -1,6 +1,6 @@
 import BASE_URL from "./apiConfig";
 
-export async function extractQuestions(ocrData: string) {
+export async function extractQuestionsSplit(ocrData: string) {
     const token = localStorage.getItem("token")
     try {
         const response = await fetch(`${BASE_URL}/processquestions`, {
@@ -16,10 +16,43 @@ export async function extractQuestions(ocrData: string) {
         if(!data) {
             return { success: false, message: 'Data is not there - weird' }
         }
-        return data
+        return { success: true, questions: data.questions }
     } catch (error) {
-        console.error(`Error extracting questions:`, error);
         return { success: false, message: 'Bruh' }
+    }
+}   
+
+export async function extractQuestions(ocrData: string) {
+    const token = localStorage.getItem("token")
+    try {
+        const response = await fetch(`${BASE_URL}/processquestions`, {
+            method: 'POST',
+            body: JSON.stringify({ text: ocrData }),
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
+            }
+        })
+        
+        if (!response.ok) {
+            if (response.status === 401) {
+                return { success: false, message: 'Not authenticated' }
+            }
+            if (response.status === 400) {
+                return { success: false, message: 'Missing required field: text' }
+            }
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
+        const data = await response.json();
+        if (!data) {
+            return { success: false, message: 'No data received from server' }
+        }
+        
+        return data;
+    } catch (error) {
+        console.error('Error processing questions:', error);
+        return { success: false, message: 'Failed to process questions' }
     }
 }
 
@@ -66,5 +99,50 @@ export async function handleGenerateBulkTemplate(items: string[][]) {
     } catch (error) {
         console.error(`Error generating a template with AI:`, error);
         return { success: false, message: 'Bruh' }
+    }
+}
+
+interface ProcessFileResponse {
+    success: boolean;
+    questions?: string[];
+    fixed?: string[];
+    randomisable?: string[];
+    ocr_text?: string;
+    message?: string;
+}
+
+export async function processFile(file: File): Promise<ProcessFileResponse> {
+    const token = localStorage.getItem("token")
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch(`${BASE_URL}/processfile`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        })
+        
+        if (!response.ok) {
+            if (response.status === 401) {
+                return { success: false, message: 'Not authenticated' }
+            }
+            if (response.status === 400) {
+                return { success: false, message: 'Invalid file or no file provided' }
+            }
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
+        const data = await response.json();
+        if (!data) {
+            return { success: false, message: 'No data received from server' }
+        }
+        
+        return data;
+    } catch (error) {
+        console.error('Error processing file:', error);
+        return { success: false, message: 'Failed to process file' }
     }
 }

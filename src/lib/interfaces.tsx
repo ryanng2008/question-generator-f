@@ -52,10 +52,12 @@ export interface BulkInputQuestion {
     questionInput: string,
     solutionInput: string,
     template: QuestionTemplateType,
-    checked: boolean | null,
+    checked?: boolean | null,
+    flagged?: boolean | null,
     sample: {
         question: string,
         answer: string
     },
-    tab?: 'input' | 'preview' | null
+    tab?: 'input' | 'preview' | null,
+    canRandomize?: boolean | null
 }

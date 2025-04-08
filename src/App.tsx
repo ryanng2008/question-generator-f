@@ -15,6 +15,7 @@ import { useAuth } from "./AuthContext"
 import EditQuestion from "./components/generic-comps/EditQuestion"
 import RepetitionPage from "./components/generic-comps/RepetitionPage"
 import BulkCreate from "./components/BulkCreate"
+import SmartCategory from "./components/SmartCategory"
 // import Metadata from "./lib/Metadata"
 
 
@@ -45,7 +46,7 @@ function App() {
           <Route path='create/bulk' element={<BulkCreate />} />
           {/* <Route path='test' element={<Workspace />}/> */}
           <Route path='account' element={<Account />}/>
-          <Route path='lab' element={<BulkCreate />} />
+          <Route path='lab' element={<SmartCategory />} />
           {/* <Route path='workspace' element={<Workspace />}/>  */}
         </Routes>
       </div>
