@@ -10,6 +10,7 @@ import { handleFetchSampleBulk } from "../lib/api/questionSampleApi";
 import Latex from "react-latex-next";
 import { handlePostCategoryQuestions } from "../lib/api/createApi";
 import { useDebounce } from 'use-debounce';
+import { useNavigate } from 'react-router-dom'
 // import { handleFetchSample } from "../lib/api/questionSampleApi";
 
 const sampleInputQuestion: BulkInputQuestion = {
@@ -42,7 +43,7 @@ const sampleInputQuestion: BulkInputQuestion = {
 
 function QuestionItem({ question, index, onChange }: { question: BulkInputQuestion, index: number, onChange: (action: 'update' | 'delete', index: number, question?: BulkInputQuestion) => void }) {
     const [showOriginal, setShowOriginal] = useState(false);
-    const [tab, setTab] = useState<'preview' | 'template'>('preview');
+    const [tab, setTab] = useState<'preview' | 'template'>('template');
     const [debouncedTemplate] = useDebounce(question.template, 1000);
 
     function setRVs(rvs: RVClient[]) {
@@ -88,6 +89,12 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
         }
         fetchNewSample();
     }, [debouncedTemplate]);
+
+    useEffect(() => {
+        if (question.template.question || question.template.answer) {
+            setTab('preview');
+        }
+    }, [])
 
     return (
         <div className="QUESTION ITEM bg-lightgray rounded-3xl py-4 px-8 flex flex-col gap-6" key={index}>
@@ -159,7 +166,7 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
 
 export default function SmartCategory() {
     const [ocrTab, setOcrTab] = useState<'upload' | 'questions'>('upload');
-    const [inputQuestions, setInputQuestions] = useState<BulkInputQuestion[]>([sampleInputQuestion]);
+    const [inputQuestions, setInputQuestions] = useState<BulkInputQuestion[]>([]);
     const [importedQuestions, setImportedQuestions] = useState<BulkInputQuestion[]>([]);
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -192,6 +199,7 @@ export default function SmartCategory() {
     const [description, setDescription] = useState('');
     const [tags, setTags] = useState<string[]>([]);
     const [tagsInput, setTagsInput] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
@@ -307,7 +315,7 @@ export default function SmartCategory() {
             }
             
             // Update OCR data with the extracted text
-            setOcrData(result.ocr_text || '');
+            setOcrData(oldData => oldData + result.ocr_text || '');
             const fixedQuestions = result.fixed?.map(q => ({
                 ...sampleInputQuestion,
                 questionInput: q,
@@ -412,10 +420,26 @@ export default function SmartCategory() {
         }
     }
     async function onPostCategory() {
+        if (inputQuestions.length === 0) {
+            setMessage('Please add at least one question');
+            return;
+        }
+
+        if (!title.trim()) {
+            setMessage('Please enter a title');
+            return;
+        }
+
+        if (!description.trim()) {
+            setMessage('Please enter a description');
+            return;
+        }
         setIsPosting(true);
         const response = await handlePostCategoryQuestions(title, description, tags, isPublic, inputQuestions.map(q => q.template));
         if(response.success) {
             setMessage('Category created successfully');
+            const id = response.inserted_id;
+            navigate(`/library/${id}/adaptive`);
         } else {
             setMessage('Failed to create category: ' + response.message);
         }
@@ -520,10 +544,10 @@ export default function SmartCategory() {
                 <div className='flex flex-col gap-4'>
                 <button 
                     onClick={onUploadFile} 
-                    disabled={isUploading}
+                    disabled={isUploading || uploadedFile !== null}
                     className={`w-full py-12 px-4 rounded-lg border-2 border-dashed border-gray-300 hover:border-darkgray transition-colors ${
-                        false 
-                        ? 'bg-gray-100 cursor-not-allowed' 
+                         (isUploading || uploadedFile !== null)
+                        ? 'bg-gray-100 cursor-not-allowed opacity-50' 
                         : 'bg-white'
                     }`}
                 >
@@ -533,7 +557,7 @@ export default function SmartCategory() {
                 <TextareaAutosize
                     className="w-full p-4 font-mono text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-darkgray"
                     value={ocrData}
-                    placeholder="1) What is 4 + 5?   2) If I run at 5 metres per second, how far will I have ran in 5 seconds?"
+                    placeholder="Paste your questions in: 1) What is 4 + 5?   2) If I run at 5 metres per second, how far will I have ran in 5 seconds?"
                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setOcrData(e.target.value)}
                 />
                 </div>
@@ -586,6 +610,33 @@ export default function SmartCategory() {
             </button>
         </div>
         <div className="flex flex-col gap-4">
+            <button 
+                onDrop={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const file = e.dataTransfer.files[0];
+                    setUploadedFile(file);
+                    setIsImportOpen(true);
+                }}
+                onDragOver={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }}
+                onDragEnter={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }}
+                onClick={() => setIsImportOpen(true)}  
+                className="flex justify-center outline-none items-center border-4 border-dashed border-gray-300 rounded-xl p-12 hover:border-gray-400 transition-colors cursor-pointer"
+            >
+                <div className="flex flex-col items-center gap-4 text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    <span className="text-xl font-medium">Upload your question document</span>
+                    <span className="text-sm">Our AI will generate more questions for you</span>
+                </div>
+            </button>
             {inputQuestions.map((question, index) => (
                 <QuestionItem question={question} index={index} onChange={inputQuestionOmni} />
             ))}
@@ -593,7 +644,7 @@ export default function SmartCategory() {
                 onClick={() => setInputQuestions(prev => [...prev, sampleInputQuestion])}
                 className="bg-darkgray text-white px-8 py-4 duration-300 rounded-full font-medium hover:scale-105 w-fit mx-auto text-lg mt-8 mb-4"
             >
-                Add Question
+                Add a template yourself
             </button>
             <div className="flex justify-end">
                 <button 

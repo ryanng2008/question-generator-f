@@ -28,19 +28,19 @@ function Dashboard() {
         return(
         <div className='CONTENT CONTAINER flex flex-col md:justify-center'>
             <div className="HEADING my-4 font-semibold md:text-6xl text-5xl text-[#444341]">
-                <h1>Study faster & better</h1>
+                <h1>Need more practice questions?</h1>
             </div>
-            <div className='ml-1 my-2'>
-                <Link to="./library">
+            <div className='ml-1 my-2 flex flex-col'>
+                <Link to="/create/set">
                 <div className='py-2 px-4 rounded-lg text-lg font-medium text-mywhite bg-darkgray inline-block hover:scale-105 duration-500'>
                     <div className='flex flex-row gap-3'>
-                        <p className=''>Find resources</p>
+                        <p className=''>Generate tailored questions</p>
                         <ArrowRightIcon className='h-6 my-auto'/>
                     </div>
                 </div>
-                <div className='my-4 text-xl hover:underline text-darkgray ml-1'>
-                    Create a set
-                </div>
+                </Link>
+                <Link to="/library" className='my-4 text-2xl hover:underline text-darkgray ml-1'>
+                    Find resources
                 </Link>
             </div>
         </div>)
