@@ -404,6 +404,8 @@ export default function SmartCategory() {
             // Process randomisable questions in batches of 10
             const randomisableQuestions = result.randomisable || [];
             const batchSize = 10;
+            console.log("FIXED QUESTIONS:")
+            console.log(fixedQuestions)
             console.log('RANDOMISABLE QUESTIONS:')
             console.log(randomisableQuestions)
             for (let i = 0; i < randomisableQuestions.length; i += batchSize) {
