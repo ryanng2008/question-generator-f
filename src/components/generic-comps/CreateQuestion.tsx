@@ -591,7 +591,6 @@ function RandomVariableInput({
                 className="max-w-full break-all p-1 rounded-md text-sm bg-white outline-mywhite" 
                 placeholder=""
                 value={variable.name} 
-                maxLength={5} 
                 onChange={onInput} // e.target.value.replace(/[^A-Za-z]/g, '')
                  />
             </div>

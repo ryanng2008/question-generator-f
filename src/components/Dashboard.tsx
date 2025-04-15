@@ -39,7 +39,7 @@ function Dashboard() {
                     </div>
                 </div>
                 </Link>
-                <Link to="/library" className='my-4 text-2xl hover:underline text-darkgray ml-1'>
+                <Link to="/library" className='my-4 text-xl hover:underline text-darkgray ml-1'>
                     Find resources
                 </Link>
             </div>

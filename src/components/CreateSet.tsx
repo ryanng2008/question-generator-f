@@ -1,6 +1,6 @@
 import { BulkInputQuestion, PVClient, QuestionTemplateType, RVClient } from "../lib/interfaces"
 import TextareaAutosize from 'react-textarea-autosize';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { handleGenerateBulkTemplate, processFile } from "../lib/api/llmApi";
 import { Cog6ToothIcon, TrashIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { FlagIcon } from "@heroicons/react/20/solid";
@@ -45,6 +45,31 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
     const [showOriginal, setShowOriginal] = useState(false);
     const [tab, setTab] = useState<'preview' | 'template'>('template');
     const [debouncedTemplate] = useDebounce(question.template, 1000);
+    const isInitialMount = useRef(true);
+    const prevTemplateRef = useRef(question.template);
+
+    // useEffect(() => {
+    //     if (isInitialMount.current) {
+    //         isInitialMount.current = false;
+    //         prevTemplateRef.current = question.template;
+    //         return;
+    //     }
+
+    //     // Only run if template content actually changed
+    //     if (JSON.stringify(prevTemplateRef.current) !== JSON.stringify(question.template)) {
+    //         async function fetchNewSample() {
+    //             const response = await handleFetchSampleBulk([debouncedTemplate]);
+    //             if (response.success && response.samples && response.samples.length > 0) {
+    //                 onChange('update', index, {
+    //                     ...question,
+    //                     sample: response.samples[0]
+    //                 });
+    //             }
+    //         }
+    //         fetchNewSample();
+    //         prevTemplateRef.current = question.template;
+    //     }
+    // }, [debouncedTemplate]);
 
     function setRVs(rvs: RVClient[]) {
         onChange('update', index, {
@@ -77,20 +102,6 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
     }
 
     useEffect(() => {
-        async function fetchNewSample() {
-            const response = await handleFetchSampleBulk([debouncedTemplate]);
-            if (response.success && response.samples && response.samples.length > 0) {
-                onChange('update', index, {
-                    ...question,
-                    sample: response.samples[0]
-                });
-                console.log(response.samples[0]);
-            }
-        }
-        fetchNewSample();
-    }, [debouncedTemplate]);
-
-    useEffect(() => {
         if (question.template.question || question.template.answer) {
             setTab('preview');
         }
@@ -117,11 +128,16 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
                     <>
                     <div className="flex flex-col gap-1">
                     <h1 className="font-semibold text-xl">Question</h1>
+                    <div className="whitespace-pre-line">
+
                     <Latex>{question.sample.question}</Latex>   
+                    </div>
                     </div>
                     <div className="flex flex-col gap-1">
                     <h1 className="font-semibold text-lg">Solution</h1>
+                    <div className="whitespace-pre-line">
                     <Latex>{question.sample.answer}</Latex>
+                    </div>
                     </div>
                     </>
                     }
@@ -200,6 +216,7 @@ export default function SmartCategory() {
     const [tags, setTags] = useState<string[]>([]);
     const [tagsInput, setTagsInput] = useState('');
     const navigate = useNavigate();
+    const [debouncedQuestions] = useDebounce(importedQuestions, 1000);
 
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
@@ -216,6 +233,28 @@ export default function SmartCategory() {
             document.removeEventListener('keydown', handleEsc);
         };
     }, [isImportOpen]);
+
+    // useEffect(() => {
+    //     async function fetchSamples() {
+    //         if (debouncedQuestions.length === 0) return;
+            
+    //         const templates = debouncedQuestions.map(q => q.template);
+    //         const response = await handleFetchSampleBulk(templates);
+            
+    //         if (response.success && response.samples) {
+    //             setImportedQuestions(questions => 
+    //                 questions.map((q, i) => ({
+    //                     ...q,
+    //                     sample: response.samples[i] || q.sample
+    //                 }))
+    //             );
+    //         }
+    //     }
+        
+    //     if (ocrTab === 'questions') {
+    //         fetchSamples();
+    //     }
+    // }, [debouncedQuestions, ocrTab]);
 
     // async function onGenerateTemplates() {
     //     setMessage('');
@@ -336,11 +375,12 @@ export default function SmartCategory() {
             // Process randomisable questions in batches of 10
             const randomisableQuestions = result.randomisable || [];
             const batchSize = 10;
-            
+            console.log(randomisableQuestions)
             for (let i = 0; i < randomisableQuestions.length; i += batchSize) {
                 const batch = randomisableQuestions.slice(i, i + batchSize);
                 const batchInputs = batch.map(q => [q, '']);
-                
+                console.log("BATCHING THIS INPUT:")
+                console.log(batchInputs);
                 const templateResult = await handleGenerateBulkTemplate(batchInputs);
                 // const samples = await handleFetchSampleBulk(templateResult.templates);
                 
@@ -367,6 +407,7 @@ export default function SmartCategory() {
         } finally {
             setIsProcessing(false);
             setUploadedFile(null);
+            //setOcrData('');
         }
     }
     async function reprocessFlagged() {

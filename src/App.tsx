@@ -36,7 +36,7 @@ function App() {
           <Route path='library/:categoryId' element={<CategoryMenu />} />
           <Route path='library/:categoryId/questions' element={<QuestionsPage />}/>
           <Route path='library/:categoryId/adaptive' element={<RepetitionPage />}/>
-          <Route path='create' element={<CreateMenu />}/>
+          <Route path='create' element={<SmartCategory />}/>
           <Route path='create/question' element={<CreateQuestion />}/>
           <Route path='create/question/:categoryId' element={<CreateQuestion />}/>
           <Route path='create/set' element={<SmartCategory />}/>
