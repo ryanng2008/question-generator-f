@@ -179,7 +179,7 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
                     <div className="QNA grid grid-cols-2 gap-4 my-4">
                         <div className="flex flex-col gap-2">
                             <h2 className="text-xl font-medium">Question template</h2>
-                            <textarea 
+                            <TextareaAutosize 
                                 className='p-2 rounded-lg outline-mywhite min-h-[100px]' 
                                 placeholder="What is the value of $\frac{[[A]]}{[[B]]}$ ?" 
                                 value={question.template.question} 
@@ -188,7 +188,7 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
                         </div>
                         <div className="flex flex-col gap-2">
                             <h2 className="text-xl font-medium">Answer template</h2>
-                            <textarea 
+                            <TextareaAutosize 
                                 className='p-2 rounded-lg outline-mywhite min-h-[100px]' 
                                 placeholder="What is the value of $\frac{[[A]]}{[[B]]}$ ?" 
                                 value={question.template.answer} 
