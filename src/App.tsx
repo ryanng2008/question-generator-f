@@ -6,7 +6,7 @@ import { Route, Routes, useLocation } from "react-router-dom"
 import { useEffect } from "react"
 import QuestionsPage from "./components/generic-comps/QuestionsPage"
 // import Workspace from "./components/Workspace"
-import CreateMenu from "./components/generic-comps/CreateMenu"
+// import CreateMenu from "./components/generic-comps/CreateMenu"
 import { addStyles } from "react-mathquill";
 import CreateQuestion from "./components/generic-comps/CreateQuestion"
 import Account from "./components/Account"

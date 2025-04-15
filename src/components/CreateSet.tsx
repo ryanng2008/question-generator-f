@@ -1,16 +1,17 @@
 import { BulkInputQuestion, PVClient, QuestionTemplateType, RVClient } from "../lib/interfaces"
 import TextareaAutosize from 'react-textarea-autosize';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { handleGenerateBulkTemplate, processFile } from "../lib/api/llmApi";
 import { Cog6ToothIcon, TrashIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { FlagIcon } from "@heroicons/react/20/solid";
 import { RVParent } from "./generic-comps/CreateQuestion";
 import { PVParent } from "./generic-comps/CreateQuestion";
-import { handleFetchSampleBulk } from "../lib/api/questionSampleApi";
+// import { handleFetchSampleBulk } from "../lib/api/questionSampleApi";
 import Latex from "react-latex-next";
 import { handlePostCategoryQuestions } from "../lib/api/createApi";
-import { useDebounce } from 'use-debounce';
+import { useDebouncedCallback } from 'use-debounce';
 import { useNavigate } from 'react-router-dom'
+import { handleFetchSample } from "../lib/api/questionSampleApi";
 // import { handleFetchSample } from "../lib/api/questionSampleApi";
 
 const sampleInputQuestion: BulkInputQuestion = {
@@ -44,9 +45,9 @@ const sampleInputQuestion: BulkInputQuestion = {
 function QuestionItem({ question, index, onChange }: { question: BulkInputQuestion, index: number, onChange: (action: 'update' | 'delete', index: number, question?: BulkInputQuestion) => void }) {
     const [showOriginal, setShowOriginal] = useState(false);
     const [tab, setTab] = useState<'preview' | 'template'>('template');
-    const [debouncedTemplate] = useDebounce(question.template, 1000);
-    const isInitialMount = useRef(true);
-    const prevTemplateRef = useRef(question.template);
+    // const [debouncedTemplate] = useDebounce(question.template, 1000);
+    // const isInitialMount = useRef(true);
+    // const prevTemplateRef = useRef(question.template);
 
     // useEffect(() => {
     //     if (isInitialMount.current) {
@@ -71,6 +72,27 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
     //     }
     // }, [debouncedTemplate]);
 
+    const debounced = useDebouncedCallback(
+        async () => {
+            console.log('running')
+            const response = await handleFetchSample(question.template.question, question.template.rvs, question.template.pvs, question.template.answer);
+            if (response.success) {
+                onChange('update', index, {
+                    ...question,
+                    sample: {
+                        question: response.question,
+                        answer: response.answer
+                    }
+                });
+            }
+        },
+        1000
+      );
+    useEffect(() => {
+        
+        debounced();
+        
+    }, [question.template.question, question.template.answer, question.template.rvs, question.template.pvs]);
     function setRVs(rvs: RVClient[]) {
         onChange('update', index, {
             ...question,
@@ -184,13 +206,20 @@ export default function SmartCategory() {
     const [ocrTab, setOcrTab] = useState<'upload' | 'questions'>('upload');
     const [inputQuestions, setInputQuestions] = useState<BulkInputQuestion[]>([]);
     const [importedQuestions, setImportedQuestions] = useState<BulkInputQuestion[]>([]);
+    console.log(importedQuestions)
+
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isPublic, setIsPublic] = useState(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const importedQuestionsItems = importedQuestions?.map((question, index) => (
-        <QuestionItem question={question} index={index} onChange={importedQuestionOmni} />
+        <QuestionItem 
+            key={`imported-${index}`} 
+            question={question} 
+            index={index} 
+            onChange={importedQuestionOmni} 
+        />
     ));
     function importedQuestionOmni(action: 'update' | 'delete', index: number, question?: BulkInputQuestion) {
         if(action === 'update' && question) {
@@ -216,7 +245,7 @@ export default function SmartCategory() {
     const [tags, setTags] = useState<string[]>([]);
     const [tagsInput, setTagsInput] = useState('');
     const navigate = useNavigate();
-    const [debouncedQuestions] = useDebounce(importedQuestions, 1000);
+    // const [debouncedQuestions] = useDebounce(importedQuestions, 1000);
 
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
@@ -375,6 +404,7 @@ export default function SmartCategory() {
             // Process randomisable questions in batches of 10
             const randomisableQuestions = result.randomisable || [];
             const batchSize = 10;
+            console.log('RANDOMISABLE QUESTIONS:')
             console.log(randomisableQuestions)
             for (let i = 0; i < randomisableQuestions.length; i += batchSize) {
                 const batch = randomisableQuestions.slice(i, i + batchSize);
@@ -679,7 +709,12 @@ export default function SmartCategory() {
                 </div>
             </button>
             {inputQuestions.map((question, index) => (
-                <QuestionItem question={question} index={index} onChange={inputQuestionOmni} />
+                <QuestionItem 
+                    key={`input-${index}`} 
+                    question={question} 
+                    index={index} 
+                    onChange={inputQuestionOmni} 
+                />
             ))}
             <button 
                 onClick={() => setInputQuestions(prev => [...prev, sampleInputQuestion])}
