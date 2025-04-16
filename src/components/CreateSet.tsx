@@ -203,16 +203,18 @@ function QuestionItem({ question, index, onChange }: { question: BulkInputQuesti
 }
 
 export default function SmartCategory() {
-    const [ocrTab, setOcrTab] = useState<'upload' | 'questions'>('upload');
+    const [ocrTab, setOcrTab] = useState<'upload' | 'questions' | 'preview'>('upload');
     const [inputQuestions, setInputQuestions] = useState<BulkInputQuestion[]>([]);
     const [importedQuestions, setImportedQuestions] = useState<BulkInputQuestion[]>([]);
     console.log(importedQuestions)
 
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-    const [isPublic, setIsPublic] = useState(false);
+    const [isPublic, setIsPublic] = useState(true);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
+    // Add new state for raw questions before template generation
+    const [rawQuestions, setRawQuestions] = useState<{question: string, canRandomize: boolean}[]>([]);
     const importedQuestionsItems = importedQuestions?.map((question, index) => (
         <QuestionItem 
             key={`imported-${index}`} 
@@ -384,37 +386,75 @@ export default function SmartCategory() {
             
             // Update OCR data with the extracted text
             setOcrData(oldData => oldData + result.ocr_text || '');
+            
+            // Store raw questions in the new state array instead of directly processing
             const fixedQuestions = result.fixed?.map(q => ({
+                question: q,
+                canRandomize: false
+            })) || [];
+            
+            const randomisableQuestions = result.randomisable?.map(q => ({
+                question: q,
+                canRandomize: true
+            })) || [];
+            
+            // Combine all questions in the raw questions state
+            setRawQuestions([...fixedQuestions, ...randomisableQuestions]);
+            
+            // Switch to preview tab to let the user review and edit questions
+            setOcrTab('preview');
+            
+            console.log("FIXED QUESTIONS:");
+            console.log(fixedQuestions);
+            console.log('RANDOMISABLE QUESTIONS:');
+            console.log(randomisableQuestions);
+            
+        } catch (err) {
+            console.error('Error processing file:', err);
+            setMessage('Failed to process file');
+        } finally {
+            setIsProcessing(false);
+            setUploadedFile(null);
+        }
+    }
+    
+    // New function to generate templates after reviewing/editing raw questions
+    async function generateTemplatesFromRawQuestions() {
+        setMessage('');
+        setIsProcessing(true);
+        
+        try {
+            const batchSize = 10;
+            
+            // Process randomisable questions in batches
+            const randomisableQuestions = rawQuestions.filter(q => q.canRandomize).map(q => q.question);
+            
+            // Create fixed questions directly
+            const fixedQuestions = rawQuestions.filter(q => !q.canRandomize).map(q => ({
                 ...sampleInputQuestion,
-                questionInput: q,
+                questionInput: q.question,
                 template: {
-                    question: q,
+                    question: q.question,
                     answer: '',
                     rvs: [],
                     pvs: []
                 },
                 sample: {
-                    question: q,
+                    question: q.question,
                     answer: ''
                 },
                 canRandomize: false
-            })) || [];
+            }));
+            
+            // Add fixed questions directly to imported questions
             setImportedQuestions(oldQuestions => [...oldQuestions, ...fixedQuestions]);
             
-            // Process randomisable questions in batches of 10
-            const randomisableQuestions = result.randomisable || [];
-            const batchSize = 10;
-            console.log("FIXED QUESTIONS:")
-            console.log(fixedQuestions)
-            console.log('RANDOMISABLE QUESTIONS:')
-            console.log(randomisableQuestions)
+            // Process randomisable questions in batches
             for (let i = 0; i < randomisableQuestions.length; i += batchSize) {
                 const batch = randomisableQuestions.slice(i, i + batchSize);
                 const batchInputs = batch.map(q => [q, '']);
-                console.log("BATCHING THIS INPUT:")
-                console.log(batchInputs);
+                
                 const templateResult = await handleGenerateBulkTemplate(batchInputs);
-                // const samples = await handleFetchSampleBulk(templateResult.templates);
                 
                 if (templateResult.success && templateResult.templates) {
                     const templatedQuestions = templateResult.templates.map((templateObj: { template: QuestionTemplateType, sample: { question: string, answer: string } }, idx: number) => ({
@@ -432,14 +472,14 @@ export default function SmartCategory() {
                 }
             }
             
+            // Switch to questions tab to show the processed templates
             setOcrTab('questions');
+            
         } catch (err) {
-            console.error('Error processing file:', err);
-            setMessage('Failed to process file');
+            console.error('Error generating templates:', err);
+            setMessage('Failed to generate templates');
         } finally {
             setIsProcessing(false);
-            setUploadedFile(null);
-            //setOcrData('');
         }
     }
     async function reprocessFlagged() {
@@ -539,7 +579,7 @@ export default function SmartCategory() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <h4 className="font-medium">Public Category</h4>
-                                <p className="text-sm text-gray-500">Make this category visible to all users</p>
+                                <p className="text-sm text-gray-500">Allow anyone to add questions to this category</p>
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input 
@@ -591,6 +631,8 @@ export default function SmartCategory() {
                 <div className='flex items-center gap-8 justify-between'>
                     <div className="flex flex-row items-center gap-3">
                         <button onClick={() => setOcrTab('upload')} className={`text-md ${ocrTab === 'upload' ? 'font-semibold' : 'font-normal'}`}>Upload</button>
+                        <div className="w-px h-4 bg-darkgray" />
+                        <button onClick={() => setOcrTab('preview')} className={`text-md ${ocrTab === 'preview' ? 'font-semibold' : 'font-normal'}`}>Review</button>
                         <div className="w-px h-4 bg-darkgray" />
                         <button onClick={() => setOcrTab('questions')} className={`text-md ${ocrTab === 'questions' ? 'font-semibold' : 'font-normal'}`}>Processing</button>
                     </div>
@@ -652,6 +694,94 @@ export default function SmartCategory() {
                             disabled={importedQuestions.filter(q => !q.flagged).length === 0}
                         >
                             Add (non-flagged) Questions
+                        </button>
+                    </div>
+                </div>}
+                {ocrTab === 'preview' && <div className='flex flex-col gap-4'>
+                    <div className='outline outline-slate-300 py-8 rounded-lg px-8 flex flex-col gap-4 overflow-y-scroll h-[450px] relative'>
+                        <h2 className="text-xl font-semibold">Question Review</h2>
+                        <p className="text-gray-500">Review and edit your questions before processing. Use the "+" button to add a new question below the current one. Mark questions that can be randomized.</p>
+                        
+                        {rawQuestions.length > 0 ? (
+                            rawQuestions.map((question, index) => (
+                                <div key={`raw-${index}`} className="p-4 bg-white rounded-lg shadow-sm relative ml-12">
+                                    <div className="absolute -left-8 top-1/2 transform -translate-y-1/2">
+                                        <button 
+                                            onClick={() => {
+                                                const newQuestions = [...rawQuestions];
+                                                newQuestions.splice(index + 1, 0, { question: "", canRandomize: false });
+                                                setRawQuestions(newQuestions);
+                                            }}
+                                            className="bg-darkgray text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-700 text-lg font-bold shadow-md"
+                                            title="Add question below"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex flex-row justify-between items-center">
+                                            <h3 className="font-medium">Question {index + 1}</h3>
+                                            <div className="flex items-center gap-2">
+                                                <label className="flex items-center cursor-pointer">
+                                                    <span className="mr-2 text-sm">Can randomize</span>
+                                                    <input 
+                                                        type="checkbox" 
+                                                        checked={question.canRandomize}
+                                                        onChange={() => {
+                                                            const updatedQuestions = [...rawQuestions];
+                                                            updatedQuestions[index] = {
+                                                                ...updatedQuestions[index],
+                                                                canRandomize: !updatedQuestions[index].canRandomize
+                                                            };
+                                                            setRawQuestions(updatedQuestions);
+                                                        }}
+                                                        className="form-checkbox h-4 w-4 text-darkgray"
+                                                    />
+                                                </label>
+                                                <button 
+                                                    onClick={() => {
+                                                        setRawQuestions(rawQuestions.filter((_, i) => i !== index));
+                                                    }} 
+                                                    className="text-gray-500 hover:text-red-500"
+                                                >
+                                                    <TrashIcon className="h-5 w-5" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <TextareaAutosize
+                                            value={question.question}
+                                            onChange={(e) => {
+                                                const updatedQuestions = [...rawQuestions];
+                                                updatedQuestions[index] = {
+                                                    ...updatedQuestions[index],
+                                                    question: e.target.value
+                                                };
+                                                setRawQuestions(updatedQuestions);
+                                            }}
+                                            className="w-full p-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-darkgray"
+                                            placeholder="Enter your question here..."
+                                        />
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-center text-gray-500 my-8">No questions to preview. Upload a file or paste questions to get started.</p>
+                        )}
+                    </div>
+                    <div className="flex flex-row gap-4 justify-end items-center">
+                        {message && <p className="text-sm text-gray-500">{message}</p>}
+                        <button 
+                            onClick={() => setRawQuestions([...rawQuestions, { question: "", canRandomize: false }])}
+                            className="bg-white border-2 border-darkgray text-darkgray px-4 py-2 rounded-lg font-medium hover:bg-gray-100"
+                        >
+                            Add Question
+                        </button>
+                        <button 
+                            onClick={generateTemplatesFromRawQuestions}
+                            className="bg-darkgray text-white px-4 py-2 rounded-lg font-medium hover:scale-105 disabled:hover:scale-100 disabled:opacity-50"
+                            disabled={rawQuestions.length === 0 || isProcessing}
+                        >
+                            {isProcessing ? 'Processing...' : 'Generate Templates'}
                         </button>
                     </div>
                 </div>}
