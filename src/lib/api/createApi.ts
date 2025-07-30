@@ -26,7 +26,7 @@ export async function handlePostQuestions(questions: QuestionTemplateType[], cat
     }
 }
 
-export async function handlePostQuestion(questionString: string, rvs: RVClient[], pvs: PVClient[], answerString: string, categoryId: string) {
+export async function handlePostQuestion(questionString: string, rvs: RVClient[], pvs: PVClient[], answerString: string, tags: string[], categoryId: string) {
     const token = localStorage.getItem("token")
     try {
         const response = await fetch(`${BASE_URL}/postquestion`, {
@@ -40,6 +40,7 @@ export async function handlePostQuestion(questionString: string, rvs: RVClient[]
                 rvs: rvs,
                 pvs: pvs,
                 answer: answerString,
+                tags: tags,
                 categoryid: categoryId
             })
         });
@@ -151,5 +152,63 @@ export async function handleEditQuestion(questionId: string, questionString: str
     } catch (error) {
         // console.error('Error posting this question:', error);
         return { success: false, message: error };
+    }
+}
+
+export async function handlePostStaticQuestion(questionString: string, answerString: string, tags: string[], categoryId: string) {
+    const token = localStorage.getItem("token")
+    try {
+        const response = await fetch(`${BASE_URL}/poststaticquestion`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                question: questionString,
+                answer: answerString,
+                tags: tags,
+                categoryid: categoryId
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to post static question. Server responded with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error posting static question:', error);
+        return { success: false, message: 'An error occurred while posting the static question.' };
+    }
+}
+
+export async function handlePostStaticQuestions(questions: {question: string, answer: string, tags?: string[]}[], categoryId: string) {
+    const token = localStorage.getItem("token")
+    try {
+        const response = await fetch(`${BASE_URL}/poststaticquestions`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                questions: questions,
+                categoryid: categoryId
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to post static questions. Server responded with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error posting static questions:', error);
+        return { success: false, message: 'An error occurred while posting the static questions.' };
     }
 }

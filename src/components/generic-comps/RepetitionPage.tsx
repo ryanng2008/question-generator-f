@@ -82,7 +82,15 @@ export default function RepetitionPage() {
     return (
         <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4 grow">
             <div className="TITLE pt-12 pb-4 md:px-16 px-4">
-                <h1 className="font-semibold md:text-5xl text-4xl text-[#444341]">{category.title}</h1>
+                <div className="flex flex-col gap-2">
+                    <Link 
+                        to={`/library/${categoryId}`}
+                        className="text-[#444341] hover:text-[#444341]/80 hover:underline duration-300 text-lg font-medium"
+                    >
+                        ← Go back
+                    </Link>
+                    <h1 className="font-semibold md:text-5xl text-4xl text-[#444341]">{category.title}</h1>
+                </div>
             </div>
             
             <RepetitionQuestionItem 

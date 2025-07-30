@@ -13,13 +13,15 @@ export interface QuestionTemplateType {
     rvs: RVClient[],
     pvs: PVClient[],
     // answer_expressions: ProcessedVariables
-    answer: string
+    answer: string,
+    tags: string[]
 }
 
 export interface GeneratedQuestionType {
     question: string,
     answer: string,
     creator: string,
+    tags: string[],
     id: string
 }
 

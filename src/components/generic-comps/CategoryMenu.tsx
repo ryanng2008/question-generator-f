@@ -26,7 +26,15 @@ function CategoryMenu() {
   return (
     <div className='w-full px-4'>
       <div className='max-w-[1120px] mx-auto py-8'>
-        <h1 className='mx-4 font-semibold text-5xl py-4'>{category ? category.title : '...'}</h1>
+        <div className='mx-4 py-4 flex flex-col gap-2'>
+          <Link 
+            to="/library"
+            className="text-[#444341] hover:text-[#444341]/80 hover:underline duration-300 text-lg font-medium"
+          >
+            ← Go back to library
+          </Link>
+          <h1 className='font-semibold text-5xl'>{category ? category.title : '...'}</h1>
+        </div>
         <div className='flex flex-col gap-[1px] my-4 mx-4'>
           <MenuButton text='Adaptive practice' linkedPage='adaptive' />
           <MenuButton text='Questions' linkedPage='questions' />

@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import { useEffect, useState, Fragment } from "react";
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 // import Latex from "react-latex-next";
 import { EditableMathField } from "react-mathquill";
 import { CheckCircleIcon, EllipsisVerticalIcon, InformationCircleIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
@@ -10,6 +10,7 @@ import { handlePostQuestion } from "../../lib/api/createApi";
 import ComboSelectCategory from "./ui/ComboSelectCategory";
 import { useAuth } from "../../AuthContext";
 import { Info } from "./ui/Info";
+import TagsInput from "./ui/TagsInput";
 import { handleFetchSample } from "../../lib/api/questionSampleApi";
 import { handleGenerateTemplate } from "../../lib/api/llmApi";
 import Latex from "react-latex-next";
@@ -46,6 +47,7 @@ export default function CreateQuestion() {
         coefficient: false,
         dp: 0
     }]);
+    const [tags, setTags] = useState<string[]>([]);
     const [message, setMessage] = useState('');
     const [templateMessage, setTemplateMessage] = useState('');
     const [sample, setSample] = useState({
@@ -136,7 +138,7 @@ export default function CreateQuestion() {
             return
         } 
         
-        const createQuestion = await handlePostQuestion(sanitizedQuestion, rvs, pvs, sanitizedAnswer, selectedId);
+        const createQuestion = await handlePostQuestion(sanitizedQuestion, rvs, pvs, sanitizedAnswer, tags, selectedId);
         if(createQuestion.success) {
             setMessage('Success!')
             navigate(`/library/${selectedId}/questions`)
@@ -169,7 +171,15 @@ export default function CreateQuestion() {
     return (
         <div className="flex flex-col gap-12 mx-4 lg:px-12 md:px-8 px-0 py-8">
             <div className="HEAD my-4">
-                <h1 className="text-6xl font-semibold">Create Question Template</h1>
+                <div className="flex flex-col gap-2">
+                    <Link 
+                        to={categoryId && categoryId !== '-1' ? `/library/${categoryId}` : `/library`}
+                        className="text-darkgray hover:text-darkgray/80 hover:underline duration-300 text-lg font-medium"
+                    >
+                        ← Go back
+                    </Link>
+                    <h1 className="text-6xl font-semibold">Create Question Template</h1>
+                </div>
             </div>
             <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-md flex flex-col gap-8 py-6 px-8">
                 <div className="flex flex-col gap-4"> 
@@ -207,9 +217,17 @@ export default function CreateQuestion() {
                     <h1 className="font-medium text-2xl">Category</h1>
                     <ComboSelectCategory categoryId={selectedId} onChange={setSelectedId}/>
                     </div>
-                    {/* <div className="bg-darkgray py-1 px-2 text-white font-medium rounded-lg"><p>{selectedId}</p></div> */}
-                    {/* <ComboBox /> */}
-                    {/* <input type="text" placeholder="Dropdown"/> */}
+                </div>
+                <div className="TAGS flex flex-col gap-2">
+                    <h2 className="font-medium text-xl">Tags</h2>
+                    <TagsInput 
+                        tags={tags} 
+                        onChange={setTags} 
+                        placeholder="Add tags like 'calculus', 'derivatives'..."
+                    />
+                    <p className="text-sm text-gray-600">Press Enter or comma to add tags. Tags help organize and suggest questions.</p>
+                </div>
+                <div className="flex justify-end">
                     <div className="relative">
                     <button onClick={() => setShowInfo(!showInfo)} className="drop-shadow-xl text-white w-70 bg-red-800 font-medium rounded-lg py-2 px-4 flex flex-row gap-2 items-center">
                         <p>READ BEFORE PROCEEDING</p>

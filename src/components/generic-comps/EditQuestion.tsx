@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { fetchQuestionDetails } from "../../lib/api/questionDetailsApi";
 import { InformationCircleIcon } from "@heroicons/react/20/solid";
 import { Info } from "./ui/Info";
@@ -114,7 +114,15 @@ export default function EditQuestion() {
     return (
         <div className="flex flex-col gap-8 mx-4 lg:px-12 md:px-8 px-0 py-8">
             <div className="HEAD my-4">
-                <h1 className="text-6xl font-semibold">Edit Question</h1>
+                <div className="flex flex-col gap-2">
+                    <Link 
+                        to={`/library/${categoryId}/questions`}
+                        className="text-darkgray hover:text-darkgray/80 hover:underline duration-300 text-lg font-medium"
+                    >
+                        ← Go back to questions
+                    </Link>
+                    <h1 className="text-6xl font-semibold">Edit Question</h1>
+                </div>
             </div>
             <div className="BIG BODY bg-lightgray rounded-lg drop-shadow-xl flex flex-col gap-8 py-6 px-8">
                 <div className="CATEGORY SELECT flex md:flex-row flex-col gap-4 md:justify-end md:items-center">

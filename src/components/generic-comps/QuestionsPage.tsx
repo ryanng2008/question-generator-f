@@ -1,7 +1,9 @@
 import { fetchQuestionList } from '../../lib/api/questionListApi';
 import { Link, useParams } from 'react-router-dom'
+import { GoBackButton } from './ui/GoBackButton'
 import 'katex/dist/katex.min.css';
 import QuestionItem from './ui/QuestionItem'
+import SuggestedQuestions from './ui/SuggestedQuestions'
 import { useState, useEffect } from 'react'
 import { fetchCategoryDetails } from '../../lib/api/categoryDetailsApi';
 import { Category, GeneratedQuestionType } from '../../lib/interfaces';
@@ -77,7 +79,15 @@ function QuestionsPage() {
   return (
     <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4" onClick={() => setDropdownShown(false)}>
         <div className="TITLE pt-12 pb-4 md:px-16 px-4">
-            <h1 className="font-semibold md:text-5xl text-4xl text-[#444341]">{category.title}</h1>
+            <div className="flex flex-col gap-2">
+                <Link 
+                    to={`/library/${categoryId}`}
+                    className="text-[#444341] hover:text-[#444341]/80 hover:underline duration-300 text-lg font-medium"
+                >
+                    ← Go back
+                </Link>
+                <h1 className="font-semibold md:text-5xl text-4xl text-[#444341]">{category.title}</h1>
+            </div>
         </div>
         <div className="ActionBar flex flex-row md:px-8 mx-4 md:mx-8 py-4 items-start gap-8">
             <div className="px-0 flex flex-row items-center gap-8 my-auto md:justify-normal justify-between">
@@ -115,20 +125,27 @@ function QuestionsPage() {
                     <h1 className=' text-[#444341] text-xl font-medium tracking-normal my-auto'>questions shown</h1>
                 </div>
             </div>
-            <div className='px-auto h-12'>
-            {(category.author === 'public' || user === category.author) && <Link className='h-12 flex items-center' to={`/create/bulk/${categoryId}`}>
-              {/* <PlusCircleIcon height={48}/> */}
-              <img src={Create} className='h-12'/>
-            </Link>}
+            <div className='px-auto h-12 flex gap-2'>
+            {(category.author === 'public' || user === category.author) && (
+              <>
+                <Link className='h-12 flex items-center' to={`/create/bulk/${categoryId}`} title="Bulk Create with Templates">
+                  <img src={Create} className='h-12'/>
+                </Link>
+                <Link 
+                  className='h-12 flex items-center bg-blue-100 rounded-lg px-3 hover:bg-blue-200 duration-300' 
+                  to={`/create/static/${categoryId}`} 
+                  title="Static Questions (No Templates)"
+                >
+                  <span className="text-blue-600 font-medium text-sm">Static</span>
+                </Link>
+              </>
+            )}
             </div>
             <div className='lg:flex hidden flex-row gap-4 items-center my-auto'>
-              {/* <Link to={`/create/bulk/${categoryId}`} className='bg-darkgray text-white px-6 hover:scale-[101%] duration-300 py-2 font-medium text-lg rounded-lg flex drop-shadow-xl'>
-                <p>Import </p>
-                
-              </Link> */}
               <div className="rounded-lg py-1 px-3 my-auto bg-green-300 text-green-600 font-medium text-lg shadow-md">NEW</div>
             </div>
         </div>
+        <SuggestedQuestions categoryId={categoryId} />
         <ul className='Questions py-4 flex flex-col gap-4'>
           {questionTags}
         </ul>

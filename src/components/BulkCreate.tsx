@@ -1,10 +1,11 @@
 import { useState, Fragment, useEffect } from "react";
-import { BulkInputQuestion, PVClient, RVClient } from "../lib/interfaces"
+import { BulkInputQuestion, PVClient, RVClient, Category } from "../lib/interfaces"
 import { TrashIcon, XMarkIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import { PVParent } from "./generic-comps/CreateQuestion";
 import { RVParent } from "./generic-comps/CreateQuestion";
 import { extractQuestions, handleGenerateBulkTemplate } from "../lib/api/llmApi";
 import { handleFetchSampleBulk } from "../lib/api/questionSampleApi";
+import { fetchCategoryDetails } from "../lib/api/categoryDetailsApi";
 import { toTeX } from "../lib/shortcuts";
 import { getOCRImage, getOCRPDF } from "../lib/api/ocrApi";
 import Latex from 'react-latex-next';
@@ -52,6 +53,7 @@ export default function BulkCreate() {
     const [inputQuestions, setInputQuestions] = useState<BulkInputQuestion[]>([sampleInputQuestion]);
     const [bulkState, setBulkState] = useState<'preview' | 'input' | null>(null);
     const [shouldFetchSamples, setShouldFetchSamples] = useState(false);
+    const [category, setCategory] = useState<Category | null>(null);
 
     useEffect(() => {
         setInputQuestions(prevInputQuestions => prevInputQuestions.map(iq => ({...iq, tab: bulkState})));
@@ -63,6 +65,14 @@ export default function BulkCreate() {
             setShouldFetchSamples(false);
         }
     }, [shouldFetchSamples]);
+
+    useEffect(() => {
+        if (categoryId && categoryId !== '-1') {
+            fetchCategoryDetails(categoryId)
+                .then(data => setCategory(data))
+                .catch(error => console.error('Error fetching category details:', error));
+        }
+    }, [categoryId]);
 
     function handleQuestionUpdate(index: number, name: string, value: string | boolean | null) {
         const nextQuestions = inputQuestions.map((q, i) => {
@@ -487,7 +497,22 @@ export default function BulkCreate() {
                 </div>
             )}
             <div className="TITLE py-2 flex flex-col gap-6">
-                <h1 className="font-semibold text-6xl">Bulk Create</h1>
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-4">
+                        <Link 
+                            to={categoryId && categoryId !== '-1' ? `/library/${categoryId}` : `/library`}
+                            className="text-darkgray hover:text-darkgray/80 hover:underline duration-300 text-lg font-medium"
+                        >
+                            ← Go back
+                        </Link>
+                    </div>
+                    <h1 className="font-semibold text-6xl">Bulk Create</h1>
+                    {category && (
+                        <p className="text-xl text-gray-600 font-medium">
+                            for {category.title}
+                        </p>
+                    )}
+                </div>
                 <Link to={`/create/question/${selectedId}`} className="text-darkgray hover:text-darkgray/80 hover:underline duration-300">Create individual question</Link>
             </div>
             <div className="ACTIONBAR RESERVED flex flex-row items-center md:gap-8 gap-4">
