@@ -9,6 +9,7 @@ interface SuggestedQuestionsProps {
 }
 
 function SuggestedQuestions({ categoryId }: SuggestedQuestionsProps) {
+    // State management for suggestions panel
     const [isExpanded, setIsExpanded] = useState(false);
     const [suggestions, setSuggestions] = useState<GeneratedQuestionType[]>([]);
     const [loading, setLoading] = useState(false);
