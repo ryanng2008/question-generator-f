@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TrashIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { TrashIcon } from "@heroicons/react/20/solid";
 import { handlePostStaticQuestions } from "../lib/api/createApi";
 import { fetchCategoryDetails } from "../lib/api/categoryDetailsApi";
 import { Link, useParams } from "react-router-dom";

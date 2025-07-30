@@ -1,6 +1,6 @@
 import { fetchQuestionList } from '../../lib/api/questionListApi';
 import { Link, useParams } from 'react-router-dom'
-import { GoBackButton } from './ui/GoBackButton'
+
 import 'katex/dist/katex.min.css';
 import QuestionItem from './ui/QuestionItem'
 import SuggestedQuestions from './ui/SuggestedQuestions'
