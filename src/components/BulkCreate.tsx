@@ -37,7 +37,8 @@ const sampleInputQuestion: BulkInputQuestion = {
             coefficient: false,
             dp: 0
         }],
-        answer: ""
+        answer: "",
+        tags: []
     },
     checked: null,
     sample: {
@@ -120,7 +121,8 @@ export default function BulkCreate() {
                         question: response.templates[i].question || '',
                         answer: response.templates[i].answer || '',
                         rvs: response.templates[i].rvs || [],
-                        pvs: response.templates[i].pvs || []
+                        pvs: response.templates[i].pvs || [],
+                        tags: []
                     },
                     checked: true}
             }))
@@ -137,7 +139,8 @@ export default function BulkCreate() {
                 question: iq.template.question,
                 answer: iq.template.answer,
                 rvs: iq.template.rvs,
-                pvs: iq.template.pvs
+                pvs: iq.template.pvs,
+                tags: iq.template.tags
             }
         })
         const response = await handleFetchSampleBulk(templates);
@@ -179,7 +182,8 @@ export default function BulkCreate() {
                         latex: ``,
                         coefficient: false,
                         dp: 0
-                    }]
+                    }],
+                    tags: []
                 },
                 sample: {
                     question: '',
@@ -323,7 +327,8 @@ export default function BulkCreate() {
                             question: response.templates[i].question || '',
                             answer: response.templates[i].answer || '',
                             rvs: response.templates[i].rvs || [],
-                            pvs: response.templates[i].pvs || []
+                            pvs: response.templates[i].pvs || [],
+                            tags: []
                         }
                     };
                 });

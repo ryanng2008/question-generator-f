@@ -32,7 +32,8 @@ const sampleInputQuestion: BulkInputQuestion = {
             coefficient: false,
             dp: 0
         }],
-        answer: ""
+        answer: "",
+        tags: []
     },
     flagged: null,
     sample: {
@@ -433,12 +434,13 @@ export default function SmartCategory() {
             const fixedQuestions = rawQuestions.filter(q => !q.canRandomize).map(q => ({
                 ...sampleInputQuestion,
                 questionInput: q.question,
-                template: {
-                    question: q.question,
-                    answer: '',
-                    rvs: [],
-                    pvs: []
-                },
+                                    template: {
+                        question: q.question,
+                        answer: '',
+                        rvs: [],
+                        pvs: [],
+                        tags: []
+                    },
                 sample: {
                     question: q.question,
                     answer: ''
