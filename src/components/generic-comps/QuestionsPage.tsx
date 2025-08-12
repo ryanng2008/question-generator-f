@@ -80,12 +80,12 @@ function QuestionsPage() {
     <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4" onClick={() => setDropdownShown(false)}>
         <div className="TITLE pt-12 pb-4 md:px-16 px-4">
             <div className="flex flex-col gap-2">
-                <Link 
+                {/* <Link 
                     to={`/library/${categoryId}`}
-                    className="text-[#444341] hover:text-[#444341]/80 hover:underline duration-300 text-lg font-medium"
+                    className="text-[#444341] hover:text-[#444341]/80 hover:underline duration-300 text-lg"
                 >
                     ← Go back
-                </Link>
+                </Link> */}
                 <h1 className="font-semibold md:text-5xl text-4xl text-[#444341]">{category.title}</h1>
             </div>
         </div>
@@ -131,13 +131,13 @@ function QuestionsPage() {
                 <Link className='h-12 flex items-center' to={`/create/bulk/${categoryId}`} title="Bulk Create with Templates">
                   <img src={Create} className='h-12'/>
                 </Link>
-                <Link 
+                {/* <Link 
                   className='h-12 flex items-center bg-blue-100 rounded-lg px-3 hover:bg-blue-200 duration-300' 
                   to={`/create/static/${categoryId}`} 
                   title="Static Questions (No Templates)"
                 >
                   <span className="text-blue-600 font-medium text-sm">Static</span>
-                </Link>
+                </Link> */}
               </>
             )}
             </div>
@@ -145,7 +145,7 @@ function QuestionsPage() {
               <div className="rounded-lg py-1 px-3 my-auto bg-green-300 text-green-600 font-medium text-lg shadow-md">NEW</div>
             </div>
         </div>
-        <SuggestedQuestions categoryId={categoryId} />
+        {/* <SuggestedQuestions categoryId={categoryId} /> */}
         <ul className='Questions py-4 flex flex-col gap-4'>
           {questionTags}
         </ul>

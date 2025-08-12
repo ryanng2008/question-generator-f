@@ -83,12 +83,12 @@ export default function RepetitionPage() {
         <div className="mx-4 lg:px-12 md:px-8 px-0 flex flex-col gap-4 grow">
             <div className="TITLE pt-12 pb-4 md:px-16 px-4">
                 <div className="flex flex-col gap-2">
-                    <Link 
+                    {/* <Link 
                         to={`/library/${categoryId}`}
-                        className="text-[#444341] hover:text-[#444341]/80 hover:underline duration-300 text-lg font-medium"
+                        className="text-[#444341] hover:text-[#444341]/80 hover:underline duration-300 text-lg"
                     >
                         ← Go back
-                    </Link>
+                    </Link> */}
                     <h1 className="font-semibold md:text-5xl text-4xl text-[#444341]">{category.title}</h1>
                 </div>
             </div>

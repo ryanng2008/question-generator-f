@@ -29,9 +29,9 @@ function CategoryMenu() {
         <div className='mx-4 py-4 flex flex-col gap-2'>
           <Link 
             to="/library"
-            className="text-[#444341] hover:text-[#444341]/80 hover:underline duration-300 text-lg font-medium"
+            className="text-[#444341] hover:text-[#444341]/80 hover:underline my-2 duration-300 text-md"
           >
-            ← Go back to library
+            ← Library
           </Link>
           <h1 className='font-semibold text-5xl'>{category ? category.title : '...'}</h1>
         </div>

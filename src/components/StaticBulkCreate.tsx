@@ -99,12 +99,12 @@ export default function StaticBulkCreate() {
             <div className="TITLE py-2 flex flex-col gap-6">
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-4">
-                        <Link 
+                        {/* <Link 
                             to={categoryId && categoryId !== '-1' ? `/library/${categoryId}` : `/library`}
-                            className="text-darkgray hover:text-darkgray/80 hover:underline duration-300 text-lg font-medium"
+                            className="text-darkgray hover:text-darkgray/80 hover:underline duration-300 text-lg"
                         >
                             ← Go back
-                        </Link>
+                        </Link> */}
                     </div>
                     <h1 className="font-semibold text-6xl">Static Question Upload</h1>
                     {category && (

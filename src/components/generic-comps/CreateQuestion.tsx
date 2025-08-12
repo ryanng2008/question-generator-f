@@ -172,12 +172,12 @@ export default function CreateQuestion() {
         <div className="flex flex-col gap-12 mx-4 lg:px-12 md:px-8 px-0 py-8">
             <div className="HEAD my-4">
                 <div className="flex flex-col gap-2">
-                    <Link 
+                    {/* <Link 
                         to={categoryId && categoryId !== '-1' ? `/library/${categoryId}` : `/library`}
                         className="text-darkgray hover:text-darkgray/80 hover:underline duration-300 text-lg font-medium"
                     >
                         ← Go back
-                    </Link>
+                    </Link> */}
                     <h1 className="text-6xl font-semibold">Create Question Template</h1>
                 </div>
             </div>
