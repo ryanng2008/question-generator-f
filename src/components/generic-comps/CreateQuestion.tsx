@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import { useEffect, useState, Fragment } from "react";
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 // import Latex from "react-latex-next";
 import { EditableMathField } from "react-mathquill";
 import { CheckCircleIcon, EllipsisVerticalIcon, InformationCircleIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";

@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import 'katex/dist/katex.min.css';
 import QuestionItem from './ui/QuestionItem'
-import SuggestedQuestions from './ui/SuggestedQuestions'
+
 import { useState, useEffect } from 'react'
 import { fetchCategoryDetails } from '../../lib/api/categoryDetailsApi';
 import { Category, GeneratedQuestionType } from '../../lib/interfaces';

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchQuestionDetails } from "../../lib/api/questionDetailsApi";
 import { InformationCircleIcon } from "@heroicons/react/20/solid";
 import { Info } from "./ui/Info";

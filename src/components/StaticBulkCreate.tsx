@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { TrashIcon } from "@heroicons/react/20/solid";
 import { handlePostStaticQuestions } from "../lib/api/createApi";
 import { fetchCategoryDetails } from "../lib/api/categoryDetailsApi";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Category } from "../lib/interfaces";
 import ComboSelectCategory from "./generic-comps/ui/ComboSelectCategory";
 import TagsInput from "./generic-comps/ui/TagsInput";
