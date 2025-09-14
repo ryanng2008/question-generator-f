@@ -16,7 +16,7 @@ import Cross from '../assets/svgs/Cross.svg';
 import HighlightCheck from '../assets/svgs/HighlightCheck.svg';
 import HighlightCross from '../assets/svgs/HighlightCross.svg';
 import { handlePostQuestions } from "../lib/api/createApi";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ComboSelectCategory from "./generic-comps/ui/ComboSelectCategory";
 
 const sampleInputQuestion: BulkInputQuestion = {
@@ -518,7 +518,7 @@ export default function BulkCreate() {
                         </p>
                     )}
                 </div>
-                <Link to={`/create/question/${selectedId}`} className="text-darkgray hover:text-darkgray/80 hover:underline duration-300">Create individual question</Link>
+                {/* <Link to={`/create/question/${selectedId}`} className="text-darkgray hover:text-darkgray/80 hover:underline duration-300">Create individual question</Link> */}
             </div>
             <div className="ACTIONBAR RESERVED flex flex-row items-center md:gap-8 gap-4">
                 <div className="sm:block hidden"><ComboSelectCategory categoryId={selectedId} onChange={setSelectedId}/></div>

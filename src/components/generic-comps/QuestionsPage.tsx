@@ -11,8 +11,7 @@ import Refresh from '../../assets/svgs/Refresh.svg'
 import Save from '../../assets/svgs/Save.svg'
 import Dropdown from './ui/Dropdown';
 import ComboSlider from './ui/ComboSlider';
-// import { PlusCircleIcon } from '@heroicons/react/20/solid';
-import Create from '../../assets/svgs/Create.svg'
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { useDebouncedCallback } from 'use-debounce';
 import { useAuth } from '../../AuthContext';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
@@ -73,7 +72,7 @@ function QuestionsPage() {
   }, [category.title])
 
   const questionTags = questionObjs && questionObjs.map((questionObj: GeneratedQuestionType, index: number) => {
-    return <li key={index}><QuestionItem questionObject={questionObj} index={index+1} key={index} categoryId={categoryId} /></li>
+    return <li key={index}><QuestionItem questionObject={questionObj} index={index+1} key={index} /></li>
   })
   const [dropdownShown, setDropdownShown] = useState(false);
   return (
@@ -125,11 +124,11 @@ function QuestionsPage() {
                     <h1 className=' text-[#444341] text-xl font-medium tracking-normal my-auto'>questions shown</h1>
                 </div>
             </div>
-            <div className='px-auto h-12 flex gap-2'>
+            <div className='h-12 flex gap-2 ml-auto'>
             {(category.author === 'public' || user === category.author) && (
               <>
-                <Link className='h-12 flex items-center' to={`/create/bulk/${categoryId}`} title="Bulk Create with Templates">
-                  <img src={Create} className='h-12'/>
+                <Link className='h-12 flex items-center rounded-lg px-3 hover:scale-105 duration-300' to={`/edit/${categoryId}`} title="Edit Set">
+                  <PencilSquareIcon className='h-10 text-darkgray'/>
                 </Link>
                 {/* <Link 
                   className='h-12 flex items-center bg-blue-100 rounded-lg px-3 hover:bg-blue-200 duration-300' 
@@ -141,9 +140,9 @@ function QuestionsPage() {
               </>
             )}
             </div>
-            <div className='lg:flex hidden flex-row gap-4 items-center my-auto'>
+            {/* <div className='lg:flex hidden flex-row gap-4 items-center my-auto'>
               <div className="rounded-lg py-1 px-3 my-auto bg-green-300 text-green-600 font-medium text-lg shadow-md">NEW</div>
-            </div>
+            </div> */}
         </div>
         {/* <SuggestedQuestions categoryId={categoryId} /> */}
         <ul className='Questions py-4 flex flex-col gap-4'>

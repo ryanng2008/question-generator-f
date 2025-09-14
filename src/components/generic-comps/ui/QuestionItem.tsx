@@ -3,12 +3,10 @@
 import { toTeX } from '../../../lib/shortcuts';
 import { GeneratedQuestionType } from '../../../lib/interfaces';
 import { useState } from 'react';
-import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import { Link } from 'react-router-dom';
 
 
 
-function QuestionItem({ questionObject, index=0, categoryId='' }: {questionObject: GeneratedQuestionType; index: number, categoryId: string }) {
+function QuestionItem({ questionObject, index=0 }: {questionObject: GeneratedQuestionType; index: number }) {
     const formattedQuestion = toTeX(questionObject.question) // (DONE) TODO: error handling inside toTeX and safety net
     const formattedAnswer = toTeX(questionObject.answer);
     // const longQuestion = questionObject.question && (questionObject.question.length > 200)
@@ -22,9 +20,6 @@ function QuestionItem({ questionObject, index=0, categoryId='' }: {questionObjec
                 <h1 className='text-2xl font-semibold'>Question {index}</h1>
                 {/* <div className='rounded-lg drop-shadow my-auto text-lg py-[3px] px-4 font-bold bg-[#CDFFC9] invisible sm:visible'><p>Easy</p></div> */}
             </div>
-            <Link to={`/edit/${categoryId}/${questionObject.id}`}>
-                <PencilSquareIcon className='h-8' />
-            </Link>
         </div>
         <div className={`CHILDREN h-fit overflow-x-auto overflow-y-clip duration-500 py-3 whitespace-pre-line`}>
         {formattedQuestion}

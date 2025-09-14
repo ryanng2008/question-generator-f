@@ -38,6 +38,7 @@ function CategoryMenu() {
         <div className='flex flex-col gap-[1px] my-4 mx-4'>
           <MenuButton text='Adaptive practice' linkedPage='adaptive' />
           <MenuButton text='Questions' linkedPage='questions' />
+          <MenuButton text='Edit Set' linkedPage={`/edit/${categoryId}`} />
           {/* <MenuButton text='Spaced Repetition' linkedPage='questions' />
           <MenuButton text='Create' linkedPage='main'/> */}
       </div>
