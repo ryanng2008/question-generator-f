@@ -28,7 +28,7 @@ function Dashboard() {
         return(
         <div className='CONTENT CONTAINER flex flex-col md:justify-center'>
             <div className="HEADING my-4 font-semibold md:text-6xl text-5xl text-[#444341]">
-                <h1>Need more practice questions?</h1>
+                <h1>Revise with efficiency</h1>
             </div>
             <div className='ml-1 my-2 flex flex-col'>
                 <Link to="/create/set">
